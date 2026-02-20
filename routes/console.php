@@ -19,3 +19,5 @@ Schedule::job(new AutoCloseResolvedTickets)->everyFifteenMinutes();
 Schedule::job(new SendCustomerNudges)->everyThirtyMinutes();
 Schedule::job(new FlagStaleKbArticles)->weekly();
 Schedule::job(new CheckAssetWarranty)->daily();
+Schedule::job(new \App\Jobs\SendDailyMetricsReport)->dailyAt('08:00');
+Schedule::job(new \App\Jobs\SendWeeklySlaReport)->weeklyOn(1, '09:00');

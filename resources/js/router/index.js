@@ -97,6 +97,11 @@ const routes = [
                 name: 'AssetDetail',
                 component: () => import('@/pages/assets/AssetDetailPage.vue'),
             },
+            {
+                path: 'stats',
+                name: 'AgentStats',
+                component: () => import('@/pages/admin/ManagerDashboardPage.vue'),
+            },
         ],
     },
 
@@ -120,6 +125,11 @@ const routes = [
                 path: 'automation',
                 name: 'AdminAutomation',
                 component: () => import('@/pages/AdminAutomationPage.vue'),
+            },
+            {
+                path: 'dashboard',
+                name: 'ManagerDashboard',
+                component: () => import('@/pages/admin/ManagerDashboardPage.vue'),
             },
         ],
     },
