@@ -22,6 +22,7 @@ Route::get('/health', function () {
 });
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\TicketController;
 
 // ─── API v1 ───
 Route::prefix('v1')->group(function () {
@@ -37,6 +38,54 @@ Route::prefix('v1')->group(function () {
         // Auth
         Route::get('/auth/me', [AuthController::class, 'me']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+        // Agent Routes
+        Route::middleware(['role:agent'])->prefix('agent')->group(function () {
+            Route::get('/tickets', [\App\Http\Controllers\Api\V1\TicketController::class, 'index']);
+            Route::patch('/tickets/{ticket}', [\App\Http\Controllers\Api\V1\Agent\AgentTicketController::class, 'update']);
+            Route::post('/tickets/{ticket}/comments', [\App\Http\Controllers\Api\V1\Agent\CommentController::class, 'store']);
+            Route::apiResource('canned-responses', \App\Http\Controllers\Api\V1\Agent\CannedResponseController::class);
+        });
+
+        // Admin Routes (Automation & Settings)
+        Route::middleware('role:admin')->prefix('admin')->group(function () {
+            Route::apiResource('automation-rules', \App\Http\Controllers\Api\V1\Admin\AutomationController::class);
+            Route::apiResource('sla-policies', \App\Http\Controllers\Api\V1\Admin\SlaController::class);
+            Route::apiResource('escalation-tiers', \App\Http\Controllers\Api\V1\Admin\EscalationController::class);
+            Route::apiResource('audit-logs', \App\Http\Controllers\Api\V1\Admin\AuditLogController::class)->only(['index', 'show']);
+        });
+
+        // Categories
+        Route::get('/categories', \App\Http\Controllers\Api\V1\CategoryController::class);
+
+        // Tickets
+        Route::get('/tickets/my-tickets', [TicketController::class, 'index']);
+        Route::post('/tickets/check-duplicate', [TicketController::class, 'checkDuplicate']);
+        Route::post('/tickets/{ticket}/comments', [\App\Http\Controllers\Api\V1\Agent\CommentController::class, 'store']);
+        Route::apiResource('tickets', TicketController::class)->except(['index']);
+
+        // Search
+        Route::get('/search', \App\Http\Controllers\Api\V1\SearchController::class);
+
+        // Knowledge Base
+        Route::prefix('kb')->group(function () {
+            // Public KB endpoints (read-only for all authenticated users)
+            Route::get('/articles', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'index']);
+            Route::get('/suggest', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'suggest']);
+            Route::get('/articles/{slug}', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'show']);
+            Route::get('/articles/{slug}/versions', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'versions']);
+            Route::post('/articles/{slug}/feedback', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'feedback']);
+            
+            // KB Category Management (Admin/Agent)
+            Route::middleware(['role:admin,agent'])->group(function () {
+                Route::apiResource('categories', \App\Http\Controllers\Api\V1\KbCategoryController::class);
+                
+                // Article creation/modification (Admin/Agent)
+                Route::post('/articles', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'store']);
+                Route::put('/articles/{slug}', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'update']);
+                Route::delete('/articles/{slug}', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'destroy']);
+            });
+        });
 
     });
 });

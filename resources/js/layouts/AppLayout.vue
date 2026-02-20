@@ -42,7 +42,7 @@
                         </button>
 
                         <router-link 
-                            to="/new-ticket"
+                            to="/tickets/new"
                             class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-xl shadow-lg shadow-primary/20 hover-lift active:scale-95"
                         >
                             <span>New Request</span>
@@ -62,10 +62,28 @@
 
                             <!-- Dropdown Menu -->
                             <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-                                <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 glass-card rounded-2xl py-2 overflow-hidden ring-1 ring-white/10">
+                                <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 glass-card rounded-lg py-2 overflow-hidden ring-1 ring-white/10">
                                     <div class="px-4 py-3 border-b border-white/10 bg-white/5">
                                         <p class="text-xs text-text-dim font-medium uppercase tracking-wider">Role</p>
                                         <p class="text-sm font-bold text-primary truncate capitalize">{{ auth.user?.role }}</p>
+                                    </div>
+                                    <div class="px-2 py-2 border-b border-white/10">
+                                        <router-link 
+                                            v-if="['agent', 'admin'].includes(auth.user?.role)"
+                                            to="/agent"
+                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-primary/10 hover:text-primary rounded-xl flex items-center gap-3 transition-all"
+                                        >
+                                            <span>🎧</span>
+                                            Agent Workspace
+                                        </router-link>
+                                        <router-link 
+                                            v-if="auth.user?.role === 'admin'"
+                                            to="/admin"
+                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-warning/10 hover:text-warning rounded-xl flex items-center gap-3 transition-all mt-1"
+                                        >
+                                            <span>👑</span>
+                                            Admin Panel
+                                        </router-link>
                                     </div>
                                     <button 
                                         @click="handleLogout"

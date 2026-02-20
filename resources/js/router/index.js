@@ -42,6 +42,16 @@ const routes = [
                 name: 'KnowledgeBase',
                 component: () => import('@/pages/KnowledgeBasePage.vue'),
             },
+            {
+                path: 'kb/:slug',
+                name: 'KbArticleViewer',
+                component: () => import('@/pages/KbArticleViewerPage.vue'),
+            },
+            {
+                path: 'settings',
+                name: 'Settings',
+                component: () => import('@/pages/SettingsPage.vue'),
+            },
         ],
     },
 
@@ -54,13 +64,28 @@ const routes = [
             {
                 path: '',
                 name: 'AgentDashboard',
-                component: () => import('@/pages/agent/AgentDashboardPage.vue'),
+                component: () => import('@/pages/AgentDashboardPage.vue'),
             },
             {
-                path: 'tickets/:id',
+                path: 'queue',
+                name: 'AgentQueue',
+                component: () => import('@/pages/AgentQueuePage.vue'),
+            },
+            {
+                path: 'tickets/:ticketNumber',
                 name: 'AgentTicketDetail',
-                component: () => import('@/pages/agent/AgentTicketDetailPage.vue'),
+                component: () => import('@/pages/AgentTicketDetailPage.vue'),
                 props: true,
+            },
+            {
+                path: 'kb/new',
+                name: 'AgentNewArticle',
+                component: () => import('@/pages/AgentArticleEditorPage.vue'),
+            },
+            {
+                path: 'kb/edit/:slug',
+                name: 'AgentEditArticle',
+                component: () => import('@/pages/AgentArticleEditorPage.vue'),
             },
         ],
     },
@@ -80,6 +105,11 @@ const routes = [
                 path: 'settings',
                 name: 'AdminSettings',
                 component: () => import('@/pages/admin/SettingsPage.vue'),
+            },
+            {
+                path: 'automation',
+                name: 'AdminAutomation',
+                component: () => import('@/pages/AdminAutomationPage.vue'),
             },
         ],
     },
