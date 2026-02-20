@@ -97,6 +97,11 @@ const routes = [
                 name: 'AssetDetail',
                 component: () => import('@/pages/assets/AssetDetailPage.vue'),
             },
+            {
+                path: 'stats',
+                name: 'AgentStats',
+                component: () => import('@/pages/admin/ManagerDashboardPage.vue'),
+            },
         ],
     },
 
