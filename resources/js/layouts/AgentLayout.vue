@@ -86,6 +86,7 @@ const authStore = useAuthStore();
 const navItems = [
     { label: 'Overview', path: '/agent', icon: '📊' },
     { label: 'Issue Queue', path: '/agent/queue', icon: '📥' },
+    { label: 'Knowledge Base', path: '/agent/kb/new', icon: '📚' },
     { label: 'Macros', path: '/agent/canned-responses', icon: '⚡' },
     { label: 'Performance', path: '/agent/stats', icon: '📈' },
     { label: 'User Portal', path: '/', icon: '🏠' },
