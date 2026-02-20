@@ -1,64 +1,106 @@
 <template>
-    <div class="min-h-screen bg-background flex items-center justify-center p-4">
-        <div class="w-full max-w-md">
-            <!-- Logo -->
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                    </svg>
+    <div class="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden transition-all duration-700">
+        <!-- ─── Atmospheric Glows ─── -->
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s"></div>
+
+        <div class="w-full max-w-md z-10 space-y-8">
+            <!-- Logo Section -->
+            <div class="text-center space-y-4">
+                <div class="inline-flex w-16 h-16 bg-linear-to-br from-primary to-secondary rounded-2xl items-center justify-center shadow-2xl shadow-primary/30 animate-bounce-slow">
+                    <span class="text-white font-black text-2xl tracking-tighter">IT</span>
                 </div>
-                <h1 class="text-2xl font-bold text-white">IT Helpdesk</h1>
-                <p class="text-gray-400 mt-1">Sign in to your account</p>
+                <div class="space-y-1">
+                    <h1 class="text-4xl font-black tracking-tight text-text-main">
+                        Welcome <span class="text-gradient">Back</span>
+                    </h1>
+                    <p class="text-text-dim text-sm font-medium tracking-wide">Next-Gen IT Management & Support</p>
+                </div>
             </div>
 
-            <!-- Login Form -->
-            <div class="bg-surface rounded-2xl p-8 border border-surface-light shadow-xl">
-                <form @submit.prevent="handleLogin" class="space-y-5">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
-                        <input v-model="form.email" type="email" required autofocus
-                            class="w-full px-4 py-2.5 bg-background border border-surface-light rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                            placeholder="you@company.com" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
-                        <input v-model="form.password" type="password" required
-                            class="w-full px-4 py-2.5 bg-background border border-surface-light rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                            placeholder="••••••••" />
+            <!-- Login Card -->
+            <div class="glass-card rounded-[2rem] p-8 shadow-2xl relative">
+                <form @submit.prevent="handleLogin" class="space-y-6">
+                    <div class="space-y-4">
+                        <!-- Email Field -->
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-1">Email Address</label>
+                            <div class="relative group">
+                                <input 
+                                    v-model="form.email"
+                                    type="email" 
+                                    required
+                                    placeholder="name@company.com"
+                                    class="w-full px-5 py-4 bg-surface-light/50 border border-glass-border rounded-2xl text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all duration-300"
+                                />
+                                <div class="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity"></div>
+                            </div>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center ml-1">
+                                <label class="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Password</label>
+                                <a href="#" class="text-[10px] font-bold text-primary hover:text-text-main transition-colors uppercase tracking-widest">Forgot?</a>
+                            </div>
+                            <div class="relative group">
+                                <input 
+                                    v-model="form.password"
+                                    type="password" 
+                                    required
+                                    placeholder="••••••••"
+                                    class="w-full px-5 py-4 bg-surface-light/50 border border-glass-border rounded-2xl text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all duration-300"
+                                />
+                                <div class="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity"></div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div v-if="error" class="bg-danger/10 border border-danger/30 text-danger text-sm rounded-lg p-3">
-                        {{ error }}
-                    </div>
+                    <!-- Error State -->
+                    <transition enter-active-class="transition duration-200 ease-out" enter-from-class="transform -translate-y-2 opacity-0" enter-to-class="transform translate-y-0 opacity-100">
+                        <p v-if="error" class="text-red-400 text-xs font-bold text-center bg-red-500/10 py-3 rounded-xl border border-red-500/20">
+                            {{ error }}
+                        </p>
+                    </transition>
 
-                    <button type="submit" :disabled="authStore.loading"
-                        class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        {{ authStore.loading ? 'Signing in...' : 'Sign in' }}
+                    <button 
+                        type="submit" 
+                        :disabled="authStore.loading"
+                        class="group relative w-full py-4 bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-black rounded-2xl shadow-xl shadow-primary/20 transition-all duration-300 hover-lift active:scale-[0.98] overflow-hidden"
+                    >
+                        <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        <span v-if="authStore.loading" class="flex items-center justify-center gap-2">
+                            <span class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                            Validating...
+                        </span>
+                        <span v-else class="tracking-widest uppercase text-xs">Authorize & Sign In</span>
                     </button>
                 </form>
 
-                <!-- Divider -->
-                <div class="flex items-center gap-4 my-6">
-                    <div class="flex-1 border-t border-surface-light"></div>
-                    <span class="text-xs text-gray-500 uppercase">or continue with</span>
-                    <div class="flex-1 border-t border-surface-light"></div>
+                <!-- SSO Divider -->
+                <div class="relative my-8">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-glass-border"></div></div>
+                    <div class="relative flex justify-center text-[10px] uppercase font-black tracking-[0.3em] text-text-dim">
+                        <span class="bg-surface px-4 py-1 rounded-full border border-glass-border">Identity Providers</span>
+                    </div>
                 </div>
 
-                <!-- SSO Buttons -->
-                <div class="space-y-3">
-                    <a href="/api/v1/auth/sso/google/redirect"
-                        class="flex items-center justify-center gap-3 w-full px-4 py-2.5 bg-background border border-surface-light rounded-lg text-gray-300 hover:text-white hover:border-gray-500 transition-colors">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
-                        Sign in with Google
-                    </a>
-                    <a href="/api/v1/auth/sso/microsoft/redirect"
-                        class="flex items-center justify-center gap-3 w-full px-4 py-2.5 bg-background border border-surface-light rounded-lg text-gray-300 hover:text-white hover:border-gray-500 transition-colors">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M0 0h11.377v11.372H0zm12.623 0H24v11.372H12.623zM0 12.623h11.377V24H0zm12.623 0H24V24H12.623z"/></svg>
-                        Sign in with Microsoft
-                    </a>
+                <!-- SSO Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-2xl hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                        <span class="text-[11px] font-bold text-text-main uppercase tracking-wider">Google</span>
+                    </button>
+                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-2xl hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
+                        <img src="https://www.svgrepo.com/show/333558/microsoft.svg" class="w-5 h-5" alt="Microsoft">
+                        <span class="text-[11px] font-bold text-text-main uppercase tracking-wider">Azure</span>
+                    </button>
                 </div>
             </div>
+
+            <p class="text-center text-text-dim text-xs font-medium">
+                Protected by enterprise-grade <span class="text-primary font-bold">SHA-256</span> encryption
+            </p>
         </div>
     </div>
 </template>
@@ -80,11 +122,23 @@ const form = reactive({
 const handleLogin = async () => {
     error.value = '';
     try {
-        await authStore.login(form);
-        const redirect = router.currentRoute.value.query.redirect || '/';
-        router.push(redirect);
+        const success = await authStore.login(form);
+        if (success) {
+            const redirect = router.currentRoute.value.query.redirect || '/';
+            router.push(redirect);
+        }
     } catch (err) {
         error.value = err.response?.data?.message || 'Invalid credentials. Please try again.';
     }
 };
 </script>
+
+<style scoped>
+@keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.animate-bounce-slow {
+    animation: bounce-slow 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+</style>

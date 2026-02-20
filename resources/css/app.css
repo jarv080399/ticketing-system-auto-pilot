@@ -2,6 +2,7 @@
 
 /* ─── Design System Tokens ─── */
 @theme {
+    /* ─── Premium Color Palette (Constants) ─── */
     --color-primary: #3b82f6;
     --color-primary-dark: #2563eb;
     --color-secondary: #6366f1;
@@ -9,8 +10,59 @@
     --color-danger: #ef4444;
     --color-warning: #f59e0b;
     --color-info: #06b6d4;
-    --color-surface: #1e293b;
-    --color-surface-light: #334155;
-    --color-background: #0f172a;
+    
+    /* ─── Functional Colors (Dynamic) ─── */
+    --color-surface: var(--surface);
+    --color-surface-light: var(--surface-light);
+    --color-background: var(--background);
+    --color-glass: var(--glass);
+    --color-glass-border: var(--glass-border);
+    --color-text-main: var(--text-main);
+    --color-text-dim: var(--text-dim);
+    
+    /* ─── Typography & Motion ─── */
     --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@layer base {
+    :root {
+        --background: #f8fafc;
+        --surface: #ffffff;
+        --surface-light: #f1f5f9;
+        --glass: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(0, 0, 0, 0.05);
+        --text-main: #0f172a;
+        --text-dim: #64748b;
+    }
+
+    .dark {
+        --background: #0b1120;
+        --surface: #1e293b;
+        --surface-light: #334155;
+        --glass: rgba(15, 23, 42, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-main: #f8fafc;
+        --text-dim: #94a3b8;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        @apply bg-background text-text-main antialiased transition-colors duration-500;
+    }
+}
+
+@layer utilities {
+    .glass-card {
+        @apply bg-glass backdrop-blur-md border border-glass-border shadow-xl;
+    }
+    
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-linear-to-r from-blue-500 to-indigo-500;
+    }
+    
+    .hover-lift {
+        @apply transition-[var(--transition-bounce)] hover:-translate-y-1 hover:shadow-2xl;
+    }
 }

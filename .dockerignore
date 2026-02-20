@@ -1,0 +1,14 @@
+node_modules
+vendor
+.git
+.agent
+*.md
+.env
+.env.backup
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+public/build
+tests
+database/database.sqlite

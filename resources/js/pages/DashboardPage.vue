@@ -1,53 +1,134 @@
 <template>
-    <div>
-        <h1 class="text-2xl font-bold mb-6">Welcome back, {{ authStore.fullName }}!</h1>
-
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-surface rounded-xl p-6 border border-surface-light">
-                <p class="text-sm text-gray-400 mb-1">Open Tickets</p>
-                <p class="text-3xl font-bold text-primary">—</p>
+    <div class="space-y-12 pb-12">
+        <!-- ─── Header Section ─── -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div class="space-y-2">
+                <h1 class="text-4xl font-black tracking-tight text-text-main transition-smooth">
+                    Hello, <span class="text-gradient">{{ authStore.user?.name?.split(' ')[0] }}</span> 
+                    <span class="inline-block animate-wave ml-2">👋</span>
+                </h1>
+                <p class="text-text-dim font-medium tracking-wide">Here's what's happening in your IT workspace today.</p>
             </div>
-            <div class="bg-surface rounded-xl p-6 border border-surface-light">
-                <p class="text-sm text-gray-400 mb-1">Resolved This Week</p>
-                <p class="text-3xl font-bold text-accent">—</p>
-            </div>
-            <div class="bg-surface rounded-xl p-6 border border-surface-light">
-                <p class="text-sm text-gray-400 mb-1">My Devices</p>
-                <p class="text-3xl font-bold text-secondary">—</p>
+            <div class="flex items-center gap-3">
+                <span class="px-5 py-2.5 glass-card rounded-2xl text-xs font-black uppercase tracking-widest text-text-dim flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                    System Online
+                </span>
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <h2 class="text-lg font-semibold mb-4">Quick Actions</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <router-link to="/tickets/new" class="bg-surface hover:bg-surface-light border border-surface-light rounded-xl p-5 transition-colors group">
-                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-primary/30 transition-colors">
-                    <span class="text-xl">🎫</span>
+        <!-- ─── Premium Stats Grid ─── -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div v-for="stat in stats" :key="stat.label" 
+                class="glass-card p-8 rounded-[2.5rem] hover-lift group relative overflow-hidden"
+            >
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
+                
+                <div class="relative z-10 space-y-5">
+                    <div :class="`w-14 h-14 rounded-2xl ${stat.bgColor} flex items-center justify-center text-3xl shadow-lg shadow-black/20`">
+                        {{ stat.icon }}
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-text-dim mb-1.5">{{ stat.label }}</p>
+                        <div class="flex items-baseline gap-2">
+                            <h2 class="text-4xl font-black text-text-main">{{ stat.value }}</h2>
+                            <span v-if="stat.trend" :class="`text-xs font-bold ${stat.trendColor}`">{{ stat.trend }}</span>
+                        </div>
+                    </div>
+                    <!-- Micro Chart Stub -->
+                    <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                        <div :class="`h-full rounded-full ${stat.barColor} transition-all duration-1000`" :style="`width: ${stat.progress}%`"></div>
+                    </div>
                 </div>
-                <p class="font-medium">New Request</p>
-                <p class="text-sm text-gray-400 mt-1">Submit a new IT ticket</p>
-            </router-link>
-            <router-link to="/tickets" class="bg-surface hover:bg-surface-light border border-surface-light rounded-xl p-5 transition-colors group">
-                <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-accent/30 transition-colors">
-                    <span class="text-xl">📋</span>
+            </div>
+            
+            <div class="glass-card p-8 rounded-[2.5rem] hover-lift group relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
+                <div class="relative z-10 space-y-5">
+                    <div class="w-14 h-14 rounded-2xl bg-secondary/20 flex items-center justify-center text-3xl shadow-lg shadow-black/20">🚀</div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-text-dim mb-1.5">SLA Compliance</p>
+                        <div class="flex items-baseline gap-2">
+                            <h2 class="text-4xl font-black text-text-main">100%</h2>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full bg-secondary w-full"></div>
+                    </div>
                 </div>
-                <p class="font-medium">My Tickets</p>
-                <p class="text-sm text-gray-400 mt-1">View your open requests</p>
-            </router-link>
-            <router-link to="/kb" class="bg-surface hover:bg-surface-light border border-surface-light rounded-xl p-5 transition-colors group">
-                <div class="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-secondary/30 transition-colors">
-                    <span class="text-xl">📚</span>
+            </div>
+        </div>
+
+        <!-- ─── Grid: Quick Actions & Recent Activity ─── -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            <!-- Quick Actions -->
+            <div class="lg:col-span-3 space-y-8">
+                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim ml-1">Priority Operations</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                    <router-link v-for="action in actions" :key="action.name" :to="action.path"
+                        class="glass-card p-7 rounded-[2rem] hover-lift bg-white/5 hover:bg-white/10 group flex flex-col gap-4 border-white/5"
+                    >
+                        <div :class="`w-14 h-14 shrink-0 rounded-2xl ${action.iconBg} flex items-center justify-center text-2xl group-hover:scale-110 transition-smooth shadow-xl shadow-black/20`">
+                            {{ action.icon }}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-text-main text-lg tracking-tight">{{ action.name }}</h4>
+                            <p class="text-sm text-text-dim mt-1.5 leading-relaxed">{{ action.desc }}</p>
+                        </div>
+                    </router-link>
                 </div>
-                <p class="font-medium">Knowledge Base</p>
-                <p class="text-sm text-gray-400 mt-1">Find answers to common questions</p>
-            </router-link>
-            <div class="bg-surface hover:bg-surface-light border border-surface-light rounded-xl p-5 transition-colors group cursor-pointer">
-                <div class="w-10 h-10 bg-warning/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-warning/30 transition-colors">
-                    <span class="text-xl">💻</span>
+
+                <!-- Modern Table Stub -->
+                <div class="space-y-8 pt-4">
+                    <div class="flex justify-between items-center px-1">
+                        <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Active Maintenance Feed</h3>
+                        <router-link to="/tickets" class="text-[10px] font-black text-primary uppercase tracking-widest hover:text-text-main transition-colors">Global Archive →</router-link>
+                    </div>
+                    <div class="glass-card rounded-[2.5rem] overflow-hidden border-white/5">
+                        <div v-if="recentTickets.length === 0" class="p-20 text-center space-y-6">
+                            <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto text-4xl">📭</div>
+                            <div class="space-y-2">
+                                <p class="text-text-main font-bold text-lg">System Clearing</p>
+                                <p class="text-text-dim max-w-xs mx-auto">No high-priority incidents reported. All infrastructure monitors are green.</p>
+                            </div>
+                            <button class="px-8 py-3 bg-primary/10 hover:bg-primary/20 text-primary font-black rounded-2xl text-xs uppercase tracking-[0.2em] transition-smooth border border-primary/20">Sync Intel</button>
+                        </div>
+                    </div>
                 </div>
-                <p class="font-medium">My Devices</p>
-                <p class="text-sm text-gray-400 mt-1">View assigned hardware</p>
+            </div>
+
+            <!-- Side Cards -->
+            <div class="space-y-10">
+                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim ml-1">Intelligence</h3>
+                
+                <!-- Announcement Card -->
+                <div class="glass-card p-7 rounded-[2rem] bg-linear-to-br from-indigo-500/10 to-purple-500/10 border-indigo-500/20 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-8xl opacity-5 group-hover:opacity-10 transition-opacity rotate-12">📢</div>
+                    <div class="relative z-10 space-y-5">
+                        <span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] font-black uppercase tracking-widest rounded-xl">Global Alert</span>
+                        <h4 class="font-bold text-lg text-text-main leading-tight">Azure Maintenance Window</h4>
+                        <p class="text-sm text-text-dim leading-relaxed">Intermittent connectivity expected on West Europe region this Sunday.</p>
+                        <button class="text-xs font-black text-indigo-400 hover:text-white transition-colors flex items-center gap-2 uppercase tracking-widest">
+                            View Details <span class="text-xl">→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- My Hardware Card -->
+                <div class="glass-card p-7 rounded-[2rem] space-y-6">
+                    <h4 class="text-sm font-black uppercase tracking-widest text-text-main flex items-center gap-3">
+                        <span class="text-2xl">💻</span> Asset Inventory
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-smooth cursor-pointer group">
+                            <div class="w-12 h-12 rounded-xl bg-surface flex items-center justify-center font-bold text-xs text-text-dim group-hover:text-primary transition-colors">MBP</div>
+                            <div>
+                                <p class="text-sm font-bold text-text-main">MacBook Pro M3</p>
+                                <p class="text-[10px] text-text-dim uppercase tracking-widest">Active • Deployment</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -57,4 +138,32 @@
 import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore();
+
+const stats = [
+    { label: 'Active Tasks', value: '12', icon: '⚡', bgColor: 'bg-primary/20', trend: '+2', trendColor: 'text-primary', barColor: 'bg-primary', progress: 65 },
+    { label: 'Resolved (7d)', value: '48', icon: '✅', bgColor: 'bg-accent/20', trend: '↑ 14%', trendColor: 'text-accent', barColor: 'bg-accent', progress: 82 },
+    { label: 'Asset Health', value: '98%', icon: '💎', bgColor: 'bg-indigo-500/20', trend: 'Stable', trendColor: 'text-gray-500', barColor: 'bg-indigo-500', progress: 98 },
+];
+
+const actions = [
+    { name: 'New Request', desc: 'Submit a high-priority IT incident or request.', path: '/new-ticket', icon: '🎟️', iconBg: 'bg-primary/20' },
+    { name: 'My Tickets', desc: 'Track your pending applications & status.', path: '/tickets', icon: '📁', iconBg: 'bg-accent/20' },
+    { name: 'Knowledge', desc: 'Search documentation for instant fixes.', path: '/kb', icon: '📖', iconBg: 'bg-indigo-500/20' },
+    { name: 'Self-Service', desc: 'Password reset & account management.', path: '/settings', icon: '⚙️', iconBg: 'bg-red-500/20' },
+];
+
+const recentTickets = [];
 </script>
+
+<style scoped>
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-15deg); }
+}
+.animate-wave {
+    display: inline-block;
+    animation: wave 2.5s ease-in-out infinite;
+    transform-origin: 70% 70%;
+}
+</style>

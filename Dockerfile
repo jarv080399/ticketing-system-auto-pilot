@@ -83,8 +83,8 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:${APP_PORT:-9093}/api/health || exit 1
+    CMD curl -f http://localhost:${APP_PORT:-9094}/api/health || exit 1
 
-EXPOSE ${APP_PORT:-9093}
+EXPOSE ${APP_PORT:-9094}
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

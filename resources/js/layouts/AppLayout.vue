@@ -1,71 +1,135 @@
 <template>
-    <div class="min-h-screen bg-background text-white font-sans">
-        <!-- Header -->
-        <header class="bg-surface border-b border-surface-light sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
+    <div class="min-h-screen bg-background font-sans selection:bg-primary/30">
+        <!-- ─── Modern Glass Header ─── -->
+        <header class="sticky top-0 z-50 glass-card border-x-0 border-t-0 bg-background/60">
+            <div class="max-w-[1600px] mx-auto px-8">
+                <div class="flex justify-between h-16 items-center">
                     <!-- Logo -->
-                    <router-link to="/" class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                            </svg>
+                    <div class="flex items-center gap-2 group cursor-pointer" @click="$router.push('/')">
+                        <div class="w-10 h-10 bg-linear-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/40 transition-all duration-300">
+                            <span class="text-white font-bold text-xl">IT</span>
                         </div>
-                        <span class="text-lg font-bold text-white">IT Helpdesk</span>
-                    </router-link>
+                        <span class="text-xl font-extrabold tracking-tight text-gradient">Helpdesk</span>
+                    </div>
 
-                    <!-- Navigation -->
-                    <nav class="hidden md:flex items-center gap-6">
-                        <router-link to="/" class="text-sm text-gray-300 hover:text-white transition-colors" active-class="text-primary font-semibold">Dashboard</router-link>
-                        <router-link to="/tickets" class="text-sm text-gray-300 hover:text-white transition-colors" active-class="text-primary font-semibold">My Tickets</router-link>
-                        <router-link to="/kb" class="text-sm text-gray-300 hover:text-white transition-colors" active-class="text-primary font-semibold">Knowledge Base</router-link>
-                        <router-link v-if="authStore.isAgent" to="/agent" class="text-sm text-gray-300 hover:text-white transition-colors" active-class="text-primary font-semibold">Agent Panel</router-link>
-                        <router-link v-if="authStore.isAdmin" to="/admin" class="text-sm text-gray-300 hover:text-white transition-colors" active-class="text-primary font-semibold">Admin</router-link>
+                    <!-- Desktop Nav -->
+                    <nav class="hidden md:flex items-center space-x-1">
+                        <router-link 
+                            v-for="item in navItems" 
+                            :key="item.path"
+                            :to="item.path"
+                            class="px-4 py-2 rounded-lg text-sm font-medium transition-smooth hover:bg-white/10"
+                            :class="[$route.path === item.path ? 'text-primary bg-primary/10' : 'text-gray-400 hover:text-white']"
+                        >
+                            {{ item.name }}
+                        </router-link>
                     </nav>
 
-                    <!-- Right side -->
+                    <!-- Right Side Actions -->
                     <div class="flex items-center gap-4">
-                        <!-- New Ticket -->
-                        <router-link to="/tickets/new" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                            + New Request
+                        <!-- Theme Toggle -->
+                        <button 
+                            @click="themeStore.toggleTheme"
+                            class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-text-dim hover:text-primary hover:border-primary/50 transition-all duration-300"
+                            title="Toggle Theme"
+                        >
+                            <svg v-if="themeStore.theme === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M16.243 16.243l.707.707M7.757 7.757l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                            </svg>
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        </button>
+
+                        <router-link 
+                            to="/new-ticket"
+                            class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-xl shadow-lg shadow-primary/20 hover-lift active:scale-95"
+                        >
+                            <span>New Request</span>
                         </router-link>
 
-                        <!-- User menu -->
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-sm font-bold">
-                                {{ initials }}
-                            </div>
-                            <button @click="handleLogout" class="text-sm text-gray-400 hover:text-white transition-colors">
-                                Logout
+                        <!-- User Profile Dropdown -->
+                        <div class="relative">
+                            <button 
+                                @click="isUserMenuOpen = !isUserMenuOpen"
+                                class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-white/5 transition-smooth border border-transparent hover:border-white/10"
+                            >
+                                <div class="w-8 h-8 rounded-lg bg-surface-light flex items-center justify-center border border-white/10">
+                                    <span class="text-xs font-bold text-text-main">{{ auth.user?.name?.charAt(0) }}</span>
+                                </div>
+                                <span class="hidden sm:inline text-sm font-medium text-text-dim group-hover:text-text-main">{{ auth.user?.name }}</span>
                             </button>
+
+                            <!-- Dropdown Menu -->
+                            <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
+                                <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 glass-card rounded-2xl py-2 overflow-hidden ring-1 ring-white/10">
+                                    <div class="px-4 py-3 border-b border-white/10 bg-white/5">
+                                        <p class="text-xs text-text-dim font-medium uppercase tracking-wider">Role</p>
+                                        <p class="text-sm font-bold text-primary truncate capitalize">{{ auth.user?.role }}</p>
+                                    </div>
+                                    <button 
+                                        @click="handleLogout"
+                                        class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 transition-colors"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            </transition>
                         </div>
+
+                        <!-- Mobile Menu Button -->
+                        <button class="md:hidden p-2 text-text-dim hover:text-text-main">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <router-view />
+        <main class="max-w-[1600px] mx-auto px-8 py-10 text-text-main">
+            <router-view v-slot="{ Component }">
+                <transition name="fade" mode="out-in">
+                    <component :is="Component" />
+                </transition>
+            </router-view>
         </main>
     </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import { useThemeStore } from '@/stores/theme';
+import { useRouter } from 'vue-router';
 
-const authStore = useAuthStore();
+const auth = useAuthStore();
+const themeStore = useThemeStore();
 const router = useRouter();
+const isUserMenuOpen = ref(false);
 
-const initials = computed(() => {
-    const name = authStore.fullName;
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-});
+const navItems = [
+    { name: 'Dashboard', path: '/' },
+    { name: 'My Tickets', path: '/tickets' },
+    { name: 'Knowledge Base', path: '/kb' },
+];
 
 const handleLogout = async () => {
-    await authStore.logout();
+    await auth.logout();
     router.push('/login');
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

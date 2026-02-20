@@ -21,35 +21,22 @@ Route::get('/health', function () {
     ]);
 });
 
+use App\Http\Controllers\Api\V1\AuthController;
+
 // ─── API v1 ───
 Route::prefix('v1')->group(function () {
 
     // ─── Auth (public) ───
     Route::prefix('auth')->group(function () {
-        // These will be implemented in Module 1
-        // Route::post('/login', [AuthController::class, 'login']);
-        // Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-        // Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-        // Route::get('/sso/{provider}/redirect', [AuthController::class, 'ssoRedirect']);
-        // Route::get('/sso/{provider}/callback', [AuthController::class, 'ssoCallback']);
+        Route::post('/login', [AuthController::class, 'login']);
     });
 
     // ─── Authenticated Routes ───
     Route::middleware('auth:sanctum')->group(function () {
 
         // Auth
-        Route::get('/auth/me', function (Request $request) {
-            return response()->json([
-                'data' => $request->user(),
-                'message' => 'Success',
-                'status' => 200,
-            ]);
-        });
-
-        // Stubs for future modules:
-        // Route::apiResource('tickets', TicketController::class);
-        // Route::apiResource('kb/articles', KbArticleController::class);
-        // Route::apiResource('assets', AssetController::class);
+        Route::get('/auth/me', [AuthController::class, 'me']);
+        Route::post('/auth/logout', [AuthController::class, 'logout']);
 
     });
 });
