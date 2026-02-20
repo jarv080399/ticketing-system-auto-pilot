@@ -19,7 +19,7 @@
 ```
 +-------------------+      +-------------------+      +-------------------+
 |   Web Front‑End   | ---> |   Backend API     | ---> |   PostgreSQL DB   |
-|   (React/Vite)   |      |   (Node/Express) |      |   (Tickets, KB,   |
+|   (Vue3/Vite)    |      |   (Laravel/PHP)   |      |   (Tickets, KB,   |
 +-------------------+      +-------------------+      |    Assets, Users) |
         ^   |                     ^   |                +-------------------+
         |   |                     |   |
@@ -54,17 +54,17 @@
 
 ## 3. Technology Stack
 
-| Layer             | Technology                                                        |
-| ----------------- | ----------------------------------------------------------------- |
-| Front‑end         | **React** + **Vite** (ESM, hot‑module reload)                     |
-| UI Library        | **TailwindCSS** (optional – can be swapped for vanilla CSS)       |
-| Backend           | **Node.js** (v20) + **Express**                                   |
-| Database          | **PostgreSQL** (12+)                                              |
-| Auth              | **SSO** via **SAML/OAuth** (Google Workspace, Microsoft Entra ID) |
-| CI/CD             | **GitHub Actions** (lint, test, build, deploy)                    |
-| Containerisation  | **Docker** (multi‑stage build)                                    |
-| Email Integration | **Nodemailer** (SMTP)                                             |
-| Messaging         | **Slack / Teams** webhook for alerts                              |
+| Layer             | Technology                                                         |
+| ----------------- | ------------------------------------------------------------------ |
+| Front‑end         | **Vue.js 3** + **Vite** (Composition API, hot‑module reload)       |
+| UI Library        | **TailwindCSS** (optional – can be swapped for vanilla CSS)        |
+| Backend           | **Laravel 11+** (PHP 8.2+)                                         |
+| Database          | **PostgreSQL** (12+)                                               |
+| Auth              | **Laravel Socialite / SSO** (Google Workspace, Microsoft Entra ID) |
+| CI/CD             | **GitHub Actions** (lint, test, build, deploy)                     |
+| Containerisation  | **Docker** (multi‑stage build, Laravel Sail for local)             |
+| Email Integration | **Laravel Mail** (SMTP)                                            |
+| Messaging         | **Slack / Teams** via Laravel Notifications                        |
 
 ---
 
@@ -175,8 +175,8 @@ Add the remaining endpoints (users, assets, KB, automation) as the project evolv
 
 - Code merged to `main` with **peer review**.
 - **Unit tests** ≥ 80 % coverage for new modules.
-- **Integration tests** for API endpoints (using Jest/Supertest).
-- **Lint** passes (`eslint` + `prettier`).
+- **Integration tests** for API endpoints (using Pest/PHPUnit).
+- **Lint** passes (PHP_CodeSniffer/Pint for backend, ESLint/Prettier for frontend).
 - **Documentation** updated (README, API spec, user guide).
 - **CI pipeline** reports green.
 - **Deploy** to staging environment for stakeholder demo.
@@ -187,8 +187,8 @@ Add the remaining endpoints (users, assets, KB, automation) as the project evolv
 
 Create `.github/workflows/ci.yml` with these jobs:
 
-1. **lint** – `npm run lint`
-2. **test** – `npm test` (unit + integration)
+1. **lint** – `composer lint` & `npm run lint`
+2. **test** – `php artisan test` & `npm run test`
 3. **build** – Docker multi‑stage build (`docker build -t ticketing-system .`)
 4. **deploy‑staging** – on push to `develop` (run `docker compose up -d` on staging server).
 5. **release** – on tag `v*` → push Docker image to registry and deploy to production.
@@ -197,21 +197,21 @@ Create `.github/workflows/ci.yml` with these jobs:
 
 ## 11. Environment & Secrets Plan
 
-| Variable                              | Description                  | Source                 |
-| ------------------------------------- | ---------------------------- | ---------------------- |
-| `DATABASE_URL`                        | PostgreSQL connection string | GitHub Secrets         |
-| `SSO_CLIENT_ID` / `SSO_CLIENT_SECRET` | SSO credentials              | Vault / GitHub Secrets |
-| `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` | Email service                | GitHub Secrets         |
-| `SLACK_WEBHOOK_URL`                   | Alerts channel               | GitHub Secrets         |
-| `JWT_SECRET`                          | JWT signing key              | Vault                  |
+| Variable                              | Description                   | Source                 |
+| ------------------------------------- | ----------------------------- | ---------------------- |
+| `DB_CONNECTION`, `DB_HOST`, ...       | PostgreSQL connection details | GitHub Secrets         |
+| `SSO_CLIENT_ID` / `SSO_CLIENT_SECRET` | SSO credentials               | Vault / GitHub Secrets |
+| `MAIL_HOST`, `MAIL_USERNAME`, ...     | Email service                 | GitHub Secrets         |
+| `SLACK_WEBHOOK_URL`                   | Alerts channel                | GitHub Secrets         |
+| `APP_KEY`                             | Laravel App Key               | Vault                  |
 
 ---
 
 ## 12. Testing Strategy
 
-- **Unit Tests** – Jest for frontend, Mocha/Chai for backend.
-- **API Integration Tests** – Supertest against an in‑memory DB.
-- **End‑to‑End UI Tests** – Cypress covering ticket creation flow.
+- **Unit Tests** – Vitest/Jest for frontend, Pest/PHPUnit for backend.
+- **API Integration Tests** – Pest/PHPUnit HTTP tests with a test database.
+- **End‑to‑End UI Tests** – Laravel Dusk or Cypress covering ticket creation flow.
 - **Performance Tests** – k6 script for search latency (< 1 s).
 - **Security Tests** – OWASP ZAP scan on staging.
 
