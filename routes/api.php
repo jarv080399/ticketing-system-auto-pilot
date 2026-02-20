@@ -87,5 +87,15 @@ Route::prefix('v1')->group(function () {
             });
         });
 
+        // Asset Tracking
+        Route::middleware('role:admin,agent')->group(function () {
+            Route::apiResource('assets', \App\Http\Controllers\Api\V1\AssetController::class);
+            Route::post('assets/{asset}/assign', [\App\Http\Controllers\Api\V1\AssetController::class, 'assign']);
+            Route::post('assets/{asset}/unassign', [\App\Http\Controllers\Api\V1\AssetController::class, 'unassign']);
+            Route::get('assets/{asset}/history', [\App\Http\Controllers\Api\V1\AssetController::class, 'history']);
+        });
+        
+        Route::get('/users/{user}/assets', [\App\Http\Controllers\Api\V1\AssetController::class, 'userAssets']);
+
     });
 });

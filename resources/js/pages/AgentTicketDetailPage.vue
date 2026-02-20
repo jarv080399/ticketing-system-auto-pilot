@@ -204,6 +204,11 @@
                     </div>
                 </div>
 
+                <!-- Asset Context -->
+                <div v-if="ticket.requester_id">
+                    <AssetSidebar :user-id="ticket.requester_id" />
+                </div>
+
                 <!-- Side Actions -->
                 <div class="glass-card p-10 rounded-xl bg-linear-to-br from-primary/10 to-secondary/10 border-primary/20">
                     <h4 class="font-black text-lg text-text-main mb-2">Internal Tools</h4>
@@ -222,6 +227,7 @@ import { useTicketStore } from '@/stores/tickets';
 import { useAuthStore } from '@/stores/auth';
 import axios from '@/plugins/axios';
 import { useToast } from 'vue-toastification';
+import AssetSidebar from '@/components/Assets/AssetSidebar.vue';
 
 const route = useRoute();
 const ticketStore = useTicketStore();

@@ -179,15 +179,20 @@
                 <!-- My Hardware Card -->
                 <div class="glass-card p-7 rounded-xl space-y-6">
                     <h4 class="text-sm font-black uppercase tracking-widest text-text-main flex items-center gap-3">
-                        <span class="text-2xl">💻</span> Asset Inventory
+                        <span class="text-2xl">💻</span> My Hardware
                     </h4>
                     <div class="space-y-3">
-                        <div class="flex items-center gap-4 p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-smooth cursor-pointer group">
-                            <div class="w-12 h-12 rounded-xl bg-surface flex items-center justify-center font-bold text-xs text-text-dim group-hover:text-primary transition-colors">MBP</div>
-                            <div>
-                                <p class="text-sm font-bold text-text-main">MacBook Pro M3</p>
-                                <p class="text-[10px] text-text-dim uppercase tracking-widest">Active • Deployment</p>
+                        <div v-for="asset in myAssets" :key="asset.id" class="flex items-center gap-4 p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-smooth cursor-pointer group">
+                            <div class="w-12 h-12 rounded-xl bg-surface flex items-center justify-center font-bold text-xs text-text-dim group-hover:text-primary transition-colors">
+                                {{ getAssetIcon(asset.type) }}
                             </div>
+                            <div>
+                                <p class="text-sm font-bold text-text-main">{{ asset.manufacturer }} {{ asset.model }}</p>
+                                <p class="text-[10px] text-text-dim uppercase tracking-widest">{{ asset.status }} • {{ asset.serial_number }}</p>
+                            </div>
+                        </div>
+                        <div v-if="myAssets.length === 0" class="text-center py-4 text-[10px] text-text-dim uppercase tracking-widest font-black italic">
+                            No assets assigned
                         </div>
                     </div>
                 </div>
@@ -197,17 +202,34 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useTicketStore } from '@/stores/tickets';
 import UniversalSearch from '@/components/UniversalSearch.vue';
+import axios from '@/plugins/axios';
 
 const authStore = useAuthStore();
 const ticketStore = useTicketStore();
+const myAssets = ref([]);
 
 onMounted(async () => {
     await ticketStore.fetchMyTickets();
+    fetchMyAssets();
 });
+
+const fetchMyAssets = async () => {
+    try {
+        const response = await axios.get(`/users/${authStore.user.id}/assets`);
+        myAssets.value = response.data.data;
+    } catch (err) {
+        console.error('Failed to fetch assets', err);
+    }
+};
+
+const getAssetIcon = (type) => {
+    const icons = { laptop: '💻', desktop: '🖥️', monitor: '📺', phone: '📱' };
+    return icons[type] || '📦';
+};
 
 const stats = computed(() => [
     { 
