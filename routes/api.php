@@ -58,6 +58,9 @@ Route::prefix('v1')->group(function () {
         // Categories
         Route::get('/categories', \App\Http\Controllers\Api\V1\CategoryController::class);
 
+        // Users search (for assignments)
+        Route::get('/search/users', \App\Http\Controllers\Api\V1\UserController::class);
+
         // Tickets
         Route::get('/tickets/my-tickets', [TicketController::class, 'index']);
         Route::post('/tickets/check-duplicate', [TicketController::class, 'checkDuplicate']);

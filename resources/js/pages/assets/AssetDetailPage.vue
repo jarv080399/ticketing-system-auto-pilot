@@ -106,6 +106,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Asset Form Modal -->
+        <AssetFormModal :show="showEditModal" :asset="asset" @close="showEditModal = false" @saved="fetchAsset" />
     </div>
 </template>
 
@@ -114,12 +117,14 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from '@/plugins/axios';
 import AssetHistoryTimeline from '@/components/Assets/AssetHistoryTimeline.vue';
+import AssetFormModal from '@/components/Assets/AssetFormModal.vue';
 import { useToast } from 'vue-toastification';
 
 const route = useRoute();
 const toast = useToast();
 const asset = ref(null);
 const loading = ref(true);
+const showEditModal = ref(false);
 
 const fetchAsset = async () => {
     loading.value = true;
@@ -178,6 +183,11 @@ const unassign = async () => {
     }
 };
 
-const openAssignModal = () => { /* Logic for assign modal */ };
-const openEditModal = () => { /* Logic for edit modal */ };
+const openAssignModal = () => {
+    showEditModal.value = true;
+};
+
+const openEditModal = () => {
+    showEditModal.value = true;
+};
 </script>

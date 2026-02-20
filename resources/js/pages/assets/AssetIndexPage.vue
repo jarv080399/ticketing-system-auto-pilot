@@ -99,6 +99,9 @@
                 <button :disabled="!hasMore" @click="page++; fetchAssets()" class="px-4 py-2 bg-surface-light border border-glass-border rounded-lg text-xs font-bold disabled:opacity-30">Next</button>
             </div>
         </div>
+
+        <!-- Asset Form Modal -->
+        <AssetFormModal :show="showFormModal" :asset="selectedAsset" @close="closeModal" @saved="fetchAssets" />
     </div>
 </template>
 
@@ -107,6 +110,7 @@ import { ref, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from '@/plugins/axios';
 import _ from 'lodash';
+import AssetFormModal from '@/components/Assets/AssetFormModal.vue';
 
 const router = useRouter();
 const assets = ref([]);
@@ -114,6 +118,9 @@ const loading = ref(true);
 const totalAssets = ref(0);
 const page = ref(1);
 const hasMore = ref(false);
+
+const showFormModal = ref(false);
+const selectedAsset = ref(null);
 
 const filters = reactive({
     q: '',
@@ -162,7 +169,7 @@ const getIcon = (type) => {
 const getStatusClass = (status) => {
     const classes = {
         active: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-        in_repair: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+        in_repair: 'bg-amber-500/10 text-amber-500 border-emerald-500/20',
         in_stock: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
         retired: 'bg-rose-500/10 text-rose-500 border-rose-500/20',
         disposed: 'bg-gray-500/10 text-gray-500 border-gray-500/20'
@@ -170,6 +177,18 @@ const getStatusClass = (status) => {
     return classes[status] || '';
 };
 
-const openCreateModal = () => { /* Implement modal later */ };
-const openEditModal = (asset) => { /* Implement modal later */ };
+const openCreateModal = () => {
+    selectedAsset.value = null;
+    showFormModal.value = true;
+};
+
+const openEditModal = (asset) => {
+    selectedAsset.value = asset;
+    showFormModal.value = true;
+};
+
+const closeModal = () => {
+    showFormModal.value = false;
+    selectedAsset.value = null;
+};
 </script>
