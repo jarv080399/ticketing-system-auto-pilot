@@ -1,7 +1,12 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import axios from 'axios';
 
 window.Pusher = Pusher;
+window.axios = axios;
+
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.withCredentials = true;
 
 window.Echo = new Echo({
     broadcaster: 'reverb',
@@ -10,5 +15,7 @@ window.Echo = new Echo({
     wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
     wssPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
     forceTLS: false,
-    enabledTransports: ['ws'],
+    encrypted: false,
+    disableStats: true,
+    enabledTransports: ['ws', 'wss'],
 });
