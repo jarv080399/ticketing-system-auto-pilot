@@ -18,7 +18,7 @@
 
 ```
 +-------------------+      +-------------------+      +-------------------+
-|   Web Front‑End   | ---> |   Backend API     | ---> |   PostgreSQL DB   |
+|   Web Front‑End   | ---> |   Backend API     | ---> | MySQL Percona DB  |
 |   (Vue3/Vite)    |      |   (Laravel/PHP)   |      |   (Tickets, KB,   |
 +-------------------+      +-------------------+      |    Assets, Users) |
         ^   |                     ^   |                +-------------------+
@@ -55,11 +55,11 @@
 ## 3. Technology Stack
 
 | Layer             | Technology                                                         |
-| ----------------- | ------------------------------------------------------------------ |
+| ----------------- | ------------------------------------------------------------------ | --- |
 | Front‑end         | **Vue.js 3** + **Vite** (Composition API, hot‑module reload)       |
 | UI Library        | **TailwindCSS** (optional – can be swapped for vanilla CSS)        |
 | Backend           | **Laravel 11+** (PHP 8.2+)                                         |
-| Database          | **PostgreSQL** (12+)                                               |
+| Database          | **MySQL 8+ (Percona Server)**                                      |     |
 | Auth              | **Laravel Socialite / SSO** (Google Workspace, Microsoft Entra ID) |
 | CI/CD             | **GitHub Actions** (lint, test, build, deploy)                     |
 | Containerisation  | **Docker** (multi‑stage build, Laravel Sail for local)             |
@@ -187,23 +187,23 @@ Add the remaining endpoints (users, assets, KB, automation) as the project evolv
 
 Create `.github/workflows/ci.yml` with these jobs:
 
-1. **lint** – `composer lint` & `npm run lint`
-2. **test** – `php artisan test` & `npm run test`
-3. **build** – Docker multi‑stage build (`docker build -t ticketing-system .`)
-4. **deploy‑staging** – on push to `develop` (run `docker compose up -d` on staging server).
-5. **release** – on tag `v*` → push Docker image to registry and deploy to production.
+1.  **lint** – `composer lint` & `npm run lint`
+2.  **test** – `php artisan test` & `npm run test`
+3.  **build** – Docker multi‑stage build (`docker build -t ticketing-system .`)
+4.  **deploy‑staging** – on push to `develop` (run `docker compose up -d` on staging server).
+5.  **release** – on tag `v*` → push Docker image to registry and deploy to production.
 
 ---
 
 ## 11. Environment & Secrets Plan
 
-| Variable                              | Description                   | Source                 |
-| ------------------------------------- | ----------------------------- | ---------------------- |
-| `DB_CONNECTION`, `DB_HOST`, ...       | PostgreSQL connection details | GitHub Secrets         |
-| `SSO_CLIENT_ID` / `SSO_CLIENT_SECRET` | SSO credentials               | Vault / GitHub Secrets |
-| `MAIL_HOST`, `MAIL_USERNAME`, ...     | Email service                 | GitHub Secrets         |
-| `SLACK_WEBHOOK_URL`                   | Alerts channel                | GitHub Secrets         |
-| `APP_KEY`                             | Laravel App Key               | Vault                  |
+| Variable                              | Description                      | Source                 |
+| ------------------------------------- | -------------------------------- | ---------------------- |
+| `DB_CONNECTION`, `DB_HOST`, ...       | MySQL Percona connection details | GitHub Secrets         |
+| `SSO_CLIENT_ID` / `SSO_CLIENT_SECRET` | SSO credentials                  | Vault / GitHub Secrets |
+| `MAIL_HOST`, `MAIL_USERNAME`, ...     | Email service                    | GitHub Secrets         |
+| `SLACK_WEBHOOK_URL`                   | Alerts channel                   | GitHub Secrets         |
+| `APP_KEY`                             | Laravel App Key                  | Vault                  |
 
 ---
 
