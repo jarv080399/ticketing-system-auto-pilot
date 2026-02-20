@@ -42,7 +42,7 @@
                         </button>
 
                         <router-link 
-                            to="/new-ticket"
+                            to="/tickets/new"
                             class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-xl shadow-lg shadow-primary/20 hover-lift active:scale-95"
                         >
                             <span>New Request</span>

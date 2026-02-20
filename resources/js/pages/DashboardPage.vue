@@ -17,6 +17,11 @@
             </div>
         </div>
 
+        <!-- ─── Search Bar ─── -->
+        <div class="flex justify-center">
+            <UniversalSearch />
+        </div>
+
         <!-- ─── Premium Stats Grid ─── -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div v-for="stat in stats" :key="stat.label" 
@@ -78,12 +83,13 @@
                     </router-link>
                 </div>
 
-                <!-- Modern Table Stub -->
+                <!-- Active Maintenance Feed -->
                 <div class="space-y-8 pt-4">
                     <div class="flex justify-between items-center px-1">
-                        <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Active Maintenance Feed</h3>
-                        <router-link to="/tickets" class="text-[10px] font-black text-primary uppercase tracking-widest hover:text-text-main transition-colors">Global Archive →</router-link>
+                        <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">My Recent Tickets</h3>
+                        <router-link to="/tickets" class="text-[10px] font-black text-primary uppercase tracking-widest hover:text-text-main transition-colors">View All →</router-link>
                     </div>
+                    
                     <div class="glass-card rounded-[2.5rem] overflow-hidden border-white/5">
                         <div v-if="recentTickets.length === 0" class="p-20 text-center space-y-6">
                             <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto text-4xl">📭</div>
@@ -91,7 +97,34 @@
                                 <p class="text-text-main font-bold text-lg">System Clearing</p>
                                 <p class="text-text-dim max-w-xs mx-auto">No high-priority incidents reported. All infrastructure monitors are green.</p>
                             </div>
-                            <button class="px-8 py-3 bg-primary/10 hover:bg-primary/20 text-primary font-black rounded-2xl text-xs uppercase tracking-[0.2em] transition-smooth border border-primary/20">Sync Intel</button>
+                            <router-link to="/tickets/new" class="inline-block px-8 py-3 bg-primary/10 hover:bg-primary/20 text-primary font-black rounded-2xl text-xs uppercase tracking-[0.2em] transition-smooth border border-primary/20">Sync Intel</router-link>
+                        </div>
+                        
+                        <div v-else class="divide-y divide-white/5">
+                            <router-link 
+                                v-for="ticket in recentTickets" :key="ticket.id" 
+                                :to="`/tickets/${ticket.ticket_number}`"
+                                class="flex items-center justify-between p-6 hover:bg-white/5 transition-colors group"
+                            >
+                                <div class="flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-xl bg-surface-light flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                        {{ ticket.category?.icon || '🎫' }}
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-1">
+                                            <span class="text-[9px] font-black uppercase tracking-widest text-primary">{{ ticket.ticket_number }}</span>
+                                            <span :class="getStatusClass(ticket.status)" class="px-2 py-0.5 rounded-md text-[8px] font-bold uppercase tracking-widest border">
+                                                {{ ticket.status.replace('_', ' ') }}
+                                            </span>
+                                        </div>
+                                        <h4 class="font-bold text-text-main group-hover:text-primary transition-colors">{{ ticket.title }}</h4>
+                                    </div>
+                                </div>
+                                <div class="text-right hidden sm:block">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-text-dim mb-1">{{ formatDate(ticket.created_at) }}</p>
+                                    <p class="text-xs font-bold text-text-main capitalize">{{ ticket.priority }}</p>
+                                </div>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -135,24 +168,73 @@
 </template>
 
 <script setup>
+import { onMounted, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import { useTicketStore } from '@/stores/tickets';
+import UniversalSearch from '@/components/UniversalSearch.vue';
 
 const authStore = useAuthStore();
+const ticketStore = useTicketStore();
 
-const stats = [
-    { label: 'Active Tasks', value: '12', icon: '⚡', bgColor: 'bg-primary/20', trend: '+2', trendColor: 'text-primary', barColor: 'bg-primary', progress: 65 },
-    { label: 'Resolved (7d)', value: '48', icon: '✅', bgColor: 'bg-accent/20', trend: '↑ 14%', trendColor: 'text-accent', barColor: 'bg-accent', progress: 82 },
-    { label: 'Asset Health', value: '98%', icon: '💎', bgColor: 'bg-indigo-500/20', trend: 'Stable', trendColor: 'text-gray-500', barColor: 'bg-indigo-500', progress: 98 },
-];
+onMounted(async () => {
+    await ticketStore.fetchMyTickets();
+});
+
+const stats = computed(() => [
+    { 
+        label: 'Active Requests', 
+        value: ticketStore.myTickets.filter(t => ['new', 'in_progress', 'waiting_on_customer'].includes(t.status)).length, 
+        icon: '⚡', 
+        bgColor: 'bg-primary/20', 
+        trend: '+2', 
+        trendColor: 'text-primary', 
+        barColor: 'bg-primary', 
+        progress: 65 
+    },
+    { 
+        label: 'Resolved Tasks', 
+        value: ticketStore.myTickets.filter(t => t.status === 'resolved').length, 
+        icon: '✅', 
+        bgColor: 'bg-accent/20', 
+        trend: '↑ 14%', 
+        trendColor: 'text-accent', 
+        barColor: 'bg-accent', 
+        progress: 82 
+    },
+    { 
+        label: 'All-Time Support', 
+        value: ticketStore.myTickets.length, 
+        icon: '💎', 
+        bgColor: 'bg-indigo-500/20', 
+        trend: 'Stable', 
+        trendColor: 'text-gray-500', 
+        barColor: 'bg-indigo-500', 
+        progress: 100 
+    },
+]);
 
 const actions = [
-    { name: 'New Request', desc: 'Submit a high-priority IT incident or request.', path: '/new-ticket', icon: '🎟️', iconBg: 'bg-primary/20' },
+    { name: 'New Request', desc: 'Submit a high-priority IT incident or request.', path: '/tickets/new', icon: '🎟️', iconBg: 'bg-primary/20' },
     { name: 'My Tickets', desc: 'Track your pending applications & status.', path: '/tickets', icon: '📁', iconBg: 'bg-accent/20' },
     { name: 'Knowledge', desc: 'Search documentation for instant fixes.', path: '/kb', icon: '📖', iconBg: 'bg-indigo-500/20' },
     { name: 'Self-Service', desc: 'Password reset & account management.', path: '/settings', icon: '⚙️', iconBg: 'bg-red-500/20' },
 ];
 
-const recentTickets = [];
+const recentTickets = computed(() => ticketStore.myTickets.slice(0, 5));
+
+const getStatusClass = (status) => {
+    switch (status) {
+        case 'new': return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+        case 'in_progress': return 'bg-primary/10 text-primary border-primary/20';
+        case 'waiting_on_customer': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
+        case 'resolved': return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
+        default: return 'bg-white/5 text-text-dim border-glass-border';
+    }
+};
+
+const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString();
+};
 </script>
 
 <style scoped>

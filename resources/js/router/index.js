@@ -42,6 +42,11 @@ const routes = [
                 name: 'KnowledgeBase',
                 component: () => import('@/pages/KnowledgeBasePage.vue'),
             },
+            {
+                path: 'settings',
+                name: 'Settings',
+                component: () => import('@/pages/SettingsPage.vue'),
+            },
         ],
     },
 
@@ -54,12 +59,17 @@ const routes = [
             {
                 path: '',
                 name: 'AgentDashboard',
-                component: () => import('@/pages/agent/AgentDashboardPage.vue'),
+                component: () => import('@/pages/AgentDashboardPage.vue'),
             },
             {
-                path: 'tickets/:id',
+                path: 'queue',
+                name: 'AgentQueue',
+                component: () => import('@/pages/AgentQueuePage.vue'),
+            },
+            {
+                path: 'tickets/:ticketNumber',
                 name: 'AgentTicketDetail',
-                component: () => import('@/pages/agent/AgentTicketDetailPage.vue'),
+                component: () => import('@/pages/AgentTicketDetailPage.vue'),
                 props: true,
             },
         ],
