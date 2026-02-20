@@ -18,7 +18,7 @@
         </div>
 
         <!-- Step 2: Form Details -->
-        <div v-else class="glass-card rounded-[2.5rem] p-8 md:p-12 space-y-10 animate-slide-up">
+        <div v-else class="glass-card rounded-xl p-8 md:p-12 space-y-10 animate-slide-up">
             <div class="flex items-center gap-4 pb-6 border-b border-glass-border">
                 <button @click="step = 1" class="p-3 rounded-xl bg-surface-light hover:bg-primary/10 text-text-dim hover:text-primary transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -34,7 +34,7 @@
             <form @submit.prevent="handleSubmit" class="space-y-8">
                 <!-- Duplicate Warning -->
                 <transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0 -translate-y-4" enter-to-class="opacity-100 translate-y-0">
-                    <div v-if="duplicateWarning" class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex gap-4 items-start">
+                    <div v-if="duplicateWarning" class="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20 flex gap-4 items-start">
                         <span class="text-2xl">⚠️</span>
                         <div class="space-y-1">
                             <p class="text-sm font-bold text-amber-500">Possible Duplicate Found</p>
@@ -57,7 +57,7 @@
                             type="text" 
                             required
                             placeholder="e.g. Broken laptop screen after travel"
-                            class="w-full px-6 py-4 bg-surface-light/50 border border-glass-border rounded-2xl text-text-main placeholder:text-text-dim/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
+                            class="w-full px-6 py-4 bg-surface-light/50 border border-glass-border rounded-lg text-text-main placeholder:text-text-dim/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
                         />
                     </div>
 
@@ -69,7 +69,7 @@
                             required
                             rows="5"
                             placeholder="Please provide as much detail as possible..."
-                            class="w-full px-6 py-4 bg-surface-light/50 border border-glass-border rounded-2xl text-text-main placeholder:text-text-dim/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all resize-none"
+                            class="w-full px-6 py-4 bg-surface-light/50 border border-glass-border rounded-lg text-text-main placeholder:text-text-dim/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all resize-none"
                         ></textarea>
                     </div>
 
@@ -79,7 +79,7 @@
                             <label class="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-1">Urgency</label>
                             <select 
                                 v-model="form.priority"
-                                class="w-full px-6 py-4 bg-surface-light/50 border border-glass-border rounded-2xl text-text-main focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all appearance-none"
+                                class="w-full px-6 py-4 bg-surface-light/50 border border-glass-border rounded-lg text-text-main focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all appearance-none"
                             >
                                 <option value="low">Low - General query</option>
                                 <option value="medium">Medium - Normal operations</option>
@@ -99,7 +99,7 @@
                                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                     accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.zip"
                                 />
-                                <div class="w-full px-6 py-4 bg-surface-light/50 border border-dashed border-glass-border rounded-2xl flex items-center gap-3 text-text-dim group-hover:border-primary transition-colors">
+                                <div class="w-full px-6 py-4 bg-surface-light/50 border border-dashed border-glass-border rounded-lg flex items-center gap-3 text-text-dim group-hover:border-primary transition-colors">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
@@ -114,14 +114,14 @@
                     <button 
                         type="button" 
                         @click="step = 1"
-                        class="px-8 py-4 rounded-2xl text-sm font-bold text-text-dim hover:text-text-main transition-colors"
+                        class="px-8 py-4 rounded-lg text-sm font-bold text-text-dim hover:text-text-main transition-colors"
                     >
                         Back
                     </button>
                     <button 
                         type="submit" 
                         :disabled="loading"
-                        class="px-10 py-4 bg-primary hover:bg-primary-dark text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover-lift active:scale-95 transition-all disabled:opacity-50"
+                        class="px-10 py-4 bg-primary hover:bg-primary-dark text-white font-black rounded-lg shadow-xl shadow-primary/20 hover-lift active:scale-95 transition-all disabled:opacity-50"
                     >
                         <span v-if="loading">Processing...</span>
                         <span v-else>Submit Request</span>

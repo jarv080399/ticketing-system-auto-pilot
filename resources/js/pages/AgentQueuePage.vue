@@ -10,7 +10,7 @@
             </div>
             
             <div class="flex items-center gap-4">
-                <div class="glass-card p-1.5 rounded-2xl flex gap-1">
+                <div class="glass-card p-1.5 rounded-lg flex gap-1">
                     <button 
                         v-for="f in queueFilters" :key="f.label"
                         @click="activeQueue = f.value"
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Table View -->
-        <div class="glass-card rounded-[3rem] overflow-hidden border-glass-border">
+        <div class="glass-card rounded-xl overflow-hidden border-glass-border">
             <div v-if="loading" class="p-20 flex flex-col items-center justify-center space-y-4">
                 <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
                 <p class="text-[10px] font-black uppercase tracking-widest text-text-dim">Synchronizing Queue...</p>
@@ -53,7 +53,7 @@
                     <tr v-for="ticket in tickets" :key="ticket.id" class="hover:bg-primary/[0.02] transition-colors group">
                         <td class="px-10 py-8">
                             <div class="flex items-center gap-5">
-                                <div class="w-12 h-12 rounded-2xl bg-surface-light flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
+                                <div class="w-12 h-12 rounded-lg bg-surface-light flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
                                     {{ ticket.category?.icon || '🎫' }}
                                 </div>
                                 <div>

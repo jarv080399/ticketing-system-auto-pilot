@@ -15,7 +15,7 @@
                 <router-link 
                     v-for="item in navItems" :key="item.path"
                     :to="item.path"
-                    class="flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 group"
+                    class="flex items-center gap-4 px-6 py-4 rounded-lg transition-all duration-300 group"
                     :class="$route.path === item.path ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'text-text-dim hover:bg-white/5'"
                 >
                     <span class="text-xl">{{ item.icon }}</span>
@@ -33,7 +33,7 @@
                         <p class="text-[10px] text-text-dim uppercase tracking-[0.2em]">{{ authStore.user?.role }}</p>
                     </div>
                 </div>
-                <button @click="handleLogout" class="w-full py-4 rounded-2xl border border-glass-border text-[10px] font-black uppercase tracking-widest text-text-dim hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all">
+                <button @click="handleLogout" class="w-full py-4 rounded-lg border border-glass-border text-[10px] font-black uppercase tracking-widest text-text-dim hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all">
                     Terminate Session
                 </button>
             </div>

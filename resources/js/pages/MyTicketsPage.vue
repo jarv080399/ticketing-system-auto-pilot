@@ -11,7 +11,7 @@
             
             <!-- Filters -->
             <div class="flex items-center gap-3">
-                <div class="glass-card p-1.5 rounded-2xl flex gap-1">
+                <div class="glass-card p-1.5 rounded-lg flex gap-1">
                     <button 
                         v-for="f in filterOptions" :key="f.label"
                         @click="activeStatus = f.value"
@@ -26,26 +26,26 @@
 
         <!-- Tickets List -->
         <div v-if="loading" class="grid grid-cols-1 gap-6">
-            <div v-for="n in 3" :key="n" class="glass-card h-40 animate-pulse rounded-[2rem]"></div>
+            <div v-for="n in 3" :key="n" class="glass-card h-40 animate-pulse rounded-xl"></div>
         </div>
 
-        <div v-else-if="tickets.length === 0" class="glass-card p-20 text-center space-y-6 rounded-[3rem]">
+        <div v-else-if="tickets.length === 0" class="glass-card p-20 text-center space-y-6 rounded-xl">
             <div class="w-24 h-24 bg-surface-light rounded-full flex items-center justify-center mx-auto text-5xl">📦</div>
             <div class="space-y-2">
                 <h3 class="text-2xl font-black text-text-main">Clear as Day</h3>
                 <p class="text-text-dim max-w-sm mx-auto">You don't have any active tickets in this category. Need help with something?</p>
             </div>
-            <router-link to="/tickets/new" class="inline-flex px-10 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover-lift">Submit First Request</router-link>
+            <router-link to="/tickets/new" class="inline-flex px-10 py-4 bg-primary text-white font-black rounded-lg shadow-xl shadow-primary/20 hover-lift">Submit First Request</router-link>
         </div>
 
         <div v-else class="grid grid-cols-1 gap-6">
             <router-link 
                 v-for="ticket in tickets" :key="ticket.id" 
                 :to="`/tickets/${ticket.ticket_number}`"
-                class="glass-card p-8 rounded-[2.5rem] hover-lift group flex flex-col md:flex-row md:items-center justify-between gap-8 border-transparent hover:border-primary/30 transition-all duration-500"
+                class="glass-card p-8 rounded-xl hover-lift group flex flex-col md:flex-row md:items-center justify-between gap-8 border-transparent hover:border-primary/30 transition-all duration-500"
             >
                 <div class="flex items-center gap-6">
-                    <div class="w-16 h-16 rounded-2xl bg-surface-light flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                    <div class="w-16 h-16 rounded-lg bg-surface-light flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
                         {{ ticket.category?.icon || '🎫' }}
                     </div>
                     <div>

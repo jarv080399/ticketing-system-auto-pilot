@@ -4,10 +4,10 @@
             v-for="category in categories" 
             :key="category.id"
             @click="$emit('select', category)"
-            class="glass-card p-6 rounded-[2rem] hover-lift group text-left border-transparent hover:border-primary/50 transition-all duration-300"
+            class="glass-card p-6 rounded-xl hover-lift group text-left border-transparent hover:border-primary/50 transition-all duration-300"
             :class="{ 'ring-2 ring-primary bg-primary/5': selectedId === category.id }"
         >
-            <div class="w-14 h-14 rounded-2xl bg-surface-light flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+            <div class="w-14 h-14 rounded-lg bg-surface-light flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
                 {{ category.icon || '❓' }}
             </div>
             <h3 class="font-bold text-text-main text-lg mb-1">{{ category.name }}</h3>

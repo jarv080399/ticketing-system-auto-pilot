@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-black text-text-main flex items-center gap-4">
-                    <span class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary text-2xl">🤖</span>
+                    <span class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary text-2xl">🤖</span>
                     Automation Engine
                 </h1>
                 <p class="text-text-dim font-medium mt-2">Manage Autopilot rules, SLAs, and escalation paths.</p>
@@ -38,7 +38,7 @@
                 <div v-if="loading" class="text-center py-20 text-text-dim animate-pulse font-bold tracking-widest uppercase">Initializing Matrices...</div>
                 
                 <div v-else class="grid grid-cols-1 gap-4">
-                    <div v-for="rule in rules" :key="rule.id" class="glass-card p-6 rounded-2xl flex items-center justify-between group hover:bg-white/5 transition-colors border-l-4" :class="rule.is_active ? 'border-primary' : 'border-gray-500'">
+                    <div v-for="rule in rules" :key="rule.id" class="glass-card p-6 rounded-lg flex items-center justify-between group hover:bg-white/5 transition-colors border-l-4" :class="rule.is_active ? 'border-primary' : 'border-gray-500'">
                         <div class="space-y-2 flex-1">
                             <div class="flex items-center gap-3">
                                 <h3 class="text-lg font-bold text-text-main">{{ rule.name }}</h3>
@@ -71,7 +71,7 @@
             <!-- 2. SLA Policies -->
             <div v-if="activeTab === 'slas'" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div v-for="policy in slaPolicies" :key="policy.id" class="glass-card p-8 rounded-[2rem] border-t-4" :class="getPriorityBorder(policy.priority)">
+                    <div v-for="policy in slaPolicies" :key="policy.id" class="glass-card p-8 rounded-xl border-t-4" :class="getPriorityBorder(policy.priority)">
                         <div class="flex items-center justify-between mb-6">
                             <h3 class="text-xl font-bold text-text-main">{{ policy.name }}</h3>
                             <span class="text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full border border-glass-border">{{ policy.priority }}</span>
@@ -100,7 +100,7 @@
 
             <!-- 3. Audit Trails -->
             <div v-if="activeTab === 'audit'" class="space-y-6">
-                 <div class="glass-card rounded-[2rem] overflow-hidden">
+                 <div class="glass-card rounded-xl overflow-hidden">
                     <table class="w-full text-left">
                         <thead>
                             <tr class="bg-surface-light/50 border-b border-glass-border">

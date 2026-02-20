@@ -18,15 +18,15 @@
                 <input 
                     type="text" 
                     placeholder="Search articles (e.g. WiFi setup, VPN reset)..."
-                    class="w-full bg-surface-light border border-glass-border rounded-3xl py-6 pl-16 pr-6 text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary/50 transition-all shadow-2xl shadow-black/10"
+                    class="w-full bg-surface-light border border-glass-border rounded-xl py-6 pl-16 pr-6 text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary/50 transition-all shadow-2xl shadow-black/10"
                 />
             </div>
         </div>
 
         <!-- KB Categories -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
-            <div v-for="cat in kbCategories" :key="cat.name" class="glass-card p-8 rounded-[2.5rem] hover-lift group">
-                <div class="w-16 h-16 rounded-2xl bg-surface-light flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            <div v-for="cat in kbCategories" :key="cat.name" class="glass-card p-8 rounded-xl hover-lift group">
+                <div class="w-16 h-16 rounded-lg bg-surface-light flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
                     {{ cat.icon }}
                 </div>
                 <h3 class="text-xl font-bold text-text-main mb-3">{{ cat.name }}</h3>
@@ -41,12 +41,12 @@
         </div>
 
         <!-- Help Banner -->
-        <div class="glass-card p-12 rounded-[3rem] bg-linear-to-r from-primary/20 to-secondary/20 border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="glass-card p-12 rounded-xl bg-linear-to-r from-primary/20 to-secondary/20 border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="space-y-2">
                 <h2 class="text-3xl font-black text-text-main">Can't find what you need?</h2>
                 <p class="text-text-dim">Our agents are available 24/7 to assist you with complex issues.</p>
             </div>
-            <router-link to="/tickets/new" class="px-10 py-5 bg-white text-primary font-black rounded-2xl shadow-xl shadow-primary/20 hover-lift whitespace-nowrap">
+            <router-link to="/tickets/new" class="px-10 py-5 bg-white text-primary font-black rounded-lg shadow-xl shadow-primary/20 hover-lift whitespace-nowrap">
                 Contact Human Support
             </router-link>
         </div>

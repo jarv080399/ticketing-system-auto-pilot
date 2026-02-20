@@ -10,12 +10,12 @@
             @input="handleInput"
             type="text" 
             placeholder="Search tickets, knowledge base, or assets..."
-            class="w-full bg-surface-light/50 border border-glass-border rounded-2xl py-5 pl-16 pr-6 text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all shadow-xl shadow-black/5"
+            class="w-full bg-surface-light/50 border border-glass-border rounded-lg py-5 pl-16 pr-6 text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all shadow-xl shadow-black/5"
         />
         
         <!-- Results Dropdown -->
         <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 translate-y-2" enter-to-class="opacity-100 translate-y-0">
-            <div v-if="results.length > 0 && query.length > 0" class="absolute top-full left-0 w-full mt-4 glass-card rounded-[2rem] shadow-2xl overflow-hidden z-[60] py-4 border-glass-border">
+            <div v-if="results.length > 0 && query.length > 0" class="absolute top-full left-0 w-full mt-4 glass-card rounded-xl shadow-2xl overflow-hidden z-[60] py-4 border-glass-border">
                 <div class="px-6 py-2">
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim">Search Results</p>
                 </div>

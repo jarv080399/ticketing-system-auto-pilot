@@ -62,7 +62,7 @@
 
                             <!-- Dropdown Menu -->
                             <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-                                <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 glass-card rounded-2xl py-2 overflow-hidden ring-1 ring-white/10">
+                                <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 glass-card rounded-lg py-2 overflow-hidden ring-1 ring-white/10">
                                     <div class="px-4 py-3 border-b border-white/10 bg-white/5">
                                         <p class="text-xs text-text-dim font-medium uppercase tracking-wider">Role</p>
                                         <p class="text-sm font-bold text-primary truncate capitalize">{{ auth.user?.role }}</p>
