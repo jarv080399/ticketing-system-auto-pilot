@@ -40,12 +40,19 @@ Route::prefix('v1')->group(function () {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
 
         // Agent Routes
-        Route::middleware(['auth:sanctum', 'role:agent'])->prefix('agent')->group(function () {
-            Route::get('/tickets', [TicketController::class, 'index']); // I'll update TicketController to handle agent index
+        Route::middleware(['role:agent'])->prefix('agent')->group(function () {
+            Route::get('/tickets', [\App\Http\Controllers\Api\V1\TicketController::class, 'index']);
             Route::patch('/tickets/{ticket}', [\App\Http\Controllers\Api\V1\Agent\AgentTicketController::class, 'update']);
             Route::post('/tickets/{ticket}/comments', [\App\Http\Controllers\Api\V1\Agent\CommentController::class, 'store']);
-
             Route::apiResource('canned-responses', \App\Http\Controllers\Api\V1\Agent\CannedResponseController::class);
+        });
+
+        // Admin Routes (Automation & Settings)
+        Route::middleware('role:admin')->prefix('admin')->group(function () {
+            Route::apiResource('automation-rules', \App\Http\Controllers\Api\V1\Admin\AutomationController::class);
+            Route::apiResource('sla-policies', \App\Http\Controllers\Api\V1\Admin\SlaController::class);
+            Route::apiResource('escalation-tiers', \App\Http\Controllers\Api\V1\Admin\EscalationController::class);
+            Route::apiResource('audit-logs', \App\Http\Controllers\Api\V1\Admin\AuditLogController::class)->only(['index', 'show']);
         });
 
         // Categories

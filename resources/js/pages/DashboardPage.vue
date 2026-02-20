@@ -83,8 +83,37 @@
                     </router-link>
                 </div>
 
+                <!-- Agent Quick Access Section -->
+                <div v-if="['agent', 'admin'].includes(authStore.user?.role)" class="pt-12 space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
+                    <div class="flex justify-between items-center px-1">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🎧</span>
+                            <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Agent Command Center</h3>
+                        </div>
+                        <router-link to="/agent" class="text-[10px] font-black text-emerald-500 uppercase tracking-widest hover:text-text-main transition-colors">Enter Workspace →</router-link>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="glass-card p-10 rounded-[3rem] bg-linear-to-br from-emerald-500/10 to-transparent border-emerald-500/20 flex items-center justify-between group cursor-pointer" @click="$router.push('/agent/queue')">
+                            <div class="space-y-2">
+                                <h4 class="text-2xl font-black text-text-main group-hover:text-emerald-400 transition-colors">38 Pending</h4>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-text-dim">Global Issue Queue</p>
+                            </div>
+                            <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-3xl group-hover:rotate-12 transition-transform">📥</div>
+                        </div>
+
+                        <div class="glass-card p-10 rounded-[3rem] bg-linear-to-br from-primary/10 to-transparent border-primary/20 flex items-center justify-between group cursor-pointer" @click="$router.push('/agent')">
+                            <div class="space-y-2">
+                                <h4 class="text-2xl font-black text-text-main group-hover:text-primary transition-colors">92% Health</h4>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-text-dim">SLA Compliance Index</p>
+                            </div>
+                            <div class="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-3xl group-hover:rotate-12 transition-transform">📈</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Active Maintenance Feed -->
-                <div class="space-y-8 pt-4">
+                <div class="space-y-8 pt-12">
                     <div class="flex justify-between items-center px-1">
                         <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">My Recent Tickets</h3>
                         <router-link to="/tickets" class="text-[10px] font-black text-primary uppercase tracking-widest hover:text-text-main transition-colors">View All →</router-link>
@@ -213,12 +242,21 @@ const stats = computed(() => [
     },
 ]);
 
-const actions = [
-    { name: 'New Request', desc: 'Submit a high-priority IT incident or request.', path: '/tickets/new', icon: '🎟️', iconBg: 'bg-primary/20' },
-    { name: 'My Tickets', desc: 'Track your pending applications & status.', path: '/tickets', icon: '📁', iconBg: 'bg-accent/20' },
-    { name: 'Knowledge', desc: 'Search documentation for instant fixes.', path: '/kb', icon: '📖', iconBg: 'bg-indigo-500/20' },
-    { name: 'Self-Service', desc: 'Password reset & account management.', path: '/settings', icon: '⚙️', iconBg: 'bg-red-500/20' },
-];
+const actions = computed(() => {
+    const base = [
+        { name: 'New Request', desc: 'Submit a high-priority IT incident or request.', path: '/tickets/new', icon: '🎟️', iconBg: 'bg-primary/20' },
+        { name: 'My Tickets', desc: 'Track your pending applications & status.', path: '/tickets', icon: '📁', iconBg: 'bg-accent/20' },
+        { name: 'Knowledge', desc: 'Search documentation for instant fixes.', path: '/kb', icon: '📖', iconBg: 'bg-indigo-500/20' },
+    ];
+
+    if (['agent', 'admin'].includes(authStore.user?.role)) {
+        base.push({ name: 'Issue Queue', desc: 'Manage incoming staff support requests.', path: '/agent/queue', icon: '📥', iconBg: 'bg-emerald-500/20' });
+    } else {
+        base.push({ name: 'Help Settings', desc: 'Password reset & account management.', path: '/settings', icon: '⚙️', iconBg: 'bg-red-500/20' });
+    }
+
+    return base;
+});
 
 const recentTickets = computed(() => ticketStore.myTickets.slice(0, 5));
 

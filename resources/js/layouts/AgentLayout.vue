@@ -88,6 +88,7 @@ const navItems = [
     { label: 'Issue Queue', path: '/agent/queue', icon: '📥' },
     { label: 'Macros', path: '/agent/canned-responses', icon: '⚡' },
     { label: 'Performance', path: '/agent/stats', icon: '📈' },
+    { label: 'User Portal', path: '/', icon: '🏠' },
 ];
 
 const pageTitle = computed(() => {

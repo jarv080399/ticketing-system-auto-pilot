@@ -91,6 +91,11 @@ const routes = [
                 name: 'AdminSettings',
                 component: () => import('@/pages/admin/SettingsPage.vue'),
             },
+            {
+                path: 'automation',
+                name: 'AdminAutomation',
+                component: () => import('@/pages/AdminAutomationPage.vue'),
+            },
         ],
     },
 

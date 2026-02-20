@@ -67,6 +67,24 @@
                                         <p class="text-xs text-text-dim font-medium uppercase tracking-wider">Role</p>
                                         <p class="text-sm font-bold text-primary truncate capitalize">{{ auth.user?.role }}</p>
                                     </div>
+                                    <div class="px-2 py-2 border-b border-white/10">
+                                        <router-link 
+                                            v-if="['agent', 'admin'].includes(auth.user?.role)"
+                                            to="/agent"
+                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-primary/10 hover:text-primary rounded-xl flex items-center gap-3 transition-all"
+                                        >
+                                            <span>🎧</span>
+                                            Agent Workspace
+                                        </router-link>
+                                        <router-link 
+                                            v-if="auth.user?.role === 'admin'"
+                                            to="/admin"
+                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-warning/10 hover:text-warning rounded-xl flex items-center gap-3 transition-all mt-1"
+                                        >
+                                            <span>👑</span>
+                                            Admin Panel
+                                        </router-link>
+                                    </div>
                                     <button 
                                         @click="handleLogout"
                                         class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 transition-colors"

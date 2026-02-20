@@ -124,7 +124,12 @@ const handleLogin = async () => {
     try {
         const success = await authStore.login(form);
         if (success) {
-            const redirect = router.currentRoute.value.query.redirect || '/';
+            let redirect = router.currentRoute.value.query.redirect;
+            
+            if (!redirect) {
+                redirect = ['agent', 'admin'].includes(authStore.user.role) ? '/agent' : '/';
+            }
+            
             router.push(redirect);
         }
     } catch (err) {
