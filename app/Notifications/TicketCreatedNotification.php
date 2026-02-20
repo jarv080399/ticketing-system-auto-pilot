@@ -29,7 +29,17 @@ class TicketCreatedNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        $channels = ['database'];
+        
+        if ($notifiable->prefersNotification('ticket_created', 'email')) {
+            $channels[] = 'mail';
+        }
+
+        if ($notifiable->prefersNotification('ticket_created', 'slack')) {
+            $channels[] = 'slack';
+        }
+
+        return $channels;
     }
 
     /**
@@ -37,13 +47,33 @@ class TicketCreatedNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $domain = explode('@', config('mail.from.address'))[1] ?? 'company.com';
+        $replyTo = "ticket-{$this->ticket->ticket_number}@{$domain}";
+
         return (new MailMessage)
                     ->subject("Ticket Acknowledgement: {$this->ticket->ticket_number}")
+                    ->replyTo($replyTo)
                     ->greeting("Hello {$notifiable->name},")
                     ->line("Thanks for reaching out! We've received your ticket: **{$this->ticket->title}**.")
                     ->line("Your ticket number is **{$this->ticket->ticket_number}**. An agent will review it shortly.")
                     ->action('View Ticket Details', url('/tickets/' . $this->ticket->ticket_number))
                     ->line('Thank you for using our service!');
+    }
+
+    /**
+     * Get the Slack representation of the notification.
+     */
+    public function toSlack(object $notifiable)
+    {
+        return (new \Illuminate\Notifications\Slack\SlackMessage)
+            ->text("New Ticket Created: #{$this->ticket->ticket_number}")
+            ->headerBlock("🎫 New Ticket: {$this->ticket->ticket_number}")
+            ->sectionBlock(function ($section) {
+                $section->text("*Title:* {$this->ticket->title}\n*Priority:* {$this->ticket->priority}");
+            })
+            ->actionsBlock(function ($actions) {
+                $actions->button('View Ticket')->url(url('/agent/tickets/' . $this->ticket->ticket_number));
+            });
     }
 
     /**

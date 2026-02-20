@@ -72,4 +72,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Asset::class, 'owner_user_id');
     }
+
+    public function notificationPreferences()
+    {
+        return $this->hasMany(NotificationPreference::class);
+    }
+
+    public function prefersNotification(string $event, string $channel): bool
+    {
+        return $this->notificationPreferences()
+            ->where('event_type', $event)
+            ->where('channel', $channel)
+            ->where('is_enabled', true)
+            ->exists();
+    }
+
+    /**
+     * Route notifications for the Slack channel.
+     *
+     * @return string
+     */
+    public function routeNotificationForSlack()
+    {
+        return config('services.slack.webhook_url');
+    }
 }
