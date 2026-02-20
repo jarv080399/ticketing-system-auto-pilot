@@ -216,7 +216,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTicketStore } from '@/stores/tickets';
 import { useAuthStore } from '@/stores/auth';
@@ -241,6 +241,20 @@ const isAssignedToMe = computed(() => {
     return ticket.value?.agent_id === authStore.user?.id;
 });
 
+const setupEcho = () => {
+    if (window.Echo && ticket.value) {
+        window.Echo.private(`ticket.${ticket.value.id}`)
+            .listen('TicketCommentCreated', (e) => {
+                if (!ticket.value.comments.find(c => c.id === e.comment.id)) {
+                    ticket.value.comments.push(e.comment);
+                    if (e.comment.user_id !== authStore.user?.id) {
+                        toast.info('New comment received');
+                    }
+                }
+            });
+    }
+};
+
 const loadTicket = async () => {
     loading.value = true;
     try {
@@ -248,12 +262,19 @@ const loadTicket = async () => {
         ticket.value = ticketStore.currentTicket;
         localStatus.value = ticket.value.status;
         localPriority.value = ticket.value.priority;
+        setupEcho();
     } finally {
         loading.value = false;
     }
 };
 
 onMounted(loadTicket);
+
+onUnmounted(() => {
+    if (window.Echo && ticket.value) {
+        window.Echo.leave(`ticket.${ticket.value.id}`);
+    }
+});
 
 const handleSendComment = async () => {
     if (!commentBody.value.trim()) return;

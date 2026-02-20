@@ -97,6 +97,26 @@
                         <div class="w-16 h-16 bg-surface-light rounded-lg flex items-center justify-center mx-auto text-3xl opacity-50">💬</div>
                         <p class="text-text-dim font-medium">No replies yet. Our agents will comment here once they review your request.</p>
                     </div>
+
+                    <!-- Reply Area -->
+                    <div class="glass-card p-6 rounded-xl shadow-2xl mt-8">
+                        <div class="space-y-4">
+                            <textarea 
+                                v-model="commentBody"
+                                placeholder="Write a reply..."
+                                class="w-full bg-surface-light border border-glass-border rounded-lg p-4 text-sm text-text-main focus:ring-2 focus:ring-primary/40 min-h-[120px] resize-none"
+                            ></textarea>
+                            <div class="text-right">
+                                <button 
+                                    @click="submitComment"
+                                    :disabled="!commentBody.trim() || sending"
+                                    class="px-8 py-3 bg-primary text-white rounded-lg text-xs font-black uppercase tracking-widest hover-lift disabled:opacity-50"
+                                >
+                                    {{ sending ? 'Sending...' : 'Reply' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -161,24 +181,70 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTicketStore } from '@/stores/tickets';
+import { useAuthStore } from '@/stores/auth';
+import axios from '@/plugins/axios';
+import { useToast } from 'vue-toastification';
 import TicketStatusTracker from '@/components/TicketStatusTracker.vue';
 
 const route = useRoute();
 const ticketStore = useTicketStore();
+const authStore = useAuthStore();
+const toast = useToast();
 
 const ticket = ref(null);
 const loading = ref(true);
+const sending = ref(false);
+const commentBody = ref('');
+
+const setupEcho = () => {
+    if (window.Echo && ticket.value) {
+        window.Echo.private(`ticket.${ticket.value.id}`)
+            .listen('TicketCommentCreated', (e) => {
+                if (!ticket.value.comments.find(c => c.id === e.comment.id)) {
+                    ticket.value.comments.push(e.comment);
+                    if (e.comment.user_id !== authStore.user?.id) {
+                        toast.info('New reply received');
+                    }
+                }
+            });
+    }
+};
+
+const submitComment = async () => {
+    if (!commentBody.value.trim()) return;
+    
+    sending.value = true;
+    try {
+        const response = await axios.post(`/tickets/${ticket.value.id}/comments`, {
+            body: commentBody.value,
+        });
+        
+        ticket.value.comments.push(response.data.data);
+        commentBody.value = '';
+    } catch (err) {
+        toast.error('Failed to send reply');
+    } finally {
+        sending.value = false;
+    }
+};
 
 onMounted(async () => {
     loading.value = true;
     try {
         await ticketStore.fetchTicketByNumber(route.params.ticketNumber);
         ticket.value = ticketStore.currentTicket;
+        setupEcho();
     } finally {
         loading.value = false;
+    }
+});
+
+onUnmounted(() => {
+    if (window.Echo && ticket.value) {
+        window.Echo.leave(`ticket.${ticket.value.id}`);
     }
 });
 

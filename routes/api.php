@@ -61,6 +61,7 @@ Route::prefix('v1')->group(function () {
         // Tickets
         Route::get('/tickets/my-tickets', [TicketController::class, 'index']);
         Route::post('/tickets/check-duplicate', [TicketController::class, 'checkDuplicate']);
+        Route::post('/tickets/{ticket}/comments', [\App\Http\Controllers\Api\V1\Agent\CommentController::class, 'store']);
         Route::apiResource('tickets', TicketController::class)->except(['index']);
 
         // Search

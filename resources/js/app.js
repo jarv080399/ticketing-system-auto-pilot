@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 import router from './router';
 import axios from './plugins/axios';
 import App from './App.vue';
+import './echo';
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
