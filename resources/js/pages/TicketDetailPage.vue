@@ -71,10 +71,29 @@
                     </div>
                 </div>
 
-                <!-- Conversation Section Placeholder -->
+                <!-- Conversation Section -->
                 <div class="space-y-8">
                     <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim ml-4">Activity Log</h3>
-                    <div class="glass-card p-12 rounded-xl text-center space-y-4">
+                    
+                    <div v-if="publicComments.length" class="space-y-8 pl-12 border-l-2 border-glass-border relative">
+                        <div v-for="comment in publicComments" :key="comment.id" class="relative">
+                            <!-- Connector Dot -->
+                            <div class="absolute -left-14 top-2 w-4 h-4 rounded-full border-4 border-surface shadow-sm bg-primary"></div>
+                            
+                            <div class="glass-card p-8 rounded-xl space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-black text-text-main text-sm">{{ comment.user?.name || 'User' }}</span>
+                                        <span v-if="comment.user?.role !== 'user'" class="px-2 py-0.5 bg-primary/20 text-primary text-[8px] font-black uppercase tracking-[0.2em] rounded-md">Agent</span>
+                                    </div>
+                                    <span class="text-[10px] text-text-dim font-bold uppercase tracking-widest">{{ formatTimeAgo(comment.created_at) }}</span>
+                                </div>
+                                <p class="text-sm text-text-dim leading-relaxed font-semibold whitespace-pre-wrap">{{ comment.body }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-else class="glass-card p-12 rounded-xl text-center space-y-4">
                         <div class="w-16 h-16 bg-surface-light rounded-lg flex items-center justify-center mx-auto text-3xl opacity-50">💬</div>
                         <p class="text-text-dim font-medium">No replies yet. Our agents will comment here once they review your request.</p>
                     </div>
@@ -142,7 +161,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTicketStore } from '@/stores/tickets';
 import TicketStatusTracker from '@/components/TicketStatusTracker.vue';
@@ -162,6 +181,21 @@ onMounted(async () => {
         loading.value = false;
     }
 });
+
+const publicComments = computed(() => {
+    return ticket.value?.comments?.filter(c => !c.is_internal) || [];
+});
+
+const formatTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMinutes = Math.floor((now - date) / 1000 / 60);
+
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+    return date.toLocaleString();
+};
 
 const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('en-US', { 
