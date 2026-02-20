@@ -32,6 +32,9 @@ Route::prefix('v1')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
     });
 
+    // CSAT Survey (Public)
+    Route::post('/surveys/{token}', [\App\Http\Controllers\Api\V1\SatisfactionSurveyController::class, 'store']);
+
     // ─── Authenticated Routes ───
     Route::middleware('auth:sanctum')->group(function () {
 
@@ -64,6 +67,7 @@ Route::prefix('v1')->group(function () {
         // Tickets
         Route::get('/tickets/my-tickets', [TicketController::class, 'index']);
         Route::post('/tickets/check-duplicate', [TicketController::class, 'checkDuplicate']);
+        Route::get('/tickets/{ticket}/survey', [\App\Http\Controllers\Api\V1\SatisfactionSurveyController::class, 'show']);
         Route::post('/tickets/{ticket}/comments', [\App\Http\Controllers\Api\V1\Agent\CommentController::class, 'store']);
         Route::apiResource('tickets', TicketController::class)->except(['index']);
 
@@ -96,6 +100,15 @@ Route::prefix('v1')->group(function () {
             Route::post('assets/{asset}/assign', [\App\Http\Controllers\Api\V1\AssetController::class, 'assign']);
             Route::post('assets/{asset}/unassign', [\App\Http\Controllers\Api\V1\AssetController::class, 'unassign']);
             Route::get('assets/{asset}/history', [\App\Http\Controllers\Api\V1\AssetController::class, 'history']);
+
+            // Reports
+            Route::prefix('reports')->group(function () {
+                Route::get('/performance', [\App\Http\Controllers\Api\V1\ReportController::class, 'performance']);
+                Route::get('/heatmap', [\App\Http\Controllers\Api\V1\ReportController::class, 'heatmap']);
+                Route::get('/trends', [\App\Http\Controllers\Api\V1\ReportController::class, 'trends']);
+                Route::get('/agents', [\App\Http\Controllers\Api\V1\ReportController::class, 'agentLeaderboard']);
+                Route::post('/export', [\App\Http\Controllers\Api\V1\ReportController::class, 'export']);
+            });
         });
         
         Route::get('/users/{user}/assets', [\App\Http\Controllers\Api\V1\AssetController::class, 'userAssets']);

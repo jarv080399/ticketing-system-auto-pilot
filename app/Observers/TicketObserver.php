@@ -62,5 +62,18 @@ class TicketObserver
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
         ]);
+
+        // Trigger CSAT Survey if closed and doesn't already have one
+        if ($ticket->status === 'closed' && !$ticket->satisfactionSurvey) {
+            $survey = \App\Models\SatisfactionSurvey::create([
+                'ticket_id' => $ticket->id,
+                'user_id' => $ticket->requester_id,
+                'token' => \Illuminate\Support\Str::uuid(),
+                'rating' => 0, // Initial state
+            ]);
+
+            \Illuminate\Support\Facades\Mail::to($ticket->requester->email)
+                ->send(new \App\Mail\SatisfactionSurveyMail($ticket, $survey));
+        }
     }
 }

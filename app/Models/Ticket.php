@@ -93,4 +93,9 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketTimeLog::class);
     }
+
+    public function satisfactionSurvey(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SatisfactionSurvey::class);
+    }
 }

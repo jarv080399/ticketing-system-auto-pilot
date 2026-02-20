@@ -24,6 +24,9 @@
                 <router-link to="/admin/automation" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors">
                     🤖 Automation
                 </router-link>
+                <router-link to="/admin/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors">
+                    📶 Intelligence
+                </router-link>
                 <router-link to="/agent" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors">
                     🛠️ Agent View
                 </router-link>

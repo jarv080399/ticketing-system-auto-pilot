@@ -121,6 +121,11 @@ const routes = [
                 name: 'AdminAutomation',
                 component: () => import('@/pages/AdminAutomationPage.vue'),
             },
+            {
+                path: 'dashboard',
+                name: 'ManagerDashboard',
+                component: () => import('@/pages/admin/ManagerDashboardPage.vue'),
+            },
         ],
     },
 
