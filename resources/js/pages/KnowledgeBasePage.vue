@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-6xl mx-auto space-y-12 pb-12">
+    <div class="w-full space-y-12 pb-12">
         <div class="text-center space-y-4">
             <h1 class="text-5xl font-black tracking-tight text-text-main">
                 How can we <span class="text-gradient">Help?</span>

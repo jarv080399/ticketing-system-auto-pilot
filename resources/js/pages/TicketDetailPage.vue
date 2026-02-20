@@ -1,10 +1,10 @@
 <template>
-    <div v-if="loading" class="max-w-5xl mx-auto space-y-12 py-12">
+    <div v-if="loading" class="w-full space-y-12 py-12">
         <div class="h-12 w-64 bg-surface-light animate-pulse rounded-xl"></div>
         <div class="h-64 glass-card animate-pulse rounded-xl"></div>
     </div>
 
-    <div v-else-if="ticket" class="max-w-5xl mx-auto space-y-12 pb-24">
+    <div v-else-if="ticket" class="w-full space-y-12 pb-24">
         <!-- Header Actions -->
         <div class="flex items-center justify-between">
             <router-link to="/tickets" class="flex items-center gap-2 text-text-dim hover:text-primary transition-colors group">

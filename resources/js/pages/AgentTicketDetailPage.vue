@@ -1,5 +1,5 @@
 <template>
-    <div v-if="loading" class="max-w-7xl mx-auto py-12">
+    <div v-if="loading" class="w-full py-12">
         <div class="h-12 w-64 bg-surface-light animate-pulse rounded-xl mb-12"></div>
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
             <div class="lg:col-span-3 h-96 glass-card animate-pulse rounded-xl"></div>
@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div v-else-if="ticket" class="max-w-7xl mx-auto space-y-12 pb-24">
+    <div v-else-if="ticket" class="w-full space-y-12 pb-24">
         <!-- Breadcrumbs & Quick Actions -->
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">

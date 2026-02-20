@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-4xl mx-auto space-y-12">
+    <div class="w-full space-y-12">
         <h1 class="text-4xl font-black text-text-main">Account <span class="text-gradient">Settings</span></h1>
         
         <div class="glass-card p-12 rounded-xl text-center space-y-6">

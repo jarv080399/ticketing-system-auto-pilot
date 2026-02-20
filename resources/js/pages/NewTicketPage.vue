@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-4xl mx-auto space-y-12 pb-12">
+    <div class="w-full space-y-12 pb-12">
         <!-- Header -->
         <div class="space-y-4">
             <h1 class="text-4xl font-black tracking-tight text-text-main">
