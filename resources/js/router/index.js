@@ -43,6 +43,11 @@ const routes = [
                 component: () => import('@/pages/KnowledgeBasePage.vue'),
             },
             {
+                path: 'kb/:slug',
+                name: 'KbArticleViewer',
+                component: () => import('@/pages/KbArticleViewerPage.vue'),
+            },
+            {
                 path: 'settings',
                 name: 'Settings',
                 component: () => import('@/pages/SettingsPage.vue'),
@@ -71,6 +76,16 @@ const routes = [
                 name: 'AgentTicketDetail',
                 component: () => import('@/pages/AgentTicketDetailPage.vue'),
                 props: true,
+            },
+            {
+                path: 'kb/new',
+                name: 'AgentNewArticle',
+                component: () => import('@/pages/AgentArticleEditorPage.vue'),
+            },
+            {
+                path: 'kb/edit/:slug',
+                name: 'AgentEditArticle',
+                component: () => import('@/pages/AgentArticleEditorPage.vue'),
             },
         ],
     },

@@ -61,6 +61,9 @@
                         />
                     </div>
 
+                    <!-- Article Suggestions -->
+                    <ArticleSuggestions :query="form.title" />
+
                     <!-- Description -->
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-1">Detailed Description</label>
@@ -138,6 +141,7 @@ import { useRouter } from 'vue-router';
 import { useTicketStore } from '@/stores/tickets';
 import { useToast } from 'vue-toastification';
 import CategoryTiles from '@/components/CategoryTiles.vue';
+import ArticleSuggestions from '@/components/Kb/ArticleSuggestions.vue';
 
 const router = useRouter();
 const ticketStore = useTicketStore();

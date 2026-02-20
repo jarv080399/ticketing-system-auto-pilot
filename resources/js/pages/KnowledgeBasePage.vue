@@ -24,18 +24,28 @@
         </div>
 
         <!-- KB Categories -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
-            <div v-for="cat in kbCategories" :key="cat.name" class="glass-card p-8 rounded-xl hover-lift group">
+        <div v-if="loading" class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 animate-pulse">
+            <div v-for="i in 3" :key="i" class="glass-card p-12 rounded-xl bg-surface-light h-64"></div>
+        </div>
+        
+        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
+            <div v-for="cat in kbCategories" :key="cat.id" class="glass-card p-8 rounded-xl hover-lift group">
                 <div class="w-16 h-16 rounded-lg bg-surface-light flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
                     {{ cat.icon }}
                 </div>
                 <h3 class="text-xl font-bold text-text-main mb-3">{{ cat.name }}</h3>
-                <p class="text-text-dim text-sm leading-relaxed mb-6">{{ cat.desc }}</p>
+                <p class="text-text-dim text-sm leading-relaxed mb-6">{{ cat.desc || '' }}</p>
                 <div class="space-y-3">
-                    <a v-for="article in cat.articles" :key="article" href="#" class="block text-sm font-medium text-primary hover:underline flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
-                        {{ article }}
-                    </a>
+                    <router-link 
+                        v-for="article in cat.articles.slice(0, 5)" 
+                        :key="article.id" 
+                        :to="'/kb/' + article.slug" 
+                        class="block text-sm font-medium text-primary hover:underline flex items-center gap-2 truncate"
+                    >
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0"></span>
+                        <span class="truncate">{{ article.title }}</span>
+                    </router-link>
+                    <p v-if="cat.articles.length === 0" class="text-xs text-text-dim italic">No articles yet.</p>
                 </div>
             </div>
         </div>
@@ -54,24 +64,20 @@
 </template>
 
 <script setup>
-const kbCategories = [
-    {
-        name: 'Getting Started',
-        icon: '🚀',
-        desc: 'New employee onboarding, hardware setup, and basic portal usage.',
-        articles: ['Connect to Office VPN', 'Software Request Policy', 'Setting up MFA']
-    },
-    {
-        name: 'Account & Access',
-        icon: '🔐',
-        desc: 'Password resets, permission management, and security protocols.',
-        articles: ['Reset AD Password', 'Request Slack Access', 'Single Sign-On Guide']
-    },
-    {
-        name: 'Technical Issues',
-        icon: '🛠️',
-        desc: 'Common hardware fixes, printer setup, and network troubleshooting.',
-        articles: ['WiFi Connection Guide', 'Printer Driver Setup', 'Slow Performance Fixes']
+import { ref, onMounted } from 'vue';
+import axios from '@/plugins/axios';
+
+const kbCategories = ref([]);
+const loading = ref(true);
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('/kb/categories');
+        kbCategories.value = response.data.data;
+    } catch (err) {
+        console.error('Failed to load KB categories', err);
+    } finally {
+        loading.value = false;
     }
-];
+});
 </script>
