@@ -25,6 +25,27 @@ services:
     networks:
       - ticketing-net
 
+  # ─── Laravel Reverb (WebSockets) ───
+  reverb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ticketing-system-reverb:latest
+    container_name: ticketing_reverb
+    restart: unless-stopped
+    command: php artisan reverb:start
+    env_file:
+      - .env
+    ports:
+      - "8081:8081"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      redis:
+        condition: service_started
+    networks:
+      - ticketing-net
+
   # ─── MySQL (Percona Server) ───
   db:
     image: percona:8.0
