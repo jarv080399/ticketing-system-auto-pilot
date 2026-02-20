@@ -10,31 +10,57 @@
             @input="handleInput"
             type="text" 
             placeholder="Search tickets, knowledge base, or assets..."
-            class="w-full bg-surface-light/50 border border-glass-border rounded-2xl py-5 pl-16 pr-6 text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all shadow-xl shadow-black/5"
+            class="w-full bg-surface-light/50 border border-glass-border rounded-lg py-5 pl-16 pr-6 text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all shadow-xl shadow-black/5"
         />
         
         <!-- Results Dropdown -->
         <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 translate-y-2" enter-to-class="opacity-100 translate-y-0">
-            <div v-if="results.length > 0 && query.length > 0" class="absolute top-full left-0 w-full mt-4 glass-card rounded-[2rem] shadow-2xl overflow-hidden z-[60] py-4 border-glass-border">
-                <div class="px-6 py-2">
-                    <p class="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim">Search Results</p>
-                </div>
+            <div v-if="(results.tickets?.length > 0 || results.knowledge_base?.length > 0) && query.length > 0" class="absolute top-full left-0 w-full mt-4 glass-card rounded-xl shadow-2xl overflow-hidden z-[60] py-4 border-glass-border">
                 
-                <div class="space-y-1">
-                    <router-link 
-                        v-for="ticket in results" :key="ticket.id"
-                        :to="`/tickets/${ticket.ticket_number}`"
-                        class="flex items-center gap-4 px-6 py-4 hover:bg-primary/10 transition-colors group"
-                        @click="query = ''"
-                    >
-                        <div class="w-10 h-10 rounded-xl bg-surface-light flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                            {{ ticket.category?.icon || '🎫' }}
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">{{ ticket.title }}</p>
-                            <p class="text-[10px] text-text-dim uppercase tracking-widest">{{ ticket.ticket_number }} • {{ ticket.status.replace('_', ' ') }}</p>
-                        </div>
-                    </router-link>
+                <div v-if="results.tickets?.length" class="mb-2">
+                    <div class="px-6 py-2">
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim">Tickets</p>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <router-link 
+                            v-for="ticket in results.tickets" :key="'ticket-'+ticket.id"
+                            :to="`/tickets/${ticket.ticket_number}`"
+                            class="flex items-center gap-4 px-6 py-4 hover:bg-primary/10 transition-colors group"
+                            @click="query = ''"
+                        >
+                            <div class="w-10 h-10 rounded-xl bg-surface-light flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                {{ ticket.category?.icon || '🎫' }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-text-main group-hover:text-primary transition-colors truncate">{{ ticket.title }}</p>
+                                <p class="text-[10px] text-text-dim uppercase tracking-widest mt-1">{{ ticket.ticket_number }} • {{ ticket.status.replace('_', ' ') }}</p>
+                            </div>
+                        </router-link>
+                    </div>
+                </div>
+
+                <div v-if="results.knowledge_base?.length">
+                    <div class="px-6 py-2 border-t border-glass-border pt-4">
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim">Knowledge Base</p>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <router-link 
+                            v-for="article in results.knowledge_base" :key="'kb-'+article.id"
+                            :to="`/kb/${article.slug}`"
+                            class="flex items-center gap-4 px-6 py-4 hover:bg-primary/10 transition-colors group"
+                            @click="query = ''"
+                        >
+                            <div class="w-10 h-10 rounded-xl bg-surface-light flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                {{ article.category?.icon || '📚' }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-text-main group-hover:text-primary transition-colors truncate">{{ article.title }}</p>
+                                <p class="text-[10px] text-text-dim uppercase tracking-widest mt-1">Article • {{ article.view_count }} views</p>
+                            </div>
+                        </router-link>
+                    </div>
                 </div>
                 
                 <div class="px-6 py-4 border-t border-glass-border mt-2">
@@ -51,12 +77,12 @@ import axios from '@/plugins/axios';
 import _ from 'lodash';
 
 const query = ref('');
-const results = ref([]);
+const results = ref({ tickets: [], knowledge_base: [] });
 const loading = ref(false);
 
 const handleInput = _.debounce(async () => {
     if (query.value.length < 2) {
-        results.value = [];
+        results.value = { tickets: [], knowledge_base: [] };
         return;
     }
 

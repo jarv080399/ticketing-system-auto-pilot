@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div v-for="stat in stats" :key="stat.label" class="glass-card p-8 rounded-[2rem] hover-lift group">
+            <div v-for="stat in stats" :key="stat.label" class="glass-card p-8 rounded-xl hover-lift group">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 rounded-xl bg-surface-light flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
                         {{ stat.icon }}
@@ -21,7 +21,7 @@
                     <router-link to="/agent/queue" class="text-[10px] font-black text-primary uppercase tracking-widest hover:underline">View Full Queue</router-link>
                 </div>
 
-                <div class="glass-card rounded-[3rem] overflow-hidden border-glass-border">
+                <div class="glass-card rounded-xl overflow-hidden border-glass-border">
                     <table class="w-full text-left">
                         <thead>
                             <tr class="bg-surface-light/50 border-b border-glass-border">
@@ -67,13 +67,13 @@
             <!-- Agent Performance Sidebar -->
             <div class="space-y-8">
                 <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Live SLA Health</h3>
-                <div class="glass-card p-10 rounded-[3rem] space-y-8">
+                <div class="glass-card p-10 rounded-xl space-y-8">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-[10px] font-black uppercase tracking-widest text-text-dim mb-1">Weekly Target</p>
                             <h4 class="text-2xl font-black text-text-main">92.4%</h4>
                         </div>
-                        <div class="w-16 h-16 rounded-2xl border-4 border-emerald-500/20 border-t-emerald-500 flex items-center justify-center font-black text-emerald-500 text-xs shadow-lg shadow-emerald-500/20">
+                        <div class="w-16 h-16 rounded-lg border-4 border-emerald-500/20 border-t-emerald-500 flex items-center justify-center font-black text-emerald-500 text-xs shadow-lg shadow-emerald-500/20">
                             +4%
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                     </div>
 
                     <div class="pt-8 border-t border-glass-border">
-                        <button class="w-full py-4 glass-card border-glass-border rounded-2xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:bg-white/5 transition-all">Detailed Analytics</button>
+                        <button class="w-full py-4 glass-card border-glass-border rounded-lg text-[10px] font-black uppercase tracking-widest text-text-dim hover:bg-white/5 transition-all">Detailed Analytics</button>
                     </div>
                 </div>
             </div>

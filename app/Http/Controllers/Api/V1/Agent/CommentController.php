@@ -40,8 +40,11 @@ class CommentController extends Controller
             $ticket->update(['first_response_at' => now()]);
         }
 
+        $comment->load('user');
+        broadcast(new \App\Events\TicketCommentCreated($comment))->toOthers();
+
         return response()->json([
-            'data' => $comment->load('user'),
+            'data' => $comment,
             'message' => 'Comment posted successfully',
         ], 201);
     }

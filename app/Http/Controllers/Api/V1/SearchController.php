@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\TicketResource;
 use App\Models\Ticket;
+use App\Models\KbArticle;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -17,7 +18,7 @@ class SearchController extends Controller
         $q = $request->get('q');
         
         if (!$q) {
-            return response()->json(['data' => []]);
+            return response()->json(['data' => ['tickets' => [], 'knowledge_base' => []]]);
         }
 
         $tickets = Ticket::with(['category', 'requester'])
@@ -31,9 +32,26 @@ class SearchController extends Controller
                       ->orWhere('ticket_number', 'LIKE', "%{$q}%")
                       ->orWhere('description', 'LIKE', "%{$q}%");
             })
-            ->limit(10)
+            ->limit(5)
             ->get();
 
-        return TicketResource::collection($tickets);
+        $kbQuery = KbArticle::with('category')->where('status', 'published');
+        if ($request->user() && $request->user()->role === 'user') {
+            $kbQuery->where('visibility', 'public');
+        }
+        
+        $knowledgeBase = $kbQuery->where(function($query) use ($q) {
+                $query->whereRaw('MATCH(title, content) AGAINST(? IN BOOLEAN MODE)', [$q])
+                      ->orWhere('title', 'LIKE', "%{$q}%");
+            })
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'data' => [
+                'tickets' => TicketResource::collection($tickets),
+                'knowledge_base' => $knowledgeBase
+            ]
+        ]);
     }
 }

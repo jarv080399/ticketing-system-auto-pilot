@@ -61,10 +61,31 @@ Route::prefix('v1')->group(function () {
         // Tickets
         Route::get('/tickets/my-tickets', [TicketController::class, 'index']);
         Route::post('/tickets/check-duplicate', [TicketController::class, 'checkDuplicate']);
+        Route::post('/tickets/{ticket}/comments', [\App\Http\Controllers\Api\V1\Agent\CommentController::class, 'store']);
         Route::apiResource('tickets', TicketController::class)->except(['index']);
 
         // Search
         Route::get('/search', \App\Http\Controllers\Api\V1\SearchController::class);
+
+        // Knowledge Base
+        Route::prefix('kb')->group(function () {
+            // Public KB endpoints (read-only for all authenticated users)
+            Route::get('/articles', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'index']);
+            Route::get('/suggest', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'suggest']);
+            Route::get('/articles/{slug}', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'show']);
+            Route::get('/articles/{slug}/versions', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'versions']);
+            Route::post('/articles/{slug}/feedback', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'feedback']);
+            
+            // KB Category Management (Admin/Agent)
+            Route::middleware(['role:admin,agent'])->group(function () {
+                Route::apiResource('categories', \App\Http\Controllers\Api\V1\KbCategoryController::class);
+                
+                // Article creation/modification (Admin/Agent)
+                Route::post('/articles', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'store']);
+                Route::put('/articles/{slug}', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'update']);
+                Route::delete('/articles/{slug}', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'destroy']);
+            });
+        });
 
     });
 });

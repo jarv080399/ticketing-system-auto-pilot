@@ -37,10 +37,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
         ]);
 
-        // Generate 50 random users
         User::factory(50)->create();
 
         $this->call(TicketSeeder::class);
         $this->call(AutomationSeeder::class);
+        $this->call(KbSeeder::class);
     }
 }

@@ -7,7 +7,7 @@
         <div class="w-full max-w-md z-10 space-y-8">
             <!-- Logo Section -->
             <div class="text-center space-y-4">
-                <div class="inline-flex w-16 h-16 bg-linear-to-br from-primary to-secondary rounded-2xl items-center justify-center shadow-2xl shadow-primary/30 animate-bounce-slow">
+                <div class="inline-flex w-16 h-16 bg-linear-to-br from-primary to-secondary rounded-lg items-center justify-center shadow-2xl shadow-primary/30 animate-bounce-slow">
                     <span class="text-white font-black text-2xl tracking-tighter">IT</span>
                 </div>
                 <div class="space-y-1">
@@ -19,7 +19,7 @@
             </div>
 
             <!-- Login Card -->
-            <div class="glass-card rounded-[2rem] p-8 shadow-2xl relative">
+            <div class="glass-card rounded-xl p-8 shadow-2xl relative">
                 <form @submit.prevent="handleLogin" class="space-y-6">
                     <div class="space-y-4">
                         <!-- Email Field -->
@@ -31,9 +31,9 @@
                                     type="email" 
                                     required
                                     placeholder="name@company.com"
-                                    class="w-full px-5 py-4 bg-surface-light/50 border border-glass-border rounded-2xl text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all duration-300"
+                                    class="w-full px-5 py-4 bg-surface-light/50 border border-glass-border rounded-lg text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all duration-300"
                                 />
-                                <div class="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity"></div>
+                                <div class="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity"></div>
                             </div>
                         </div>
 
@@ -49,9 +49,9 @@
                                     type="password" 
                                     required
                                     placeholder="••••••••"
-                                    class="w-full px-5 py-4 bg-surface-light/50 border border-glass-border rounded-2xl text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all duration-300"
+                                    class="w-full px-5 py-4 bg-surface-light/50 border border-glass-border rounded-lg text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all duration-300"
                                 />
-                                <div class="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity"></div>
+                                <div class="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity"></div>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                     <button 
                         type="submit" 
                         :disabled="authStore.loading"
-                        class="group relative w-full py-4 bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-black rounded-2xl shadow-xl shadow-primary/20 transition-all duration-300 hover-lift active:scale-[0.98] overflow-hidden"
+                        class="group relative w-full py-4 bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-black rounded-lg shadow-xl shadow-primary/20 transition-all duration-300 hover-lift active:scale-[0.98] overflow-hidden"
                     >
                         <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         <span v-if="authStore.loading" class="flex items-center justify-center gap-2">
@@ -87,11 +87,11 @@
 
                 <!-- SSO Grid -->
                 <div class="grid grid-cols-2 gap-4">
-                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-2xl hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
+                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-lg hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
                         <span class="text-[11px] font-bold text-text-main uppercase tracking-wider">Google</span>
                     </button>
-                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-2xl hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
+                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-lg hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
                         <img src="https://www.svgrepo.com/show/333558/microsoft.svg" class="w-5 h-5" alt="Microsoft">
                         <span class="text-[11px] font-bold text-text-main uppercase tracking-wider">Azure</span>
                     </button>
