@@ -88,6 +88,7 @@ const navItems = [
     { label: 'Issue Queue', path: '/agent/queue', icon: '📥' },
     { label: 'Knowledge Base', path: '/agent/kb/new', icon: '📚' },
     { label: 'Macros', path: '/agent/canned-responses', icon: '⚡' },
+    { label: 'Asset Registry', path: '/agent/assets', icon: '📦' },
     { label: 'Performance', path: '/agent/stats', icon: '📈' },
     { label: 'User Portal', path: '/', icon: '🏠' },
 ];

@@ -58,6 +58,9 @@ Route::prefix('v1')->group(function () {
         // Categories
         Route::get('/categories', \App\Http\Controllers\Api\V1\CategoryController::class);
 
+        // Users search (for assignments)
+        Route::get('/search/users', \App\Http\Controllers\Api\V1\UserController::class);
+
         // Tickets
         Route::get('/tickets/my-tickets', [TicketController::class, 'index']);
         Route::post('/tickets/check-duplicate', [TicketController::class, 'checkDuplicate']);
@@ -86,6 +89,16 @@ Route::prefix('v1')->group(function () {
                 Route::delete('/articles/{slug}', [\App\Http\Controllers\Api\V1\KbArticleController::class, 'destroy']);
             });
         });
+
+        // Asset Tracking
+        Route::middleware('role:admin,agent')->group(function () {
+            Route::apiResource('assets', \App\Http\Controllers\Api\V1\AssetController::class);
+            Route::post('assets/{asset}/assign', [\App\Http\Controllers\Api\V1\AssetController::class, 'assign']);
+            Route::post('assets/{asset}/unassign', [\App\Http\Controllers\Api\V1\AssetController::class, 'unassign']);
+            Route::get('assets/{asset}/history', [\App\Http\Controllers\Api\V1\AssetController::class, 'history']);
+        });
+        
+        Route::get('/users/{user}/assets', [\App\Http\Controllers\Api\V1\AssetController::class, 'userAssets']);
 
     });
 });

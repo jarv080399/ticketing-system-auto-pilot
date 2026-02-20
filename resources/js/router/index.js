@@ -87,6 +87,16 @@ const routes = [
                 name: 'AgentEditArticle',
                 component: () => import('@/pages/AgentArticleEditorPage.vue'),
             },
+            {
+                path: 'assets',
+                name: 'AssetRegistry',
+                component: () => import('@/pages/assets/AssetIndexPage.vue'),
+            },
+            {
+                path: 'assets/:id',
+                name: 'AssetDetail',
+                component: () => import('@/pages/assets/AssetDetailPage.vue'),
+            },
         ],
     },
 
