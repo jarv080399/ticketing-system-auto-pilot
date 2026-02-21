@@ -96,7 +96,7 @@ const routes = [
             {
                 path: 'tickets/:ticketNumber',
                 name: 'AgentTicketDetail',
-                component: () => import('@/pages/AgentTicketDetailPage.vue'),
+                component: () => import('@/pages/agent/AgentTicketDetailPage.vue'),
                 props: true,
             },
             {
