@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,8 @@ Route::prefix('v1')->group(function () {
 
     // ─── Authenticated Routes ───
     Route::middleware('auth:sanctum')->group(function () {
+        // Broadcasting auth
+        Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
         // Auth
         Route::get('/auth/me', [AuthController::class, 'me']);

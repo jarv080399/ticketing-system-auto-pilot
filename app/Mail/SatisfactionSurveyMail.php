@@ -2,8 +2,9 @@
 
 namespace App\Mail;
 
+use App\Models\Ticket;
+use App\Models\SatisfactionSurvey;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,41 +14,25 @@ class SatisfactionSurveyMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        public Ticket $ticket,
+        public SatisfactionSurvey $survey
+    ) {}
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Satisfaction Survey Mail',
+            subject: "We'd love your feedback on Ticket #{$this->ticket->ticket_number}",
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'emails.tickets.survey',
+            with: [
+                'surveyUrl' => url("/survey/{$this->survey->token}"),
+            ],
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }
