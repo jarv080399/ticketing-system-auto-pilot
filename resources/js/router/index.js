@@ -124,6 +124,11 @@ const routes = [
                 name: 'AgentStats',
                 component: () => import('@/pages/admin/ManagerDashboardPage.vue'),
             },
+            {
+                path: 'canned-responses',
+                name: 'AgentCannedResponses',
+                component: () => import('@/pages/agent/CannedResponsesPage.vue'),
+            },
         ],
     },
 

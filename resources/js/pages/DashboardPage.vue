@@ -219,7 +219,7 @@ onMounted(async () => {
 
 const fetchMyAssets = async () => {
     try {
-        const response = await axios.get(`/users/${authStore.user.id}/assets`);
+        const response = await axios.get('/user/assets');
         myAssets.value = response.data.data;
     } catch (err) {
         console.error('Failed to fetch assets', err);

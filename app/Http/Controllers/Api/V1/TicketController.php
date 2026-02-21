@@ -66,16 +66,29 @@ class TicketController extends Controller
         // 2. Handle Attachments
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
-                $path = $file->store('tickets/' . $ticket->id, 'public');
-                
-                TicketAttachment::create([
-                    'ticket_id' => $ticket->id,
-                    'file_name' => $file->getClientOriginalName(),
-                    'file_path' => $path,
-                    'mime_type' => $file->getMimeType(),
-                    'file_size' => $file->getSize(),
-                ]);
+                try {
+                    $path = $file->store('tickets/' . $ticket->id, 'public');
+
+                    TicketAttachment::create([
+                        'ticket_id' => $ticket->id,
+                        'file_name' => $file->getClientOriginalName(),
+                        'file_path' => $path,
+                        'mime_type' => $file->getMimeType(),
+                        'file_size' => $file->getSize(),
+                    ]);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning(
+                        "Failed to store attachment for ticket #{$ticket->id}: " . $e->getMessage()
+                    );
+                }
             }
+        }
+
+        // 3. Notify the requester (queued — won't block response)
+        try {
+            $ticket->requester->notify(new TicketCreatedNotification($ticket));
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Ticket notification failed: ' . $e->getMessage());
         }
 
         return (new TicketResource($ticket->refresh()->load('category')))

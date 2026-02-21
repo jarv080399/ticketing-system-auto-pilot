@@ -53,18 +53,49 @@
 
                         <!-- Attachments -->
                         <div v-if="ticket.attachments?.length" class="pt-8 border-t border-glass-border">
-                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-text-dim mb-4">Attached Evidence</h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div v-for="file in ticket.attachments" :key="file.id" class="p-4 rounded-lg bg-surface-light border border-glass-border flex items-center gap-4 group cursor-pointer hover:border-primary/50 transition-all">
-                                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                                        </svg>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-text-dim">Attachments <span class="text-text-dim/50">({{ ticket.attachments.length }})</span></h4>
+                            </div>
+
+                            <!-- Image thumbnails row -->
+                            <div v-if="imageAttachments.length" class="mb-4">
+                                <p class="text-[9px] font-black uppercase tracking-widest text-text-dim/50 mb-2">Images</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <div
+                                        v-for="(file, i) in imageAttachments"
+                                        :key="file.id"
+                                        class="relative w-20 h-20 rounded-lg overflow-hidden border border-glass-border cursor-zoom-in hover:border-primary/50 hover:scale-105 transition-all group"
+                                        @click="openLightbox(i)"
+                                    >
+                                        <img :src="file.url" :alt="file.file_name" class="w-full h-full object-cover" loading="lazy" />
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <span class="text-white text-lg">🔍</span>
+                                        </div>
                                     </div>
-                                    <div class="overflow-hidden">
-                                        <p class="text-sm font-bold text-text-main truncate">{{ file.file_name }}</p>
-                                        <p class="text-[10px] text-text-dim uppercase tracking-widest">{{ (file.file_size / 1024).toFixed(1) }} KB</p>
-                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PDF / doc list -->
+                            <div v-if="pdfAttachments.length">
+                                <p class="text-[9px] font-black uppercase tracking-widest text-text-dim/50 mb-2">Documents</p>
+                                <div class="flex flex-col gap-2">
+                                    <a
+                                        v-for="file in pdfAttachments"
+                                        :key="file.id"
+                                        :href="file.url"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="flex items-center gap-4 p-3 rounded-lg bg-surface-light border border-glass-border hover:border-primary/40 hover:bg-white/5 transition-all group"
+                                    >
+                                        <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center text-xl flex-shrink-0">
+                                            📄
+                                        </div>
+                                        <div class="flex-1 overflow-hidden">
+                                            <p class="text-sm font-bold text-text-main truncate group-hover:text-primary transition-colors">{{ file.file_name }}</p>
+                                            <p class="text-[10px] text-text-dim uppercase tracking-widest">{{ formatBytes(file.file_size) }} · PDF</p>
+                                        </div>
+                                        <span class="text-text-dim group-hover:text-primary transition-colors text-sm flex-shrink-0">⬇</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -178,6 +209,55 @@
         <p class="text-text-dim">The ticket you are looking for does not exist or you lack permission to view it.</p>
         <router-link to="/tickets" class="px-10 py-4 bg-primary text-white rounded-lg inline-block">My Tickets</router-link>
     </div>
+
+    <!-- ─── Lightbox ─── -->
+    <Transition name="lightbox">
+        <div
+            v-if="lightbox.open"
+            class="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center"
+            @click.self="closeLightbox"
+            @keydown.esc="closeLightbox"
+            tabindex="0"
+        >
+            <!-- Close -->
+            <button
+                @click="closeLightbox"
+                class="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg transition-all z-10"
+            >✕</button>
+
+            <!-- Prev -->
+            <button
+                v-if="imageAttachments.length > 1"
+                @click="lightbox.index = (lightbox.index - 1 + imageAttachments.length) % imageAttachments.length"
+                class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl flex items-center justify-center transition-all z-10"
+            >‹</button>
+
+            <!-- Image -->
+            <div class="max-w-5xl max-h-[85vh] w-full px-16 flex flex-col items-center gap-4">
+                <img
+                    :src="imageAttachments[lightbox.index]?.url"
+                    :alt="imageAttachments[lightbox.index]?.file_name"
+                    class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl"
+                />
+                <div class="text-center">
+                    <p class="text-white font-bold text-sm">{{ imageAttachments[lightbox.index]?.file_name }}</p>
+                    <p class="text-white/50 text-xs mt-0.5">{{ formatBytes(imageAttachments[lightbox.index]?.file_size) }} · {{ lightbox.index + 1 }} / {{ imageAttachments.length }}</p>
+                </div>
+                <a
+                    :href="imageAttachments[lightbox.index]?.url"
+                    :download="imageAttachments[lightbox.index]?.file_name"
+                    class="px-5 py-2 text-xs font-black uppercase tracking-widest bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all"
+                >⬇ Download</a>
+            </div>
+
+            <!-- Next -->
+            <button
+                v-if="imageAttachments.length > 1"
+                @click="lightbox.index = (lightbox.index + 1) % imageAttachments.length"
+                class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl flex items-center justify-center transition-all z-10"
+            >›</button>
+        </div>
+    </Transition>
 </template>
 
 <script setup>
@@ -198,6 +278,31 @@ const ticket = ref(null);
 const loading = ref(true);
 const sending = ref(false);
 const commentBody = ref('');
+const lightbox = ref({ open: false, index: 0 });
+
+const imageAttachments = computed(() => ticket.value?.attachments?.filter(a => a.is_image) ?? []);
+const pdfAttachments   = computed(() => ticket.value?.attachments?.filter(a => !a.is_image) ?? []);
+
+const formatBytes = (bytes) => {
+    if (!bytes) return '';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+};
+
+const openLightbox = (index) => {
+    lightbox.value = { open: true, index };
+    document.addEventListener('keydown', handleLightboxKey);
+};
+const closeLightbox = () => {
+    lightbox.value.open = false;
+    document.removeEventListener('keydown', handleLightboxKey);
+};
+const handleLightboxKey = (e) => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') lightbox.value.index = (lightbox.value.index + 1) % imageAttachments.value.length;
+    if (e.key === 'ArrowLeft')  lightbox.value.index = (lightbox.value.index - 1 + imageAttachments.value.length) % imageAttachments.value.length;
+};
 
 const setupEcho = () => {
     if (window.Echo && ticket.value) {
@@ -294,3 +399,15 @@ const getPriorityClass = (priority) => {
     }
 };
 </script>
+
+<style scoped>
+.lightbox-enter-active,
+.lightbox-leave-active {
+    transition: opacity 0.2s ease;
+}
+.lightbox-enter-from,
+.lightbox-leave-to {
+    opacity: 0;
+}
+.cursor-zoom-in { cursor: zoom-in; }
+</style>

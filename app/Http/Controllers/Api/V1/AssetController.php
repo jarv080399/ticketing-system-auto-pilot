@@ -140,8 +140,13 @@ class AssetController extends Controller
         return $asset->history()->with('performer')->get();
     }
 
-    public function userAssets(User $user)
+    public function userAssets(Request $request)
     {
-        return $user->assets()->paginate();
+        $assets = $request->user()->assets()->with('owner')->paginate(15);
+
+        return response()->json([
+            'data' => $assets->items(),
+            'total' => $assets->total(),
+        ]);
     }
 }

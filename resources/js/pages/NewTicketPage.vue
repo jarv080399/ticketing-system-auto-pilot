@@ -91,22 +91,77 @@
                             </select>
                         </div>
 
-                        <!-- Attachments (Simplified) -->
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-1">Attachments (Max 5)</label>
-                            <div class="relative">
-                                <input 
-                                    type="file" 
-                                    multiple 
-                                    @change="handleFileUpload"
+                        <!-- Attachments with Preview -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <label class="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-1">
+                                    Attachments <span class="text-text-dim/50">(Images &amp; PDF · max 5 · 10 MB each)</span>
+                                </label>
+                                <span v-if="files.length" class="text-[10px] font-bold text-primary">{{ files.length }}/5</span>
+                            </div>
+
+                            <!-- Drop Zone -->
+                            <div
+                                class="relative rounded-lg transition-all duration-200"
+                                :class="isDragging
+                                    ? 'border-2 border-primary bg-primary/5 scale-[1.01]'
+                                    : 'border-2 border-dashed border-glass-border bg-surface-light/50 hover:border-primary/50 hover:bg-surface-light'"
+                                @dragover.prevent="isDragging = true"
+                                @dragleave.prevent="isDragging = false"
+                                @drop.prevent="handleDrop"
+                            >
+                                <input
+                                    ref="fileInputRef"
+                                    type="file"
+                                    multiple
+                                    accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
                                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.zip"
+                                    @change="handleFileChange"
                                 />
-                                <div class="w-full px-6 py-4 bg-surface-light/50 border border-dashed border-glass-border rounded-lg flex items-center gap-3 text-text-dim group-hover:border-primary transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                                    </svg>
-                                    <span class="text-sm">{{ files.length ? `${files.length} files selected` : 'Drop files here or click to upload' }}</span>
+                                <div class="flex flex-col items-center justify-center gap-2 py-6 px-4 pointer-events-none">
+                                    <div class="w-10 h-10 rounded-full bg-surface flex items-center justify-center text-xl">
+                                        {{ isDragging ? '📂' : '📎' }}
+                                    </div>
+                                    <p class="text-sm font-bold text-text-dim text-center">
+                                        {{ isDragging ? 'Release to attach' : 'Drop files here or click to browse' }}
+                                    </p>
+                                    <p class="text-[10px] text-text-dim/60 font-medium">JPG · PNG · GIF · WEBP · PDF</p>
+                                </div>
+                            </div>
+
+                            <!-- Preview Grid -->
+                            <div v-if="filePreviews.length" class="grid grid-cols-3 gap-2">
+                                <div
+                                    v-for="(preview, i) in filePreviews"
+                                    :key="i"
+                                    class="relative group rounded-lg overflow-hidden bg-surface-light border border-glass-border aspect-square"
+                                >
+                                    <!-- Image preview -->
+                                    <img
+                                        v-if="preview.type === 'image'"
+                                        :src="preview.url"
+                                        :alt="preview.name"
+                                        class="w-full h-full object-cover"
+                                    />
+
+                                    <!-- PDF preview -->
+                                    <div v-else class="w-full h-full flex flex-col items-center justify-center gap-1 p-2">
+                                        <span class="text-3xl">📄</span>
+                                        <p class="text-[9px] font-bold text-text-dim text-center truncate w-full px-1">{{ preview.name }}</p>
+                                        <p class="text-[9px] text-text-dim/60">{{ preview.size }}</p>
+                                    </div>
+
+                                    <!-- Overlay on hover -->
+                                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 p-1">
+                                        <p class="text-[9px] font-bold text-white text-center truncate w-full px-2">{{ preview.name }}</p>
+                                        <p class="text-[9px] text-white/70">{{ preview.size }}</p>
+                                        <button
+                                            type="button"
+                                            @click.stop="removeFile(i)"
+                                            class="mt-1 w-7 h-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-xs font-black transition-colors"
+                                            title="Remove"
+                                        >✕</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -149,8 +204,15 @@ const toast = useToast();
 
 const step = ref(1);
 const loading = ref(false);
+const isDragging = ref(false);
 const duplicateWarning = ref(null);
 const files = ref([]);
+const filePreviews = ref([]);
+const fileInputRef = ref(null);
+
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+const MAX_FILES = 5;
 
 const form = ref({
     title: '',
@@ -173,8 +235,53 @@ const selectCategory = (category) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-const handleFileUpload = (e) => {
-    files.value = Array.from(e.target.files);
+const formatBytes = (bytes) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+};
+
+const buildPreview = (file) => new Promise((resolve) => {
+    const type = file.type.startsWith('image/') ? 'image' : 'pdf';
+    if (type === 'pdf') {
+        resolve({ type, name: file.name, size: formatBytes(file.size), url: null });
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => resolve({ type, name: file.name, size: formatBytes(file.size), url: e.target.result });
+    reader.readAsDataURL(file);
+});
+
+const addFiles = async (incoming) => {
+    const valid = [];
+    for (const file of incoming) {
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            toast.error(`"${file.name}" is not allowed. Only images and PDFs.`);
+            continue;
+        }
+        if (file.size > MAX_SIZE_BYTES) {
+            toast.error(`"${file.name}" exceeds the 10 MB limit.`);
+            continue;
+        }
+        if (files.value.length + valid.length >= MAX_FILES) {
+            toast.warning(`Maximum ${MAX_FILES} attachments allowed.`);
+            break;
+        }
+        valid.push(file);
+    }
+    const previews = await Promise.all(valid.map(buildPreview));
+    files.value = [...files.value, ...valid];
+    filePreviews.value = [...filePreviews.value, ...previews];
+    // Reset the input so re-selecting the same file triggers change again
+    if (fileInputRef.value) fileInputRef.value.value = '';
+};
+
+const handleFileChange = (e) => addFiles(Array.from(e.target.files));
+const handleDrop = (e) => { isDragging.value = false; addFiles(Array.from(e.dataTransfer.files)); };
+
+const removeFile = (index) => {
+    files.value.splice(index, 1);
+    filePreviews.value.splice(index, 1);
 };
 
 const checkDuplicate = async () => {
@@ -200,10 +307,14 @@ const handleSubmit = async () => {
 
         const response = await ticketStore.createTicket(formData);
         toast.success('Ticket submitted successfully!');
-        router.push(`/tickets/${response.data.ticket_number}`);
+        // TicketResource wraps in { data: {...} } — store returns that wrapper object
+        const ticketNumber = response?.data?.ticket_number ?? response?.ticket_number;
+        router.push(`/tickets/${ticketNumber}`);
     } catch (err) {
         console.error(err);
-        toast.error(err.message || 'Error creating ticket');
+        // Show first Laravel validation error if available
+        const firstError = err?.errors ? Object.values(err.errors)[0]?.[0] : null;
+        toast.error(firstError || err?.message || 'Failed to submit ticket. Please try again.');
     } finally {
         loading.value = false;
     }
