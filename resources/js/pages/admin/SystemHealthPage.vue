@@ -52,17 +52,21 @@
                     <h2 class="text-sm font-black uppercase tracking-widest text-white">Maintenance Actions</h2>
                 </div>
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <button class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left">
-                        🧹 Clear Cache
+                    <button @click="performAction('clear-cache')" :disabled="isProcessing['clear-cache']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                        <span>🧹 Clear Cache</span>
+                        <div v-if="isProcessing['clear-cache']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>
-                    <button class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left">
-                        🔄 Restart Workers
+                    <button @click="performAction('restart-workers')" :disabled="isProcessing['restart-workers']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                        <span>🔄 Restart Workers</span>
+                        <div v-if="isProcessing['restart-workers']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>
-                    <button class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left">
-                        📦 Run Migrations
+                    <button @click="performAction('run-migrations')" :disabled="isProcessing['run-migrations']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                        <span>📦 Run Migrations</span>
+                        <div v-if="isProcessing['run-migrations']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>
-                    <button class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left">
-                        🧪 Run Self-Tests
+                    <button @click="performAction('run-tests')" :disabled="isProcessing['run-tests']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                        <span>🧪 Run Self-Tests</span>
+                        <div v-if="isProcessing['run-tests']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>
                 </div>
             </div>
@@ -73,9 +77,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from '@/plugins/axios';
+import { useToast } from 'vue-toastification';
 
+const toast = useToast();
 const loading = ref(true);
 const healthData = ref({});
+const isProcessing = ref({
+    'clear-cache': false,
+    'restart-workers': false,
+    'run-migrations': false,
+    'run-tests': false,
+});
 
 const fetchHealth = async () => {
     try {
@@ -85,6 +97,22 @@ const fetchHealth = async () => {
         console.error('Failed to load system health');
     } finally {
         loading.value = false;
+    }
+};
+
+const performAction = async (action) => {
+    if(isProcessing.value[action]) return;
+    
+    isProcessing.value[action] = true;
+    try {
+        const response = await axios.post(`/admin/system-health/${action}`);
+        toast.success(response.data.message || 'Action executed successfully.');
+        fetchHealth(); // Refresh health after action
+    } catch (error) {
+        const msg = error.response?.data?.message || 'Failed to execute maintenance action.';
+        toast.error(msg);
+    } finally {
+        isProcessing.value[action] = false;
     }
 };
 

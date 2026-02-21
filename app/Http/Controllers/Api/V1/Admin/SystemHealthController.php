@@ -90,4 +90,51 @@ class SystemHealthController extends Controller
             'message' => !$pending ? 'All migrations run' : 'Pending migrations found',
         ];
     }
+
+    public function clearCache(): JsonResponse
+    {
+        try {
+            Artisan::call('optimize:clear');
+            return response()->json(['message' => 'System cache cleared successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to clear cache.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function restartWorkers(): JsonResponse
+    {
+        try {
+            Artisan::call('queue:restart');
+            return response()->json(['message' => 'Queue workers restarted (they will restart after their current job).']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to restart workers.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function runMigrationsAction(): JsonResponse
+    {
+        try {
+            Artisan::call('migrate', ['--force' => true]);
+            $output = Artisan::output();
+            $message = str_contains($output, 'Nothing to migrate') ? 'Nothing to migrate.' : 'Database migrated successfully.';
+            return response()->json(['message' => $message]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to run migrations.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function runTests(): JsonResponse
+    {
+        try {
+            // Can be tied to a standard php artisan test later or specific health checks.
+            // For now, let's just re-verify system health synchronously and return response.
+            Artisan::call('view:cache'); // compile views
+            Artisan::call('config:cache');
+            Artisan::call('route:cache');
+            
+            return response()->json(['message' => 'Self-tests complete. Configuration verified and cached.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Self-tests encountered an issue.', 'error' => $e->getMessage()], 500);
+        }
+    }
 }

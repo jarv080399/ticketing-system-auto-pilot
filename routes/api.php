@@ -65,6 +65,10 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('holidays', \App\Http\Controllers\Api\V1\Admin\HolidayController::class);
             Route::apiResource('custom-fields', \App\Http\Controllers\Api\V1\Admin\CustomFieldController::class);
             Route::get('/system-health', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'index']);
+            Route::post('/system-health/clear-cache', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'clearCache']);
+            Route::post('/system-health/restart-workers', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'restartWorkers']);
+            Route::post('/system-health/run-migrations', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'runMigrationsAction']);
+            Route::post('/system-health/run-tests', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'runTests']);
             Route::get('/activity-log', [\App\Http\Controllers\Api\V1\Admin\ActivityLogController::class, 'index']);
         });
 
