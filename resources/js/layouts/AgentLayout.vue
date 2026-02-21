@@ -26,7 +26,7 @@
             <div class="p-8 border-t border-glass-border space-y-6">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-xl bg-surface-light flex items-center justify-center font-black text-primary border border-glass-border">
-                        {{ authStore.user?.name.charAt(0) }}
+                        {{ authStore.user?.name?.charAt(0) }}
                     </div>
                     <div class="overflow-hidden">
                         <p class="font-bold text-text-main truncate text-sm">{{ authStore.user?.name }}</p>

@@ -4,7 +4,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div class="space-y-2">
                 <h1 class="text-4xl font-black tracking-tight text-text-main transition-smooth">
-                    Hello, <span class="text-gradient">{{ authStore.user?.name?.split(' ')[0] }}</span> 
+                    Hello, <span class="text-gradient">{{ authStore.user?.name?.split(' ')?.[0] }}</span> 
                     <span class="inline-block animate-wave ml-2">👋</span>
                 </h1>
                 <p class="text-text-dim font-medium tracking-wide">Here's what's happening in your IT workspace today.</p>
