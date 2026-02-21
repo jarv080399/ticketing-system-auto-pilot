@@ -3,5 +3,12 @@
 </template>
 
 <script setup>
-// Root App component — renders the active route
+import { onMounted } from 'vue';
+import { useThemeStore } from '@/stores/theme';
+
+onMounted(() => {
+    // Initialize the theme immediately upon application load,
+    // ensuring the dark/light class is applied even when not in AppLayout.
+    useThemeStore();
+});
 </script>
