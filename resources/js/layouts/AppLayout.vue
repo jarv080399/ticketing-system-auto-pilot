@@ -27,6 +27,8 @@
 
                     <!-- Right Side Actions -->
                     <div class="flex items-center gap-4">
+                        <NotificationBell />
+                        
                         <!-- Theme Toggle -->
                         <button 
                             @click="themeStore.toggleTheme"
@@ -122,6 +124,7 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useThemeStore } from '@/stores/theme';
 import { useRouter } from 'vue-router';
+import NotificationBell from '@/components/NotificationBell.vue';
 
 const auth = useAuthStore();
 const themeStore = useThemeStore();

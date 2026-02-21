@@ -78,9 +78,6 @@ class TicketController extends Controller
             }
         }
 
-        // 3. Auto-Acknowledgement
-        $request->user()->notify(new TicketCreatedNotification($ticket));
-
         return (new TicketResource($ticket->refresh()->load('category')))
             ->additional(['message' => 'Ticket created successfully']);
     }

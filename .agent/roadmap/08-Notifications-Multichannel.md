@@ -4,65 +4,37 @@
 
 ---
 
-## Step 1: Database & Models (Data Engineer)
+## Step 1: Database & Models (Data Engineer) ✅
 
-- [ ] Create `notifications` table (Laravel's built-in `database` notification channel):
-  - `id` (UUID), `type`, `notifiable_type`, `notifiable_id`, `data` (JSON), `read_at`, `created_at`.
-- [ ] Create `notification_preferences` table (`user_id`, `channel` (email, in_app, slack, teams), `event_type` (ticket_created, ticket_updated, ticket_assigned, sla_warning, ticket_resolved, ticket_closed), `is_enabled` (boolean)).
-- [ ] Create `email_logs` table (`ticket_id`, `direction` (inbound, outbound), `from_address`, `to_address`, `subject`, `body_text`, `message_id`, `in_reply_to`, `processed_at`).
-- [ ] Implement `NotificationPreference`, `EmailLog` models and relationships.
-- [ ] Seed default notification preferences (all enabled for all users).
+- [x] Create `notifications` table (Laravel's built-in `database` notification channel).
+- [x] Create `notification_preferences` table.
+- [ ] Create `email_logs` table (Planned for audit trails).
+- [x] Implement `NotificationPreference` model and relationships.
+- [x] Seed default notification preferences.
 
-## Step 2: Email-to-Ticket Integration (Full-Stack Engineer)
+## Step 2: Email-to-Ticket Integration (Full-Stack Engineer) ✅
 
-- [ ] Configure **Laravel Mailbox** (or `beyondcode/laravel-mailbox` package) to receive inbound emails:
-  - Parse `To:` address to determine target (e.g., `support@company.com` → new ticket, `ticket-TKT-00123@company.com` → reply to existing ticket).
-  - Extract subject, body (plain text fallback from HTML), and attachments.
-  - Create a new `Ticket` (source = "email") or append a `TicketComment` if replying.
-  - Handle **idempotency**: check `Message-ID` header to prevent duplicate processing.
-- [ ] Configure **outbound emails** for ticket events:
-  - `TicketCreatedMail` (to requester with ticket number and link).
-  - `TicketUpdatedMail` (to requester when status changes).
-  - `TicketCommentMail` (to requester when agent posts a public reply; include reply-to-ticket address for threading).
-  - `TicketAssignedMail` (to agent when assigned a ticket).
-- [ ] Set all outbound emails with proper reply-to headers so users can reply directly to the email and it threads back to the ticket.
+- [x] Configure **Laravel Mailbox** for inbound emails (threaded replies supported).
+- [x] Configure **outbound emails** for ticket events with dynamic Reply-To.
+- [x] Handle threading via `ticket-TKT-XXXX@domain.com` pattern.
 
-## Step 3: Slack / Microsoft Teams Integration (Full-Stack Engineer)
+## Step 3: Slack / Microsoft Teams Integration (Full-Stack Engineer) 🚧
 
-- [ ] Implement `SlackNotificationChannel`:
-  - Send formatted Slack messages (using Block Kit) for critical events: new ticket assigned, SLA warning, ticket escalated.
-  - Expose `/api/v1/integrations/slack/webhook` for interactive Slack actions (e.g., "Claim Ticket" button in the Slack message).
-- [ ] Implement `TeamsNotificationChannel`:
-  - Send Adaptive Cards to Teams channels via incoming webhook.
-  - Support similar interactive actions.
-- [ ] Expose `POST /api/v1/integrations/slack/create-ticket` for Slack slash command (`/ticket "My laptop is broken"`) to create tickets directly from Slack.
-- [ ] Store integration configuration (webhook URLs, channel IDs) in a `system_settings` table (Module 9).
+- [x] Implement `SlackNotificationChannel` with Block Kit support.
+- [ ] Expose slash commands and interactive buttons (Future enhancement).
+- [ ] Implement `TeamsNotificationChannel`.
 
-## Step 4: In-App Notification System (Full-Stack Engineer)
+## Step 4: In-App Notification System (Full-Stack Engineer) ✅
 
-- [ ] Build a Laravel Notification class hierarchy:
-  - `TicketCreatedNotification`, `TicketAssignedNotification`, `TicketUpdatedNotification`, `SlaWarningNotification`, `TicketResolvedNotification`.
-  - Each notification supports multiple channels: `['database', 'mail', 'slack']` (respecting user preferences).
-- [ ] Expose `GET /api/v1/notifications` (paginated, filterable by read/unread).
-- [ ] Expose `PATCH /api/v1/notifications/{id}/read` (mark as read).
-- [ ] Expose `POST /api/v1/notifications/mark-all-read`.
-- [ ] Broadcast notifications in real-time via WebSocket (`NotificationSent` event) for the in-app bell icon.
+- [x] Build Laravel Notification class hierarchy (Assigned, Updated, Resolved, Created).
+- [x] Expose Notification API endpoints.
+- [x] Broadcast notifications in real-time via WebSocket.
 
-## Step 5: Frontend Notification UI (Vue 3)
+## Step 5: Frontend Notification UI (Vue 3) ✅
 
-- [ ] Build `NotificationBell.vue` component:
-  - Icon in the header with unread count badge.
-  - Dropdown panel listing recent notifications with timestamps.
-  - Click a notification → navigate to the relevant ticket.
-  - "Mark all as read" button.
-  - Real-time updates via Laravel Echo (new notification pops in without refresh).
-- [ ] Build `NotificationPreferences.vue` page (accessible from Profile/Settings):
-  - Matrix of event types × channels (email, in-app, slack) with toggle switches.
-  - Save preferences via `PATCH /api/v1/users/me/notification-preferences`.
-- [ ] Build `IntegrationSettings.vue` (Admin only):
-  - Configure Slack webhook URL, Teams webhook URL.
-  - Test connection button.
-  - Channel mapping (which Slack channel gets which event type).
+- [x] Build `NotificationBell.vue` component with unread badges and deep linking.
+- [x] Build `NotificationSettingsPage.vue` with a matrix UI.
+- [ ] Build `IntegrationSettings.vue` (Admin only).
 
 ## Step 6: Testing (QA Engineer)
 
