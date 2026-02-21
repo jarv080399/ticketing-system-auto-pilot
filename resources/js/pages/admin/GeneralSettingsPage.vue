@@ -98,7 +98,7 @@ const fetchSettings = async () => {
     } catch (error) {
         alert('Failed to load settings');
     } finally {
-        loading.ref = false;
+        loading.value = false;
     }
 };
 
