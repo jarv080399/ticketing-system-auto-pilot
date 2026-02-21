@@ -111,7 +111,15 @@ Route::prefix('v1')->group(function () {
             });
         });
         
-        Route::get('/users/{user}/assets', [\App\Http\Controllers\Api\V1\AssetController::class, 'userAssets']);
+        // User Data & Notifications
+        Route::prefix('user')->group(function () {
+            Route::get('/notifications', [\App\Http\Controllers\Api\V1\NotificationController::class, 'index']);
+            Route::post('/notifications/{id}/read', [\App\Http\Controllers\Api\V1\NotificationController::class, 'markAsRead']);
+            Route::post('/notifications/read-all', [\App\Http\Controllers\Api\V1\NotificationController::class, 'markAllAsRead']);
+            Route::get('/notification-preferences', [\App\Http\Controllers\Api\V1\NotificationController::class, 'preferences']);
+            Route::patch('/notification-preferences', [\App\Http\Controllers\Api\V1\NotificationController::class, 'updatePreferences']);
+            Route::get('/assets', [\App\Http\Controllers\Api\V1\AssetController::class, 'userAssets']);
+        });
 
     });
 });

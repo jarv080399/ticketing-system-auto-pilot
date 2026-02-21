@@ -7,6 +7,10 @@ use App\Models\Ticket;
 use App\Services\AutomationService;
 use App\Services\SlaService;
 
+use App\Notifications\TicketCreatedNotification;
+use App\Notifications\TicketAssignedNotification;
+use App\Notifications\TicketResolvedNotification;
+
 class TicketObserver
 {
     public function __construct(
@@ -35,6 +39,9 @@ class TicketObserver
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
         ]);
+
+        // 4. Send Auto-Acknowledgement
+        $ticket->requester->notify(new TicketCreatedNotification($ticket));
     }
 
     /**
@@ -64,7 +71,7 @@ class TicketObserver
         ]);
 
         // Trigger CSAT Survey if closed and doesn't already have one
-        if ($ticket->status === 'closed' && !$ticket->satisfactionSurvey) {
+        if ($ticket->wasChanged('status') && $ticket->status === 'closed' && !$ticket->satisfactionSurvey) {
             $survey = \App\Models\SatisfactionSurvey::create([
                 'ticket_id' => $ticket->id,
                 'user_id' => $ticket->requester_id,
@@ -74,6 +81,16 @@ class TicketObserver
 
             \Illuminate\Support\Facades\Mail::to($ticket->requester->email)
                 ->send(new \App\Mail\SatisfactionSurveyMail($ticket, $survey));
+        }
+
+        // Send Assignment Notification
+        if ($ticket->wasChanged('agent_id') && $ticket->agent_id) {
+            $ticket->agent->notify(new TicketAssignedNotification($ticket));
+        }
+
+        // Send Resolution Notification
+        if ($ticket->wasChanged('status') && $ticket->status === 'resolved') {
+            $ticket->requester->notify(new TicketResolvedNotification($ticket));
         }
     }
 }
