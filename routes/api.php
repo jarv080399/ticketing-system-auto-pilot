@@ -56,6 +56,16 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('sla-policies', \App\Http\Controllers\Api\V1\Admin\SlaController::class);
             Route::apiResource('escalation-tiers', \App\Http\Controllers\Api\V1\Admin\EscalationController::class);
             Route::apiResource('audit-logs', \App\Http\Controllers\Api\V1\Admin\AuditLogController::class)->only(['index', 'show']);
+
+            // Module 9: System Settings
+            Route::get('/settings', [\App\Http\Controllers\Api\V1\Admin\SettingsController::class, 'index']);
+            Route::patch('/settings', [\App\Http\Controllers\Api\V1\Admin\SettingsController::class, 'update']);
+            Route::apiResource('business-hours', \App\Http\Controllers\Api\V1\Admin\BusinessHourController::class)->only(['index']);
+            Route::put('business-hours', [\App\Http\Controllers\Api\V1\Admin\BusinessHourController::class, 'update']);
+            Route::apiResource('holidays', \App\Http\Controllers\Api\V1\Admin\HolidayController::class);
+            Route::apiResource('custom-fields', \App\Http\Controllers\Api\V1\Admin\CustomFieldController::class);
+            Route::get('/system-health', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'index']);
+            Route::get('/activity-log', [\App\Http\Controllers\Api\V1\Admin\ActivityLogController::class, 'index']);
         });
 
         // Categories

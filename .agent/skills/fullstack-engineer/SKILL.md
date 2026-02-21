@@ -67,6 +67,24 @@ You are a senior full-stack engineer responsible for building the NextGen IT Tic
 - Use **multi-stage builds** for production images.
 - Use **Laravel Sail** for local development (optional).
 - Docker Compose must define services: `app`, `db`, `redis` (optional), `mailpit` (for local email testing).
+- **All `npm` and `php artisan` commands MUST be executed inside the `app` container** (e.g., `docker exec ticketing_app php artisan ...`).
+
+### Permission Handling (Docker)
+
+When running commands inside Docker as `root`, new files may be created with `root` ownership, causing `EACCES` (Permission Denied) errors on the host.
+
+**How to Fix Permission Issues:**
+
+1. **Reset Ownership:** Run a command via Docker to change ownership back to the host user:
+    ```bash
+    docker exec -u root ticketing_app chown -R 1000:1000 /var/www/html
+    ```
+    _(Note: 1000:1000 is typically the UID/GID of the first host user)._
+2. **Correct Permissions:** Ensure storage and cache directories remain writable by the web server:
+    ```bash
+    docker exec -u root ticketing_app chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+    ```
+3. **Prevention:** Always check for `root`-owned files after running `artisan make` commands.
 
 ---
 
@@ -116,13 +134,13 @@ ticketing-system/
 - Use **RESTful** conventions: `GET /api/tickets`, `POST /api/tickets`, `PATCH /api/tickets/{id}`, `DELETE /api/tickets/{id}`.
 - Always version the API under `/api/v1/` when ready for production.
 - Return consistent JSON structure:
-  ```json
-  {
-    "data": { ... },
-    "message": "Success",
-    "status": 200
-  }
-  ```
+    ```json
+    {
+      "data": { ... },
+      "message": "Success",
+      "status": 200
+    }
+    ```
 - Use **HTTP status codes** correctly (201 Created, 422 Validation Error, 403 Forbidden, 404 Not Found).
 - Paginate list endpoints using Laravel's built-in paginator.
 

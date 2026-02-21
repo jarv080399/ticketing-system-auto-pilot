@@ -42,5 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TicketSeeder::class);
         $this->call(AutomationSeeder::class);
         $this->call(KbSeeder::class);
+        $this->call(SystemSettingsSeeder::class);
+        $this->call(BusinessHoursSeeder::class);
     }
 }

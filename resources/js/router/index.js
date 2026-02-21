@@ -124,7 +124,7 @@ const routes = [
             {
                 path: 'settings',
                 name: 'AdminSettings',
-                component: () => import('@/pages/admin/SettingsPage.vue'),
+                component: () => import('@/pages/admin/GeneralSettingsPage.vue'),
             },
             {
                 path: 'automation',
@@ -132,9 +132,39 @@ const routes = [
                 component: () => import('@/pages/AdminAutomationPage.vue'),
             },
             {
-                path: 'dashboard',
-                name: 'ManagerDashboard',
+                path: 'analytics',
+                name: 'AdminAnalytics',
                 component: () => import('@/pages/admin/ManagerDashboardPage.vue'),
+            },
+            {
+                path: 'business-hours',
+                name: 'AdminBusinessHours',
+                component: () => import('@/pages/admin/BusinessHoursPage.vue'),
+            },
+            {
+                path: 'holidays',
+                name: 'AdminHolidays',
+                component: () => import('@/pages/admin/HolidaysPage.vue'),
+            },
+            {
+                path: 'custom-fields',
+                name: 'AdminCustomFields',
+                component: () => import('@/pages/admin/CustomFieldsPage.vue'),
+            },
+            {
+                path: 'health',
+                name: 'AdminHealth',
+                component: () => import('@/pages/admin/SystemHealthPage.vue'),
+            },
+            {
+                path: 'activity',
+                name: 'AdminActivity',
+                component: () => import('@/pages/admin/ActivityLogPage.vue'),
+            },
+            {
+                path: 'users',
+                name: 'AdminUsers',
+                component: () => import('@/pages/admin/UserManagementPage.vue'),
             },
         ],
     },
