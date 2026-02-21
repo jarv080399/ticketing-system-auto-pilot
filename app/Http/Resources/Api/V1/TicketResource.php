@@ -34,7 +34,16 @@ class TicketResource extends JsonResource
             'source' => $this->source,
             'tags' => $this->tags,
             'comments' => $this->whenLoaded('comments'),
-            'attachments' => $this->whenLoaded('attachments'),
+            'attachments' => $this->whenLoaded('attachments', function () {
+                return $this->attachments->map(fn ($a) => [
+                    'id'        => $a->id,
+                    'file_name' => $a->file_name,
+                    'file_size' => $a->file_size,
+                    'mime_type' => $a->mime_type,
+                    'url'       => \Illuminate\Support\Facades\Storage::disk('public')->url($a->file_path),
+                    'is_image'  => str_starts_with($a->mime_type ?? '', 'image/'),
+                ]);
+            }),
             'sla_due_at' => $this->sla_due_at,
             'first_response_at' => $this->first_response_at,
             'resolved_at' => $this->resolved_at,

@@ -9,6 +9,18 @@ const routes = [
         component: () => import('@/pages/LoginPage.vue'),
         meta: { guest: true },
     },
+    {
+        path: '/forgot-password',
+        name: 'ForgotPassword',
+        component: () => import('@/pages/ForgotPasswordPage.vue'),
+        meta: { guest: true },
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: () => import('@/pages/ResetPasswordPage.vue'),
+        meta: { guest: true },
+    },
 
     // ─── Authenticated Routes ───
     {
@@ -57,6 +69,11 @@ const routes = [
                 name: 'NotificationSettings',
                 component: () => import('@/pages/NotificationSettingsPage.vue'),
             },
+            {
+                path: 'profile',
+                name: 'Profile',
+                component: () => import('@/pages/ProfilePage.vue'),
+            },
         ],
     },
 
@@ -79,7 +96,7 @@ const routes = [
             {
                 path: 'tickets/:ticketNumber',
                 name: 'AgentTicketDetail',
-                component: () => import('@/pages/AgentTicketDetailPage.vue'),
+                component: () => import('@/pages/agent/AgentTicketDetailPage.vue'),
                 props: true,
             },
             {
@@ -106,6 +123,11 @@ const routes = [
                 path: 'stats',
                 name: 'AgentStats',
                 component: () => import('@/pages/admin/ManagerDashboardPage.vue'),
+            },
+            {
+                path: 'canned-responses',
+                name: 'AgentCannedResponses',
+                component: () => import('@/pages/agent/CannedResponsesPage.vue'),
             },
         ],
     },

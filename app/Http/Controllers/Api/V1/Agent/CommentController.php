@@ -41,7 +41,12 @@ class CommentController extends Controller
         }
 
         $comment->load('user');
-        broadcast(new \App\Events\TicketCommentCreated($comment))->toOthers();
+        try {
+            broadcast(new \App\Events\TicketCommentCreated($comment))->toOthers();
+        } catch (\Throwable $e) {
+            // Broadcasting failure must not break the HTTP response
+            \Illuminate\Support\Facades\Log::warning('Broadcasting failed for comment #' . $comment->id . ': ' . $e->getMessage());
+        }
 
         return response()->json([
             'data' => $comment,

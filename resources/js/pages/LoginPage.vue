@@ -41,7 +41,7 @@
                         <div class="space-y-2">
                             <div class="flex justify-between items-center ml-1">
                                 <label class="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Password</label>
-                                <a href="#" class="text-[10px] font-bold text-primary hover:text-text-main transition-colors uppercase tracking-widest">Forgot?</a>
+                                <router-link to="/forgot-password" class="text-[10px] font-bold text-primary hover:text-text-main transition-colors uppercase tracking-widest">Forgot?</router-link>
                             </div>
                             <div class="relative group">
                                 <input 
@@ -87,11 +87,11 @@
 
                 <!-- SSO Grid -->
                 <div class="grid grid-cols-2 gap-4">
-                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-lg hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
+                    <button @click="loginWithSSO('google')" class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-lg hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
                         <span class="text-[11px] font-bold text-text-main uppercase tracking-wider">Google</span>
                     </button>
-                    <button class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-lg hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
+                    <button @click="loginWithSSO('microsoft')" class="flex items-center justify-center gap-3 py-3.5 px-4 bg-surface-light/50 border border-glass-border rounded-lg hover:bg-surface-light hover-lift active:scale-95 transition-all duration-300">
                         <img src="https://www.svgrepo.com/show/333558/microsoft.svg" class="w-5 h-5" alt="Microsoft">
                         <span class="text-[11px] font-bold text-text-main uppercase tracking-wider">Azure</span>
                     </button>
@@ -135,6 +135,10 @@ const handleLogin = async () => {
     } catch (err) {
         error.value = err.response?.data?.message || 'Invalid credentials. Please try again.';
     }
+};
+
+const loginWithSSO = (provider) => {
+    window.location.href = `/api/v1/auth/sso/${provider}/redirect`;
 };
 </script>
 

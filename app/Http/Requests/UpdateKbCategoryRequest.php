@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateKbCategoryRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateKbCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->role === 'admin' || $this->user()->role === 'agent';
     }
 
     /**
@@ -22,7 +23,13 @@ class UpdateKbCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'sometimes|required|string|max:255',
+            'icon' => 'nullable|string|max:255',
+            'parent_id' => [
+                'nullable',
+                Rule::exists('kb_categories', 'id')->whereNot('id', $this->route('category')->id),
+            ],
+            'sort_order' => 'integer|min:0',
         ];
     }
 }

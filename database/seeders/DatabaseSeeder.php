@@ -44,5 +44,6 @@ class DatabaseSeeder extends Seeder
         $this->call(KbSeeder::class);
         $this->call(SystemSettingsSeeder::class);
         $this->call(BusinessHoursSeeder::class);
+        $this->call(HolidaySeeder::class);
     }
 }

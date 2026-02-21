@@ -11,12 +11,13 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      APP_URL: "http://localhost:9094"
     ports:
       - "9094:9094"
     volumes:
       - .:/var/www/html
-      - /var/www/html/vendor
-      - /var/www/html/node_modules
+      - ./docker/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     depends_on:
       db:
         condition: service_healthy
@@ -34,8 +35,13 @@ services:
     container_name: ticketing_reverb
     restart: unless-stopped
     command: php artisan reverb:start
+    healthcheck:
+      disable: true
     env_file:
       - .env
+    environment:
+      APP_URL: "http://localhost:9094"
+      REVERB_HOST: "0.0.0.0"
     ports:
       - "8081:8081"
     volumes:

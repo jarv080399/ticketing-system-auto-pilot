@@ -10,5 +10,6 @@ Broadcast::channel('ticket.{ticketId}', function ($user, $ticketId) {
     $ticket = \App\Models\Ticket::find($ticketId);
     if (!$ticket) return false;
     
-    return $user->role !== 'user' || $user->id === $ticket->user_id;
+    // Agents and Admins can see all tickets. Users can only see their own.
+    return $user->role !== 'user' || (int) $user->id === (int) $ticket->requester_id;
 });

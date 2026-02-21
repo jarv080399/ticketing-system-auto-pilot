@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,10 @@ Route::prefix('v1')->group(function () {
     // ─── Auth (public) ───
     Route::prefix('auth')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
+        Route::get('/sso/{provider}/redirect', [AuthController::class, 'redirectToProvider']);
+        Route::get('/sso/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     });
 
     // CSAT Survey (Public)
@@ -37,10 +42,13 @@ Route::prefix('v1')->group(function () {
 
     // ─── Authenticated Routes ───
     Route::middleware('auth:sanctum')->group(function () {
+        // Broadcasting auth
+        Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
         // Auth
         Route::get('/auth/me', [AuthController::class, 'me']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
+        Route::post('/auth/revoke-all', [AuthController::class, 'revokeAll']);
 
         // Agent Routes
         Route::middleware(['role:agent'])->prefix('agent')->group(function () {
@@ -53,6 +61,7 @@ Route::prefix('v1')->group(function () {
         // Admin Routes (Automation & Settings)
         Route::middleware('role:admin')->prefix('admin')->group(function () {
             Route::apiResource('automation-rules', \App\Http\Controllers\Api\V1\Admin\AutomationController::class);
+            Route::apiResource('users', \App\Http\Controllers\Api\V1\Admin\UserController::class);
             Route::apiResource('sla-policies', \App\Http\Controllers\Api\V1\Admin\SlaController::class);
             Route::apiResource('escalation-tiers', \App\Http\Controllers\Api\V1\Admin\EscalationController::class);
             Route::apiResource('audit-logs', \App\Http\Controllers\Api\V1\Admin\AuditLogController::class)->only(['index', 'show']);
@@ -65,6 +74,10 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('holidays', \App\Http\Controllers\Api\V1\Admin\HolidayController::class);
             Route::apiResource('custom-fields', \App\Http\Controllers\Api\V1\Admin\CustomFieldController::class);
             Route::get('/system-health', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'index']);
+            Route::post('/system-health/clear-cache', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'clearCache']);
+            Route::post('/system-health/restart-workers', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'restartWorkers']);
+            Route::post('/system-health/run-migrations', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'runMigrationsAction']);
+            Route::post('/system-health/run-tests', [\App\Http\Controllers\Api\V1\Admin\SystemHealthController::class, 'runTests']);
             Route::get('/activity-log', [\App\Http\Controllers\Api\V1\Admin\ActivityLogController::class, 'index']);
         });
 

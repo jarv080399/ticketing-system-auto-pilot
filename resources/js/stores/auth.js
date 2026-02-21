@@ -47,6 +47,36 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
+        async revokeAll() {
+            this.loading = true;
+            try {
+                await api.post('/auth/revoke-all');
+                this.clearAuth();
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async forgotPassword(email) {
+            this.loading = true;
+            try {
+                const { data } = await api.post('/auth/forgot-password', { email });
+                return data;
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async resetPassword(formData) {
+            this.loading = true;
+            try {
+                const { data } = await api.post('/auth/reset-password', formData);
+                return data;
+            } finally {
+                this.loading = false;
+            }
+        },
+
         setAuth(user, token) {
             this.user = user;
             this.token = token;

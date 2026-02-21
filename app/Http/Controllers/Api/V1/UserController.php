@@ -15,14 +15,27 @@ class UserController extends Controller
     {
         // Simple search for agents/admins to find users to assign assets to
         $q = $request->get('q');
+        $role = $request->get('role');
         
-        $query = User::query();
+        $query = User::withCount('assets');
 
         if ($q) {
-            $query->where('name', 'like', "%{$q}%")
-                  ->orWhere('email', 'like', "%{$q}%");
+            $query->where(function ($builder) use ($q) {
+                $builder->where('name', 'like', "%{$q}%")
+                        ->orWhere('email', 'like', "%{$q}%");
+            });
+        }
+        
+        if ($role) {
+            $query->where('role', $role);
         }
 
-        return $query->limit(50)->get(['id', 'name', 'email']);
+        if ($request->has('page')) {
+            return response()->json($query->paginate(15));
+        }
+
+        return response()->json([
+            'data' => $query->limit(50)->get(['id', 'name', 'email', 'role'])
+        ]);
     }
 }

@@ -13,8 +13,12 @@ class CannedResponseController extends Controller
      */
     public function index(Request $request)
     {
-        $responses = CannedResponse::where('is_shared', true)
-            ->orWhere('created_by', $request->user()->id)
+        $responses = CannedResponse::with('creator:id,name')
+            ->where(function ($query) use ($request) {
+                $query->where('is_shared', true)
+                      ->orWhere('created_by', $request->user()->id);
+            })
+            ->latest()
             ->get();
 
         return response()->json(['data' => $responses]);
@@ -35,6 +39,7 @@ class CannedResponseController extends Controller
         $validated['created_by'] = $request->user()->id;
 
         $response = CannedResponse::create($validated);
+        $response->load('creator:id,name');
 
         return response()->json(['data' => $response], 201);
     }

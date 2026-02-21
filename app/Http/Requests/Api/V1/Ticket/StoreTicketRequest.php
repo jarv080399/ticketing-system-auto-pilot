@@ -27,7 +27,7 @@ class StoreTicketRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'],
             'priority' => ['nullable', 'in:low,medium,high,critical'],
             'attachments' => ['nullable', 'array', 'max:5'],
-            'attachments.*' => ['file', 'max:10240', 'mimes:jpg,jpeg,png,pdf,doc,docx,zip'],
+            'attachments.*' => ['file', 'max:10240', 'mimes:jpg,jpeg,png,gif,webp,pdf'],
         ];
     }
 }
