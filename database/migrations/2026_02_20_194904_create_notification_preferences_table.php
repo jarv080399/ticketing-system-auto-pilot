@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('notification_preferences', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('event_type'); // ticket_created, ticket_updated, comment_added, etc.
+            $table->string('channel'); // email, slack, teams, in_app
+            $table->boolean('is_enabled')->default(true);
             $table->timestamps();
+
+            $table->unique(['user_id', 'event_type', 'channel'], 'user_notification_preference_unique');
         });
     }
 
