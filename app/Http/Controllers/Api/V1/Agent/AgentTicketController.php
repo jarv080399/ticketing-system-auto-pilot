@@ -37,6 +37,9 @@ class AgentTicketController extends Controller
 
         $ticket->update($validated);
 
-        return new TicketResource($ticket->load(['category', 'requester', 'agent']));
+        // Broadcast the update for real-time UI synchronization
+        broadcast(new \App\Events\TicketUpdated($ticket->load(['category', 'requester', 'agent'])))->toOthers();
+
+        return new TicketResource($ticket);
     }
 }

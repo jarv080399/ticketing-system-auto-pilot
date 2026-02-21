@@ -568,6 +568,13 @@ function setupEcho() {
                         toast.info('New reply received');
                     }
                 }
+            })
+            .listen('TicketUpdated', (e) => {
+                // Smoothly sync the entire ticket object
+                Object.assign(ticket.value, e.ticket);
+                editStatus.value = ticket.value.status;
+                editPriority.value = ticket.value.priority;
+                toast.info(`Ticket updated to ${ticket.value.status.replace(/_/g, ' ')}`);
             });
     }
 }
