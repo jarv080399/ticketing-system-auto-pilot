@@ -87,7 +87,7 @@ const newHoliday = ref({ name: '', date: '', is_recurring: false });
 
 const fetchHolidays = async () => {
     try {
-        const response = await axios.get('/api/v1/admin/holidays');
+        const response = await axios.get('/admin/holidays');
         holidays.value = response.data.data;
     } catch (error) {
         alert('Failed to load holidays');
@@ -98,7 +98,7 @@ const fetchHolidays = async () => {
 
 const addHoliday = async () => {
     try {
-        await axios.post('/api/v1/admin/holidays', newHoliday.value);
+        await axios.post('/admin/holidays', newHoliday.value);
         showModal.value = false;
         newHoliday.value = { name: '', date: '', is_recurring: false };
         fetchHolidays();
@@ -110,7 +110,7 @@ const addHoliday = async () => {
 const deleteHoliday = async (id) => {
     if (!confirm('Are you sure you want to delete this holiday?')) return;
     try {
-        await axios.delete(`/api/v1/admin/holidays/${id}`);
+        await axios.delete(`/admin/holidays/${id}`);
         fetchHolidays();
     } catch (error) {
         alert('Failed to delete holiday');

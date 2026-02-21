@@ -88,7 +88,7 @@ const dayNames = [
 
 const fetchHours = async () => {
     try {
-        const response = await axios.get('/api/v1/admin/business-hours');
+        const response = await axios.get('/admin/business-hours');
         hours.value = response.data.data;
     } catch (error) {
         alert('Failed to load business hours');
@@ -100,7 +100,7 @@ const fetchHours = async () => {
 const updateHours = async () => {
     saving.value = true;
     try {
-        await axios.put('/api/v1/admin/business-hours', {
+        await axios.put('/admin/business-hours', {
             hours: hours.value
         });
         alert('Business hours updated successfully');

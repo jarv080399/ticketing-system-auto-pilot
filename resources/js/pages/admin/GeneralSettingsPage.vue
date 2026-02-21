@@ -82,7 +82,7 @@ const editedSettings = ref({});
 
 const fetchSettings = async () => {
     try {
-        const response = await axios.get('/api/v1/admin/settings');
+        const response = await axios.get('/admin/settings');
         groupedSettings.value = response.data.data;
         
         // Initialize editedSettings
@@ -109,7 +109,7 @@ const formatLabel = (key) => {
 const save = async () => {
     saving.value = true;
     try {
-        await axios.patch('/api/v1/admin/settings', {
+        await axios.patch('/admin/settings', {
             settings: editedSettings.value
         });
         alert('Settings updated successfully');

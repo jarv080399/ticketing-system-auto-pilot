@@ -79,7 +79,7 @@ const healthData = ref({});
 
 const fetchHealth = async () => {
     try {
-        const response = await axios.get('/api/v1/admin/system-health');
+        const response = await axios.get('/admin/system-health');
         healthData.value = response.data.data;
     } catch (error) {
         console.error('Failed to load system health');

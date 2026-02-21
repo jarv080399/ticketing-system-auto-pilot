@@ -116,7 +116,7 @@ const filters = ref({
 const fetchLogs = async (page = 1) => {
     loading.value = true;
     try {
-        const response = await axios.get('/api/v1/admin/activity-log', {
+        const response = await axios.get('/admin/activity-log', {
             params: { ...filters.value, page }
         });
         logs.value = response.data.data;

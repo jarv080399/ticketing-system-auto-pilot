@@ -81,8 +81,7 @@ const users = ref([]);
 
 const fetchUsers = async () => {
     try {
-        const response = await axios.get('/api/v1/search/users');
-        // Note: The search/users endpoint might return a different structure, let's assume simple list for now
+        const response = await axios.get('/search/users');
         users.value = Array.isArray(response.data) ? response.data : response.data.data || [];
     } catch (error) {
         console.error('Failed to load users');

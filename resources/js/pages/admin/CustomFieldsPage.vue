@@ -143,7 +143,7 @@ const form = ref({
 
 const fetchFields = async () => {
     try {
-        const response = await axios.get('/api/v1/admin/custom-fields');
+        const response = await axios.get('/admin/custom-fields');
         fields.value = response.data.data;
     } catch (error) {
         alert('Failed to load custom fields');
@@ -190,9 +190,9 @@ const saveField = async () => {
     saving.value = true;
     try {
         if (editingId.value) {
-            await axios.put(`/api/v1/admin/custom-fields/${editingId.value}`, form.value);
+            await axios.put(`/admin/custom-fields/${editingId.value}`, form.value);
         } else {
-            await axios.post('/api/v1/admin/custom-fields', form.value);
+            await axios.post('/admin/custom-fields', form.value);
         }
         showModal.value = false;
         fetchFields();
@@ -206,7 +206,7 @@ const saveField = async () => {
 const deleteField = async (id) => {
     if (!confirm('All data stored in this field across existing records will be lost. Continue?')) return;
     try {
-        await axios.delete(`/api/v1/admin/custom-fields/${id}`);
+        await axios.delete(`/admin/custom-fields/${id}`);
         fetchFields();
     } catch (error) {
         alert('Failed to delete field');
