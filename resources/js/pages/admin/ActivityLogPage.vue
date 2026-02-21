@@ -5,7 +5,7 @@
                 <h1 class="text-3xl font-black text-white tracking-tight">Audit Log</h1>
                 <p class="text-text-dim text-sm mt-2">Immutable audit trail for all administrative actions, configurations, and system updates.</p>
             </div>
-            <button class="px-5 py-2.5 bg-background border border-glass-border hover:bg-surface-light shadow-sm text-text-dim hover:text-white font-black text-sm rounded-xl transition-all flex items-center gap-2">
+            <button class="px-5 py-2.5 bg-background border border-glass-border hover:bg-surface-light shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] text-text-dim hover:text-text-main font-black text-sm rounded-xl transition-all flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                 Export CSV
             </button>
@@ -36,7 +36,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
                 Apply
             </button>
-            <button @click="resetFilters" class="px-4 py-2.5 text-text-dim hover:text-white transition-colors text-sm font-bold">
+            <button @click="resetFilters" class="px-4 py-2.5 text-text-dim hover:text-text-main transition-colors text-sm font-bold">
                 Clear
             </button>
         </div>
@@ -60,7 +60,7 @@
                         </thead>
                         <tbody class="divide-y divide-glass-border text-gray-300">
                             <tr v-for="log in logs" :key="log.id" class="hover:bg-white/5 transition-colors group">
-                                <td class="px-6 py-4 text-sm tabular-nums text-text-dim group-hover:text-white transition-colors">
+                                <td class="px-6 py-4 text-sm tabular-nums text-text-dim group-hover:text-text-main transition-colors">
                                     {{ formatDate(log.created_at) }}
                                 </td>
                                 <td class="px-6 py-4">
@@ -126,7 +126,7 @@
                             @click="changePage(page)"
                             :class="[
                                 'w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-all',
-                                page === currentPage ? 'bg-primary text-white shadow-md' : 'text-text-dim hover:text-white hover:bg-surface-light'
+                                page === currentPage ? 'bg-primary text-white shadow-md' : 'text-text-dim hover:text-text-main hover:bg-surface-light'
                             ]"
                         >
                             {{ page }}

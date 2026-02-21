@@ -170,7 +170,7 @@
                         <span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] font-black uppercase tracking-widest rounded-xl">Global Alert</span>
                         <h4 class="font-bold text-lg text-text-main leading-tight">Azure Maintenance Window</h4>
                         <p class="text-sm text-text-dim leading-relaxed">Intermittent connectivity expected on West Europe region this Sunday.</p>
-                        <button class="text-xs font-black text-indigo-400 hover:text-white transition-colors flex items-center gap-2 uppercase tracking-widest">
+                        <button class="text-xs font-black text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-widest">
                             View Details <span class="text-xl">→</span>
                         </button>
                     </div>

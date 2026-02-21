@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-background text-white font-sans flex">
+    <div class="min-h-screen bg-background text-text-main font-sans flex">
         <!-- Admin Sidebar -->
         <aside class="w-64 bg-surface border-r border-surface-light flex flex-col">
             <div class="p-4 border-b border-surface-light">
@@ -16,43 +16,43 @@
 
             <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
                 <div class="text-[10px] font-black uppercase tracking-widest text-text-dim px-3 mb-2 mt-4">Platform</div>
-                <router-link to="/admin" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     📊 Dashboard
                 </router-link>
-                <router-link to="/admin/analytics" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/analytics" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     📈 Intelligence
                 </router-link>
 
                 <div class="text-[10px] font-black uppercase tracking-widest text-text-dim px-3 mb-2 mt-6">Configuration</div>
-                <router-link to="/admin/settings" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/settings" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     ⚙️ General Settings
                 </router-link>
-                <router-link to="/admin/automation" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/automation" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     🤖 Automation Rules
                 </router-link>
-                <router-link to="/admin/business-hours" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/business-hours" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     🕒 Business Hours
                 </router-link>
-                <router-link to="/admin/holidays" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/holidays" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     🗓️ Holidays
                 </router-link>
-                <router-link to="/admin/custom-fields" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/custom-fields" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     🏗️ Custom Fields
                 </router-link>
 
                 <div class="text-[10px] font-black uppercase tracking-widest text-text-dim px-3 mb-2 mt-6">System</div>
-                <router-link to="/admin/health" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/health" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     🏥 System Health
                 </router-link>
-                <router-link to="/admin/activity" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors" active-class="bg-surface-light text-white">
+                <router-link to="/admin/activity" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     📋 Activity Log
                 </router-link>
                 
                 <div class="pt-6 mt-6 border-t border-surface-light">
-                    <router-link to="/agent" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors">
+                    <router-link to="/agent" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors">
                         🛠️ Agent View
                     </router-link>
-                    <router-link to="/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-surface-light hover:text-white transition-colors">
+                    <router-link to="/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors">
                         🏠 User Portal
                     </router-link>
                 </div>

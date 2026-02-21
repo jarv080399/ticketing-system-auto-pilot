@@ -33,7 +33,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
                 Apply
             </button>
-            <button @click="resetFilters" class="px-4 py-2.5 text-text-dim hover:text-white transition-colors text-sm font-bold">
+            <button @click="resetFilters" class="px-4 py-2.5 text-text-dim hover:text-text-main transition-colors text-sm font-bold">
                 Clear
             </button>
         </div>
@@ -135,8 +135,8 @@
                             :key="page"
                             @click="changePage(page)"
                             :class="[
-                                'w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-all',
-                                page === currentPage ? 'bg-primary text-white shadow-md' : 'text-text-dim hover:text-white hover:bg-surface-light'
+                                'w-8 h-8 rounded-lg flex items-center justify-center',
+                                page === currentPage ? 'bg-primary text-white shadow-md' : 'text-text-dim hover:text-text-main hover:bg-surface-light'
                             ]"
                         >
                             {{ page }}
