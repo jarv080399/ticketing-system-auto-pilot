@@ -71,9 +71,16 @@
                                     </div>
                                     <div class="px-2 py-2 border-b border-white/10">
                                         <router-link 
+                                            to="/profile"
+                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-white/10 rounded-xl flex items-center gap-3 transition-all"
+                                        >
+                                            <span>👤</span>
+                                            My Profile
+                                        </router-link>
+                                        <router-link 
                                             v-if="['agent', 'admin'].includes(auth.user?.role)"
                                             to="/agent"
-                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-primary/10 hover:text-primary rounded-xl flex items-center gap-3 transition-all"
+                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-primary/10 hover:text-primary rounded-xl flex items-center gap-3 transition-all mt-1"
                                         >
                                             <span>🎧</span>
                                             Agent Workspace

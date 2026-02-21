@@ -30,6 +30,10 @@ Route::prefix('v1')->group(function () {
     // ─── Auth (public) ───
     Route::prefix('auth')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
+        Route::get('/sso/{provider}/redirect', [AuthController::class, 'redirectToProvider']);
+        Route::get('/sso/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     });
 
     // CSAT Survey (Public)
@@ -41,6 +45,7 @@ Route::prefix('v1')->group(function () {
         // Auth
         Route::get('/auth/me', [AuthController::class, 'me']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
+        Route::post('/auth/revoke-all', [AuthController::class, 'revokeAll']);
 
         // Agent Routes
         Route::middleware(['role:agent'])->prefix('agent')->group(function () {
@@ -53,6 +58,7 @@ Route::prefix('v1')->group(function () {
         // Admin Routes (Automation & Settings)
         Route::middleware('role:admin')->prefix('admin')->group(function () {
             Route::apiResource('automation-rules', \App\Http\Controllers\Api\V1\Admin\AutomationController::class);
+            Route::apiResource('users', \App\Http\Controllers\Api\V1\Admin\UserController::class);
             Route::apiResource('sla-policies', \App\Http\Controllers\Api\V1\Admin\SlaController::class);
             Route::apiResource('escalation-tiers', \App\Http\Controllers\Api\V1\Admin\EscalationController::class);
             Route::apiResource('audit-logs', \App\Http\Controllers\Api\V1\Admin\AuditLogController::class)->only(['index', 'show']);

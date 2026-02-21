@@ -9,6 +9,18 @@ const routes = [
         component: () => import('@/pages/LoginPage.vue'),
         meta: { guest: true },
     },
+    {
+        path: '/forgot-password',
+        name: 'ForgotPassword',
+        component: () => import('@/pages/ForgotPasswordPage.vue'),
+        meta: { guest: true },
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: () => import('@/pages/ResetPasswordPage.vue'),
+        meta: { guest: true },
+    },
 
     // ─── Authenticated Routes ───
     {
@@ -56,6 +68,11 @@ const routes = [
                 path: 'settings/notifications',
                 name: 'NotificationSettings',
                 component: () => import('@/pages/NotificationSettingsPage.vue'),
+            },
+            {
+                path: 'profile',
+                name: 'Profile',
+                component: () => import('@/pages/ProfilePage.vue'),
             },
         ],
     },
