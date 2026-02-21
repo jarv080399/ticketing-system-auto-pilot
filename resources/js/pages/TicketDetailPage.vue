@@ -314,6 +314,10 @@ const setupEcho = () => {
                         toast.info('New reply received');
                     }
                 }
+            })
+            .listen('TicketUpdated', (e) => {
+                Object.assign(ticket.value, e.ticket);
+                toast.info(`Your ticket status is now: ${ticket.value.status.replace(/_/g, ' ')}`);
             });
     }
 };

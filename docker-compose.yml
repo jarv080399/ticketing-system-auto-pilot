@@ -35,10 +35,13 @@ services:
     container_name: ticketing_reverb
     restart: unless-stopped
     command: php artisan reverb:start
+    healthcheck:
+      disable: true
     env_file:
       - .env
     environment:
       APP_URL: "http://localhost:9094"
+      REVERB_HOST: "0.0.0.0"
     ports:
       - "8081:8081"
     volumes:
