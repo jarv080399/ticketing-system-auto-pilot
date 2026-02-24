@@ -73,7 +73,7 @@
                     <!-- Theme Toggle -->
                     <button 
                         @click="themeStore.toggleTheme" 
-                        class="p-2.5 rounded-xl bg-background border border-glass-border text-text-dim hover:text-white transition-all shadow-inner group"
+                        class="p-2.5 rounded-xl bg-background border border-glass-border text-text-dim hover:text-text-main transition-all shadow-inner group"
                         title="Toggle System Luminescence"
                     >
                         <svg v-if="themeStore.theme === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -87,10 +87,10 @@
                     <!-- User Account -->
                     <div class="flex items-center gap-3 pl-6 border-l border-glass-border">
                         <div class="text-right">
-                            <p class="text-[11px] font-black text-white leading-none uppercase tracking-wider">{{ authStore.user?.name }}</p>
+                            <p class="text-[11px] font-black text-text-main leading-none uppercase tracking-wider">{{ authStore.user?.name }}</p>
                             <p class="text-[9px] font-bold text-primary-dim uppercase tracking-widest mt-1">{{ authStore.user?.role }}</p>
                         </div>
-                        <div class="w-10 h-10 rounded-xl bg-background border border-glass-border flex items-center justify-center text-white font-black text-xs shadow-inner overflow-hidden relative group">
+                        <div class="w-10 h-10 rounded-xl bg-background border border-glass-border flex items-center justify-center text-text-main font-black text-xs shadow-inner overflow-hidden relative group">
                             <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             {{ authStore.user?.name?.charAt(0) }}
                         </div>

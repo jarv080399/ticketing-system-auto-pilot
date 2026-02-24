@@ -45,7 +45,7 @@
             <header class="h-16 px-8 border-b border-glass-border flex items-center justify-between sticky top-0 bg-surface/80 backdrop-blur-xl z-40">
                 <div class="flex items-center gap-4">
                     <span class="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim">Console /</span>
-                    <h2 class="text-sm font-black text-white uppercase tracking-widest">{{ pageTitle }}</h2>
+                    <h2 class="text-sm font-black text-text-main uppercase tracking-widest">{{ pageTitle }}</h2>
                 </div>
 
                 <div class="flex items-center gap-6">
@@ -57,7 +57,7 @@
                     <!-- Theme Toggle -->
                     <button 
                         @click="themeStore.toggleTheme" 
-                        class="p-2 rounded-lg bg-background border border-glass-border text-text-dim hover:text-white transition-all shadow-inner"
+                        class="p-2 rounded-lg bg-background border border-glass-border text-text-dim hover:text-text-main transition-all shadow-inner"
                     >
                         <svg v-if="themeStore.theme === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 12.728l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -73,10 +73,10 @@
 
                     <div class="flex items-center gap-3 pl-2">
                         <div class="text-right hidden sm:block">
-                            <p class="text-[10px] font-black text-white leading-none uppercase tracking-wider">{{ authStore.user?.name }}</p>
+                            <p class="text-[10px] font-black text-text-main leading-none uppercase tracking-wider">{{ authStore.user?.name }}</p>
                             <p class="text-[8px] font-bold text-primary-dim uppercase tracking-widest mt-1">{{ authStore.user?.role }}</p>
                         </div>
-                        <div class="w-9 h-9 rounded-lg bg-background border border-glass-border flex items-center justify-center text-white font-black text-xs shadow-inner">
+                        <div class="w-9 h-9 rounded-lg bg-background border border-glass-border flex items-center justify-center text-text-main font-black text-xs shadow-inner">
                             {{ authStore.user?.name?.charAt(0) }}
                         </div>
                     </div>

@@ -2,7 +2,7 @@
     <div class="space-y-6 pb-10">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-black text-white tracking-tight">User Management</h1>
+                <h1 class="text-3xl font-black text-text-main tracking-tight">User Management</h1>
                 <p class="text-text-dim text-sm mt-2">Manage system users, access roles, and account status.</p>
             </div>
             <button class="px-5 py-2.5 bg-primary hover:bg-primary-dark shadow-lg shadow-primary/20 text-white font-black text-sm rounded-xl transition-all hover-lift active:scale-95 flex items-center gap-2 block">
@@ -16,20 +16,20 @@
             <div class="flex-1 min-w-[200px]">
                 <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2">Search Users</label>
                 <div class="relative">
-                    <input v-model="filters.q" type="text" placeholder="Name or email address..." class="w-full bg-background border border-glass-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @keyup.enter="applyFilters" />
+                    <input v-model="filters.q" type="text" placeholder="Name or email address..." class="w-full bg-background border border-glass-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @keyup.enter="applyFilters" />
                     <svg class="w-4 h-4 text-text-dim absolute left-4 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
             </div>
             <div class="w-full sm:w-auto">
                 <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2">Role</label>
-                <select v-model="filters.role" class="w-full sm:w-40 bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner">
+                <select v-model="filters.role" class="w-full sm:w-40 bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner">
                     <option value="">All Roles</option>
                     <option value="admin">Admin</option>
                     <option value="agent">Agent</option>
                     <option value="user">User</option>
                 </select>
             </div>
-            <button @click="applyFilters" class="px-6 py-2.5 bg-surface-light border border-glass-border hover:bg-white/10 text-white font-bold rounded-xl transition-all shadow-sm flex items-center gap-2">
+            <button @click="applyFilters" class="px-6 py-2.5 bg-surface-light border border-glass-border hover:bg-white/10 text-text-main font-bold rounded-xl transition-all shadow-sm flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
                 Apply
             </button>
@@ -63,7 +63,7 @@
                                             {{ user.name.charAt(0).toUpperCase() }}
                                         </div>
                                         <div>
-                                            <div class="font-bold text-white tracking-wide">{{ user.name }}</div>
+                                            <div class="font-bold text-text-main tracking-wide">{{ user.name }}</div>
                                             <div class="text-xs text-text-dim mt-0.5">{{ user.email }}</div>
                                         </div>
                                     </div>
@@ -95,7 +95,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button @click="editUser(user)" class="p-2 bg-surface-light border border-glass-border rounded-lg text-white hover:text-primary hover:border-primary/50 transition-all font-bold text-xs">
+                                        <button @click="editUser(user)" class="p-2 bg-surface-light border border-glass-border rounded-lg text-text-main hover:text-primary hover:border-primary/50 transition-all font-bold text-xs">
                                             Edit
                                         </button>
                                         <button class="p-2 bg-surface-light border border-glass-border rounded-lg text-text-dim hover:text-red-400 hover:bg-red-500/10 transition-all">
@@ -123,7 +123,7 @@
                     <button 
                         @click="changePage(currentPage - 1)" 
                         :disabled="currentPage === 1"
-                        class="px-3 py-1.5 text-xs font-bold text-white rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                        class="px-3 py-1.5 text-xs font-bold text-text-main rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                     >
                         Prev
                     </button>
@@ -146,7 +146,7 @@
                     <button 
                         @click="changePage(currentPage + 1)" 
                         :disabled="currentPage === lastPage"
-                        class="px-3 py-1.5 text-xs font-bold text-white rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                        class="px-3 py-1.5 text-xs font-bold text-text-main rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                     >
                         Next
                     </button>

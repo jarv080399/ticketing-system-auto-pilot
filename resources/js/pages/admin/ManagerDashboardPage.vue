@@ -105,8 +105,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, computed } from 'vue';
 import axios from '@/plugins/axios';
+import { useThemeStore } from '@/stores/theme';
+
+const themeStore = useThemeStore();
+const chartTheme = computed(() => themeStore.theme === 'dark' ? 'dark' : 'light');
+const labelColor = computed(() => themeStore.theme === 'dark' ? '#9ca3af' : '#64748b');
 
 const selectedRange = ref(30);
 const ranges = [
@@ -122,43 +127,51 @@ const kpis = ref([
     { label: 'Satisfaction', value: '0', unit: '/5', icon: '⭐', trend: '8', trendUp: true },
 ]);
 
-const volumeChart = reactive({
-    series: [{ name: 'Incidents', data: [] }],
+const chartData = reactive({
+    volumeCategories: [],
+    volumeSeries: [],
+    categoryLabels: [],
+    categorySeries: [],
+    heatmapSeries: []
+});
+
+const volumeChart = computed(() => ({
+    series: [{ name: 'Incidents', data: chartData.volumeSeries }],
     options: {
         chart: { toolbar: { show: false }, background: 'transparent' },
         stroke: { curve: 'smooth', width: 3, colors: ['#6366f1'] },
         fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] } },
         dataLabels: { enabled: false },
-        xaxis: { categories: [], labels: { style: { colors: '#9ca3af', fontWeight: 600 } } },
-        yaxis: { labels: { style: { colors: '#9ca3af', fontWeight: 600 } } },
-        grid: { borderColor: 'rgba(255,255,255,0.05)' },
-        theme: { mode: 'dark' }
+        xaxis: { categories: chartData.volumeCategories, labels: { style: { colors: labelColor.value, fontWeight: 600 } } },
+        yaxis: { labels: { style: { colors: labelColor.value, fontWeight: 600 } } },
+        grid: { borderColor: themeStore.theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
+        theme: { mode: chartTheme.value }
     }
-});
+}));
 
-const categoryChart = reactive({
-    series: [],
+const categoryChart = computed(() => ({
+    series: chartData.categorySeries,
     options: {
         chart: { background: 'transparent' },
-        labels: [],
+        labels: chartData.categoryLabels,
         colors: ['#6366f1', '#a855f7', '#ec4899', '#f97316', '#3b82f6'],
-        legend: { position: 'bottom', labels: { colors: '#9ca3af' } },
+        legend: { position: 'bottom', labels: { colors: labelColor.value } },
         stroke: { width: 0 },
-        theme: { mode: 'dark' }
+        theme: { mode: chartTheme.value }
     }
-});
+}));
 
-const heatmapChart = reactive({
-    series: [],
+const heatmapChart = computed(() => ({
+    series: chartData.heatmapSeries,
     options: {
         chart: { toolbar: { show: false }, background: 'transparent' },
         dataLabels: { enabled: false },
         colors: ["#6366f1"],
-        xaxis: { type: 'category', labels: { style: { colors: '#9ca3af' } } },
-        yaxis: { labels: { style: { colors: '#9ca3af' } } },
-        theme: { mode: 'dark' }
+        xaxis: { type: 'category', labels: { style: { colors: labelColor.value } } },
+        yaxis: { labels: { style: { colors: labelColor.value } } },
+        theme: { mode: chartTheme.value }
     }
-});
+}));
 
 const leaderboard = ref([]);
 
@@ -172,12 +185,12 @@ const fetchData = async () => {
         kpis.value[2].value = d.sla_compliance_rate;
         kpis.value[3].value = d.avg_csat_score || '5.0';
 
-        categoryChart.series = d.volume_by_category.map(c => c.count);
-        categoryChart.options.labels = d.volume_by_category.map(c => c.name);
+        chartData.categorySeries = d.volume_by_category.map(c => c.count);
+        chartData.categoryLabels = d.volume_by_category.map(c => c.name);
 
         const trends = await axios.get('/reports/trends', { params: { days: selectedRange.value } });
-        volumeChart.series[0].data = trends.data.data.map(t => t.count);
-        volumeChart.options.xaxis.categories = trends.data.data.map(t => t.date);
+        chartData.volumeSeries = trends.data.data.map(t => t.count);
+        chartData.volumeCategories = trends.data.data.map(t => t.date);
 
         const heat = await axios.get('/reports/heatmap', { params: { days: selectedRange.value } });
         processHeatmap(heat.data.data);
@@ -199,7 +212,7 @@ const processHeatmap = (raw) => {
         });
         return { name: day, data };
     });
-    heatmapChart.series = formatted;
+    chartData.heatmapSeries = formatted;
 };
 
 onMounted(fetchData);

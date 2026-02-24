@@ -2,7 +2,7 @@
     <div class="space-y-8 pb-10">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-3xl font-black text-white tracking-tight">System Holidays</h1>
+                <h1 class="text-3xl font-black text-text-main tracking-tight">System Holidays</h1>
                 <p class="text-text-dim text-sm mt-2">
                     Specify non-working dates. SLA timers will automatically pause during these designated dates globally, bypassing standard business hours.
                 </p>
@@ -28,9 +28,9 @@
                 <div class="w-16 h-16 bg-surface-light rounded-2xl flex items-center justify-center mx-auto mb-4 border border-glass-border shadow-inner">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
-                <h3 class="text-lg font-black text-white tracking-wide">No Holidays Active</h3>
+                <h3 class="text-lg font-black text-text-main tracking-wide">No Holidays Active</h3>
                 <p class="text-text-dim mt-2 max-w-sm mx-auto text-sm leading-relaxed">No custom non-working dates have been defined yet. The standard business hour schedule will strictly apply every week.</p>
-                <button @click="showModal = true" class="mt-6 px-6 py-2.5 bg-surface-light hover:bg-white/5 border border-glass-border text-white font-bold rounded-xl transition-all shadow-sm">
+                <button @click="showModal = true" class="mt-6 px-6 py-2.5 bg-surface-light border border-glass-border text-text-main hover:bg-white/5 font-bold rounded-xl transition-all shadow-sm">
                     Create First Holiday
                 </button>
             </div>
@@ -38,14 +38,14 @@
             <div v-else class="bg-surface rounded-2xl border border-glass-border shadow-xl overflow-hidden relative">
                 <div class="px-8 py-5 bg-surface-light border-b border-glass-border flex items-center justify-between">
                     <div>
-                        <h2 class="text-base font-black uppercase tracking-widest text-white">Holiday Calendar</h2>
+                        <h2 class="text-base font-black uppercase tracking-widest text-text-main">Holiday Calendar</h2>
                         <p class="text-xs text-text-dim mt-1">Listed dates where the system treats as offline globally.</p>
                     </div>
                     
                     <div class="hidden justify-center sm:flex w-10 h-10 bg-surface rounded-xl border border-glass-border items-center text-primary shadow-sm hover:scale-110 transition-transform cursor-help relative group/tooltip">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         <div class="absolute bottom-full right-0 mb-3 hidden group-hover/tooltip:block w-72 p-3 bg-gray-800 text-xs text-blue-100 rounded-xl border border-blue-500/30 shadow-2xl z-20 normal-case leading-relaxed font-normal">
-                            <div class="font-black text-white mb-1">Calendar Guide:</div>
+                            <div class="font-black text-text-main mb-1">Calendar Guide:</div>
                             "Recurring" holidays automatically pause SLA timers on the same month/date every year without manual renewal.
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                         <tbody class="divide-y divide-glass-border text-gray-300">
                             <tr v-for="holiday in holidays" :key="holiday.id" class="hover:bg-white/5 transition-colors group">
                                 <td class="px-6 py-5">
-                                    <div class="font-black text-white tracking-wide text-sm">{{ holiday.name }}</div>
+                                    <div class="font-black text-text-main tracking-wide text-sm">{{ holiday.name }}</div>
                                 </td>
                                 <td class="px-6 py-5">
                                     <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-surface border border-glass-border rounded-lg text-sm font-mono text-primary-dim shadow-inner">
@@ -104,7 +104,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                     </div>
                     <div>
-                        <h2 class="text-xl font-black text-white">Add New Holiday</h2>
+                        <h2 class="text-xl font-black text-text-main">Add New Holiday</h2>
                         <p class="text-xs text-text-dim font-medium mt-1">SLA timers will freeze on this date.</p>
                     </div>
                 </div>
@@ -112,11 +112,11 @@
                 <div class="space-y-6">
                     <div>
                         <label class="block text-xs font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Holiday Name</label>
-                        <input v-model="newHoliday.name" type="text" placeholder="e.g. Christmas Day, New Year..." class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
+                        <input v-model="newHoliday.name" type="text" placeholder="e.g. Christmas Day, New Year..." class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
                     </div>
                     <div>
                         <label class="block text-xs font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Calendar Date</label>
-                        <input v-model="newHoliday.date" type="date" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
+                        <input v-model="newHoliday.date" type="date" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
                     </div>
                     <div class="flex items-center gap-4 bg-background px-4 py-3 p-4 rounded-xl border border-glass-border shadow-inner cursor-pointer hover:border-gray-600 transition-colors" @click="newHoliday.is_recurring = !newHoliday.is_recurring">
                         <button 
@@ -143,7 +143,7 @@
                 </div>
                 
                 <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-glass-border">
-                    <button @click="showModal = false" class="px-5 py-2.5 text-sm text-text-dim font-bold hover:text-white hover:bg-white/5 rounded-xl transition-all">Cancel</button>
+                    <button @click="showModal = false" class="px-5 py-2.5 text-sm text-text-dim font-bold hover:text-text-main hover:bg-surface-light rounded-xl transition-all">Cancel</button>
                     <button @click="addHoliday" :disabled="!newHoliday.name || !newHoliday.date" class="px-7 py-2.5 bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/30 font-black rounded-xl transition-all hover-lift active:scale-95 disabled:opacity-50 disabled:hover:scale-100 disabled:shadow-none flex items-center gap-2">
                         Create Record
                     </button>

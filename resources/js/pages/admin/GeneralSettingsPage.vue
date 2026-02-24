@@ -2,7 +2,7 @@
     <div class="space-y-10 pb-20">
         <!-- Header -->
         <div class="mb-10">
-            <h1 class="text-3xl font-black text-white tracking-tight">System Configuration</h1>
+            <h1 class="text-3xl font-black text-text-main tracking-tight">System Configuration</h1>
             <p class="text-text-dim text-sm mt-2">
                 Manage global parameters, operational boundaries, and platform presentation. 
             </p>
@@ -21,7 +21,7 @@
                 
                 <!-- Group Header -->
                 <div class="px-8 py-5 bg-surface-light border-b border-glass-border">
-                    <h2 class="text-sm font-black uppercase tracking-[0.2em] text-white">{{ group }} Settings</h2>
+                    <h2 class="text-sm font-black uppercase tracking-[0.2em] text-text-main">{{ group }} Settings</h2>
                 </div>
                 
                 <!-- Group Fields: Contents Side by Side -->
@@ -30,7 +30,7 @@
                         
                         <!-- Left Side: Label & Description -->
                         <div class="lg:col-span-4 space-y-1">
-                            <label :for="setting.key" class="text-sm font-bold text-gray-200 group-hover/item:text-primary transition-colors">
+                            <label :for="setting.key" class="text-sm font-bold text-text-main group-hover/item:text-primary transition-colors">
                                 {{ formatLabel(setting.key) }}
                             </label>
                             <p class="text-[11px] text-text-dim leading-relaxed max-w-sm">
@@ -46,7 +46,7 @@
                                     :id="setting.key"
                                     v-model="editedSettings[setting.key]"
                                     :type="setting.type === 'integer' ? 'number' : 'text'"
-                                    class="w-full px-4 py-2.5 bg-background border border-glass-border rounded-xl text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all font-mono"
+                                    class="w-full px-4 py-2.5 bg-background border border-glass-border rounded-xl text-text-main text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all font-mono"
                                 />
                                 <div v-if="setting.type === 'integer'" class="absolute right-3 top-2.5 text-[9px] font-black text-text-dim opacity-50 uppercase tracking-widest pointer-events-none">NUM</div>
                             </div>
@@ -93,9 +93,9 @@
                     <button 
                         @click="save"
                         :disabled="saving"
-                        class="px-8 py-3 bg-primary hover:bg-primary-dark text-black font-black text-xs uppercase tracking-widest rounded-xl shadow-lg shadow-primary/20 transition-all disabled:opacity-50 flex items-center gap-2"
+                        class="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg shadow-primary/20 transition-all disabled:opacity-50 flex items-center gap-2"
                     >
-                        <span v-if="saving" class="animate-spin rounded-full h-3 w-3 border-b-2 border-black"></span>
+                        <span v-if="saving" class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></span>
                         <span v-else>Apply Config</span>
                     </button>
                 </div>

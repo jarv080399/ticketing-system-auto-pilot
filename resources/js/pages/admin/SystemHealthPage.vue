@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-6">
         <div>
-            <h1 class="text-2xl font-bold text-white">System Health</h1>
+            <h1 class="text-2xl font-bold text-text-main">System Health</h1>
             <p class="text-text-dim text-sm mt-1">Real-time status of critical infrastructure services.</p>
         </div>
 
@@ -29,7 +29,7 @@
                     </div>
                     
                     <div>
-                        <div class="text-lg font-bold text-white">{{ service.message }}</div>
+                        <div class="text-lg font-bold text-text-main">{{ service.message }}</div>
                         <div v-if="service.details" class="mt-2 text-xs text-text-dim grid grid-cols-2 gap-2">
                             <div v-for="(val, label) in service.details" :key="label">
                                 <span class="capitalize">{{ label }}:</span> {{ val }}
@@ -49,22 +49,22 @@
             <!-- Maintenance Actions -->
             <div class="bg-surface border border-glass-border rounded-xl overflow-hidden mt-8">
                 <div class="px-6 py-4 bg-surface-light border-b border-glass-border">
-                    <h2 class="text-sm font-black uppercase tracking-widest text-white">Maintenance Actions</h2>
+                    <h2 class="text-sm font-black uppercase tracking-widest text-text-main">Maintenance Actions</h2>
                 </div>
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <button @click="performAction('clear-cache')" :disabled="isProcessing['clear-cache']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                    <button @click="performAction('clear-cache')" :disabled="isProcessing['clear-cache']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-text-main hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
                         <span>🧹 Clear Cache</span>
                         <div v-if="isProcessing['clear-cache']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>
-                    <button @click="performAction('restart-workers')" :disabled="isProcessing['restart-workers']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                    <button @click="performAction('restart-workers')" :disabled="isProcessing['restart-workers']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-text-main hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
                         <span>🔄 Restart Workers</span>
                         <div v-if="isProcessing['restart-workers']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>
-                    <button @click="performAction('run-migrations')" :disabled="isProcessing['run-migrations']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                    <button @click="performAction('run-migrations')" :disabled="isProcessing['run-migrations']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-text-main hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
                         <span>📦 Run Migrations</span>
                         <div v-if="isProcessing['run-migrations']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>
-                    <button @click="performAction('run-tests')" :disabled="isProcessing['run-tests']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-white hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
+                    <button @click="performAction('run-tests')" :disabled="isProcessing['run-tests']" class="px-4 py-3 bg-background border border-glass-border rounded-lg text-sm text-text-main hover:border-primary transition-all text-left disabled:opacity-50 flex items-center justify-between">
                         <span>🧪 Run Self-Tests</span>
                         <div v-if="isProcessing['run-tests']" class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                     </button>

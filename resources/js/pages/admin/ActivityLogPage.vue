@@ -2,7 +2,7 @@
     <div class="space-y-6 pb-10">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-black text-white tracking-tight">Audit Log</h1>
+                <h1 class="text-3xl font-black text-text-main tracking-tight">Audit Log</h1>
                 <p class="text-text-dim text-sm mt-2">Immutable audit trail for all administrative actions, configurations, and system updates.</p>
             </div>
             <button class="px-5 py-2.5 bg-background border border-glass-border hover:bg-surface-light shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] text-text-dim hover:text-text-main font-black text-sm rounded-xl transition-all flex items-center gap-2">
@@ -15,15 +15,15 @@
         <div class="bg-surface/50 border border-glass-border rounded-2xl p-5 flex flex-wrap gap-4 items-end shadow-sm">
             <div class="w-full sm:w-auto">
                 <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2">Action Keyword</label>
-                <input v-model="filters.action" type="text" placeholder="e.g. created, updated..." class="w-full sm:w-48 bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @keyup.enter="applyFilters" />
+                <input v-model="filters.action" type="text" placeholder="e.g. created, updated..." class="w-full sm:w-48 bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @keyup.enter="applyFilters" />
             </div>
             <div class="w-full sm:w-auto">
                 <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2">User ID</label>
-                <input v-model="filters.user_id" type="number" placeholder="User ID..." class="w-full sm:w-32 bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @keyup.enter="applyFilters" />
+                <input v-model="filters.user_id" type="number" placeholder="User ID..." class="w-full sm:w-32 bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @keyup.enter="applyFilters" />
             </div>
             <div class="flex-1 min-w-[200px]">
                 <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2">Entity Type</label>
-                <select v-model="filters.entity_type" class="w-full bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @change="applyFilters">
+                <select v-model="filters.entity_type" class="w-full bg-background border border-glass-border rounded-xl px-4 py-2.5 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner" @change="applyFilters">
                     <option value="">All Supported Entities</option>
                     <option value="App\Models\Ticket">Ticket</option>
                     <option value="App\Models\User">User</option>
@@ -32,7 +32,7 @@
                     <option value="App\Models\AutomationRule">Automation</option>
                 </select>
             </div>
-            <button @click="applyFilters" class="px-6 py-2.5 bg-surface-light border border-glass-border hover:bg-white/10 text-white font-bold rounded-xl transition-all shadow-sm flex items-center gap-2">
+            <button @click="applyFilters" class="px-6 py-2.5 bg-surface-light border border-glass-border hover:bg-white/10 text-text-main font-bold rounded-xl transition-all shadow-sm flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
                 Apply
             </button>
@@ -69,7 +69,7 @@
                                             {{ log.user?.name?.charAt(0) || 'S' }}
                                         </div>
                                         <div>
-                                            <div class="text-white font-bold tracking-wide">{{ log.user?.name || 'System Auto Pilot' }}</div>
+                                            <div class="text-text-main font-bold tracking-wide">{{ log.user?.name || 'System Auto Pilot' }}</div>
                                             <div class="text-[10px] text-text-dim">UID: {{ log.user_id || 'SYS' }} • {{ log.ip_address }}</div>
                                         </div>
                                     </div>
@@ -87,7 +87,7 @@
                                         {{ log.action }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-sm font-bold text-white tracking-wide">
+                                <td class="px-6 py-4 text-sm font-bold text-text-main tracking-wide">
                                     {{ log.auditable_type?.split('\\').pop() || 'Unknown' }}
                                 </td>
                                 <td class="px-6 py-4 text-xs font-mono text-text-dim">
@@ -113,7 +113,7 @@
                     <button 
                         @click="changePage(currentPage - 1)" 
                         :disabled="currentPage === 1"
-                        class="px-3 py-1.5 text-xs font-bold text-white rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                        class="px-3 py-1.5 text-xs font-bold text-text-main rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                     >
                         Prev
                     </button>
@@ -136,7 +136,7 @@
                     <button 
                         @click="changePage(currentPage + 1)" 
                         :disabled="currentPage === lastPage"
-                        class="px-3 py-1.5 text-xs font-bold text-white rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                        class="px-3 py-1.5 text-xs font-bold text-text-main rounded-lg hover:bg-surface-light transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                     >
                         Next
                     </button>

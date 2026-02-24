@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <!-- Micro Chart Stub -->
-                    <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-1.5 w-full bg-surface-light rounded-full overflow-hidden">
                         <div :class="`h-full rounded-full ${stat.barColor} transition-all duration-1000`" :style="`width: ${stat.progress}%`"></div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                             <h2 class="text-4xl font-black text-text-main">100%</h2>
                         </div>
                     </div>
-                    <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                    <div class="h-1.5 w-full bg-surface-light rounded-full overflow-hidden">
                         <div class="h-full rounded-full bg-secondary w-full"></div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim ml-1">Priority Operations</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                     <router-link v-for="action in actions" :key="action.name" :to="action.path"
-                        class="glass-card p-7 rounded-xl hover-lift bg-white/5 hover:bg-white/10 group flex flex-col gap-4 border-white/5"
+                        class="glass-card p-7 rounded-xl hover-lift bg-surface/50 hover:bg-surface transition-all group flex flex-col gap-4 border-glass-border"
                     >
                         <div :class="`w-14 h-14 shrink-0 rounded-lg ${action.iconBg} flex items-center justify-center text-2xl group-hover:scale-110 transition-smooth shadow-xl shadow-black/20`">
                             {{ action.icon }}
@@ -119,9 +119,9 @@
                         <router-link to="/tickets" class="text-[10px] font-black text-primary uppercase tracking-widest hover:text-text-main transition-colors">View All →</router-link>
                     </div>
                     
-                    <div class="glass-card rounded-xl overflow-hidden border-white/5">
+                    <div class="glass-card rounded-xl overflow-hidden border-glass-border">
                         <div v-if="recentTickets.length === 0" class="p-20 text-center space-y-6">
-                            <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto text-4xl">📭</div>
+                            <div class="w-20 h-20 bg-surface-light rounded-full flex items-center justify-center mx-auto text-4xl">📭</div>
                             <div class="space-y-2">
                                 <p class="text-text-main font-bold text-lg">System Clearing</p>
                                 <p class="text-text-dim max-w-xs mx-auto">No high-priority incidents reported. All infrastructure monitors are green.</p>
@@ -129,11 +129,11 @@
                             <router-link to="/tickets/new" class="inline-block px-8 py-3 bg-primary/10 hover:bg-primary/20 text-primary font-black rounded-lg text-xs uppercase tracking-[0.2em] transition-smooth border border-primary/20">Sync Intel</router-link>
                         </div>
                         
-                        <div v-else class="divide-y divide-white/5">
+                        <div v-else class="divide-y divide-glass-border">
                             <router-link 
                                 v-for="ticket in recentTickets" :key="ticket.id" 
                                 :to="`/tickets/${ticket.ticket_number}`"
-                                class="flex items-center justify-between p-6 hover:bg-white/5 transition-colors group"
+                                class="flex items-center justify-between p-6 hover:bg-surface-light transition-colors group"
                             >
                                 <div class="flex items-center gap-5">
                                     <div class="w-12 h-12 rounded-xl bg-surface-light flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
@@ -182,7 +182,7 @@
                         <span class="text-2xl">💻</span> My Hardware
                     </h4>
                     <div class="space-y-3">
-                        <div v-for="asset in myAssets" :key="asset.id" class="flex items-center gap-4 p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-smooth cursor-pointer group">
+                        <div v-for="asset in myAssets" :key="asset.id" class="flex items-center gap-4 p-4 rounded-lg bg-surface-light border border-glass-border hover:bg-surface transition-smooth cursor-pointer group">
                             <div class="w-12 h-12 rounded-xl bg-surface flex items-center justify-center font-bold text-xs text-text-dim group-hover:text-primary transition-colors">
                                 {{ getAssetIcon(asset.type) }}
                             </div>
