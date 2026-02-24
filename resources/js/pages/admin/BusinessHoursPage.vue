@@ -68,7 +68,7 @@
                                                 class="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform"
                                             ></span>
                                         </button>
-                                        <span class="text-xs font-bold" :class="day.is_working_day ? 'text-text-main' : 'text-text-dim'">
+                                        <span class="text-xs font-bold whitespace-nowrap" :class="day.is_working_day ? 'text-text-main' : 'text-text-dim'">
                                             {{ day.is_working_day ? 'Working Day' : 'Rest Day' }}
                                         </span>
                                     </div>
