@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-10 pb-20">
+    <div class="space-y-8 pb-10">
         <!-- Header -->
         <div class="mb-10">
             <h1 class="text-3xl font-black text-text-main tracking-tight">System Configuration</h1>
@@ -75,17 +75,17 @@
                 </div>
             </div>
 
-            <!-- Sticky Save Bar -->
-            <div class="flex items-center justify-between sticky bottom-6 p-5 rounded-2xl bg-surface/90 backdrop-blur-xl border border-glass-border shadow-2xl z-40 mt-10">
+            <!-- Save Bar -->
+            <div class="flex items-center justify-between p-6 rounded-xl bg-surface border border-glass-border mt-6">
                 <div class="hidden sm:block">
-                    <p class="text-[10px] font-black text-text-dim uppercase tracking-widest">Global Persistence</p>
-                    <p class="text-[11px] text-primary mt-0.5 font-bold">Unsaved changes will be discarded on navigation.</p>
+                    <p class="text-[11px] font-semibold tracking-widest text-text-dim uppercase">Global Persistence</p>
+                    <p class="text-xs text-text-dim mt-0.5">Unsaved changes will be discarded on navigation.</p>
                 </div>
                 
-                <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
                     <button 
                         @click="reset"
-                        class="px-5 py-2.5 text-xs font-bold text-text-dim hover:text-text-main transition-all uppercase tracking-widest"
+                        class="bg-surface-light hover:bg-surface text-text-dim hover:text-text-main text-sm font-semibold px-4 py-2 rounded-lg transition-colors border border-glass-border"
                         :disabled="saving"
                     >
                         Discard
@@ -93,7 +93,7 @@
                     <button 
                         @click="save"
                         :disabled="saving"
-                        class="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg shadow-primary/20 transition-all disabled:opacity-50 flex items-center gap-2"
+                        class="bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-6 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
                         <span v-if="saving" class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></span>
                         <span v-else>Apply Config</span>
