@@ -89,7 +89,7 @@
                         'px-5 py-2 text-xs font-black uppercase tracking-widest rounded-md transition-all duration-200',
                         activeTab === tab.id 
                             ? 'bg-primary text-white shadow-md' 
-                            : 'text-text-dim hover:text-white hover:bg-white/5'
+                            : 'text-text-dim hover:text-text-main hover:bg-white/5'
                     ]"
                 >
                     {{ tab.label }}
@@ -116,7 +116,7 @@
                                 <!-- Info Section -->
                                 <div class="flex-1 space-y-4">
                                     <div class="flex items-center gap-3">
-                                        <h3 class="text-xl font-black text-white tracking-tight">{{ rule.name }}</h3>
+                                        <h3 class="text-xl font-black text-text-main tracking-tight">{{ rule.name }}</h3>
                                         <span 
                                             :class="[
                                                 'px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border transition-colors',
@@ -132,28 +132,28 @@
                                     <div class="flex flex-wrap items-center gap-3 pt-2">
                                         <div class="flex items-center gap-2 px-3 py-1 bg-background/30 rounded border border-glass-border">
                                             <span class="text-[9px] font-black text-primary uppercase tracking-tighter">TRIGGER</span>
-                                            <span class="text-xs text-white font-mono uppercase">{{ rule.trigger_event.replace('_', ' ') }}</span>
+                                            <span class="text-xs text-text-main font-mono uppercase">{{ rule.trigger_event.replace('_', ' ') }}</span>
                                         </div>
                                         <div class="text-primary-dim">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
                                         </div>
                                         <div class="flex items-center gap-2 px-3 py-1 bg-background/30 rounded border border-glass-border">
                                             <span class="text-[9px] font-black text-emerald-400 uppercase tracking-tighter">IF</span>
-                                            <span class="text-xs text-white font-mono opacity-80">Satisfied Conditions</span>
+                                            <span class="text-xs text-text-main font-mono opacity-80">Satisfied Conditions</span>
                                         </div>
                                         <div class="text-primary-dim">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
                                         </div>
                                         <div class="flex items-center gap-2 px-3 py-1 bg-background/30 rounded border border-glass-border">
                                             <span class="text-[9px] font-black text-rose-400 uppercase tracking-tighter">THEN</span>
-                                            <span class="text-xs text-white font-mono opacity-80">Exec Action Batch</span>
+                                            <span class="text-xs text-text-main font-mono opacity-80">Exec Action Batch</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Actions Section -->
                                 <div class="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-200">
-                                    <button @click="openModal(rule)" class="group/btn flex items-center gap-2 px-4 py-2 bg-surface-light border border-glass-border rounded-lg text-text-dim hover:text-white hover:border-primary transition-all">
+                                    <button @click="openModal(rule)" class="group/btn flex items-center gap-2 px-4 py-2 bg-surface-light border border-glass-border rounded-lg text-text-dim hover:text-text-main hover:border-primary transition-all">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
                                         <span class="text-xs font-bold uppercase tracking-wider">Configure</span>
                                     </button>
@@ -169,7 +169,7 @@
                         <div class="w-16 h-16 bg-background rounded-lg flex items-center justify-center border border-glass-border mb-6">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                         </div>
-                        <h4 class="text-white font-black text-lg">No Logic Matrices Found</h4>
+                        <h4 class="text-text-main font-black text-lg">No Logic Matrices Found</h4>
                         <p class="text-xs mt-2 uppercase tracking-widest opacity-50 font-bold">Deploy your first rule to automate workflows.</p>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                 <div v-if="activeTab === 'slas'" class="animate-in fade-in duration-300 space-y-10">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="text-xl font-black text-white">SLA Contracts</h3>
+                            <h3 class="text-xl font-black text-text-main">SLA Contracts</h3>
                             <p class="text-xs text-text-dim mt-1">Operational thresholds defined by ticket priority levels.</p>
                         </div>
                         <button @click="openSlaModal()" class="group px-6 py-2.5 bg-primary hover:bg-primary-dark shadow-md shadow-primary/20 text-white text-xs font-black uppercase tracking-widest rounded-lg transition-all hover-lift flex items-center gap-3">
@@ -194,8 +194,8 @@
                             <div class="p-6 relative z-10">
                                 <div class="flex justify-between items-start mb-6">
                                     <div class="space-y-1">
-                                        <span class="text-[9px] font-black uppercase tracking-widest opacity-50 text-white">Policy Node</span>
-                                        <h3 class="text-xl font-black text-white tracking-tight">{{ policy.name }}</h3>
+                                        <span class="text-[9px] font-black uppercase tracking-widest opacity-50 text-text-main">Policy Node</span>
+                                        <h3 class="text-xl font-black text-text-main tracking-tight">{{ policy.name }}</h3>
                                     </div>
                                     <div class="px-3 py-1.5 bg-background shadow-inner border border-glass-border rounded-lg">
                                         <div class="w-2.5 h-2.5 rounded-full" :class="getPriorityColorClass(policy.priority).split(' ')[0]"></div>
@@ -208,13 +208,13 @@
                                             <p class="text-[9px] font-black uppercase tracking-widest text-text-dim mb-2 flex items-center gap-2">
                                                 Response
                                             </p>
-                                            <p class="text-2xl font-black text-white group-hover/stat:text-primary transition-colors">{{ formatMinutes(policy.response_time_minutes) }}</p>
+                                            <p class="text-2xl font-black text-text-main group-hover/stat:text-primary transition-colors">{{ formatMinutes(policy.response_time_minutes) }}</p>
                                         </div>
                                         <div class="bg-background p-4 rounded-lg border border-glass-border shadow-inner group/stat">
                                             <p class="text-[9px] font-black uppercase tracking-widest text-text-dim mb-2 flex items-center gap-2">
                                                 Resolution
                                             </p>
-                                            <p class="text-2xl font-black text-white group-hover/stat:text-red-400 transition-colors">{{ formatMinutes(policy.resolution_time_minutes) }}</p>
+                                            <p class="text-2xl font-black text-text-main group-hover/stat:text-red-400 transition-colors">{{ formatMinutes(policy.resolution_time_minutes) }}</p>
                                         </div>
                                     </div>
                                     
@@ -223,7 +223,7 @@
                                             <span class="text-[10px] font-black text-text-dim uppercase tracking-widest">{{ policy.business_hours_only ? 'Business Hours' : '24/7' }}</span>
                                         </div>
                                         <div class="flex gap-2">
-                                            <button @click="openSlaModal(policy)" class="w-9 h-9 rounded-lg bg-surface-light border border-glass-border flex items-center justify-center text-text-dim hover:text-white hover:border-primary transition-all">
+                                            <button @click="openSlaModal(policy)" class="w-9 h-9 rounded-lg bg-surface-light border border-glass-border flex items-center justify-center text-text-dim hover:text-text-main hover:border-primary transition-all">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
                                             </button>
                                             <button @click="deleteSla(policy.id)" class="w-9 h-9 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all">
@@ -249,11 +249,11 @@
                                 @input="fetchAuditLogs(1)"
                                 type="text" 
                                 placeholder="Search action, actor, or resource..." 
-                                class="w-full bg-surface border border-glass-border rounded-lg pl-10 pr-4 py-2 text-xs text-white focus:outline-none focus:border-primary transition-all shadow-sm"
+                                class="w-full bg-surface border border-glass-border rounded-lg pl-10 pr-4 py-2 text-xs text-text-main focus:outline-none focus:border-primary transition-all shadow-sm"
                             />
                         </div>
                         <div class="text-[10px] font-black uppercase tracking-widest text-text-dim">
-                            Total Records: <span class="text-white">{{ auditMeta.total }}</span>
+                            Total Records: <span class="text-text-main">{{ auditMeta.total }}</span>
                         </div>
                     </div>
 
@@ -276,16 +276,16 @@
                                     <tr v-for="log in auditLogs" :key="log.id" class="hover:bg-white/5 transition-colors">
                                         <td class="px-6 py-4 text-xs font-mono text-text-dim bg-background/20">{{ new Date(log.created_at).toLocaleString() }}</td>
                                         <td class="px-6 py-4">
-                                            <span class="px-2.5 py-1 bg-surface shadow-inner border border-glass-border text-white rounded text-[9px] font-black uppercase tracking-widest">{{ log.action.replace(/_/g, ' ') }}</span>
+                                            <span class="px-2.5 py-1 bg-surface shadow-inner border border-glass-border text-text-main rounded text-[9px] font-black uppercase tracking-widest">{{ log.action.replace(/_/g, ' ') }}</span>
                                         </td>
-                                        <td class="px-6 py-4 text-xs font-bold text-white tracking-wide">
+                                        <td class="px-6 py-4 text-xs font-bold text-text-main tracking-wide">
                                             {{ log.auditable_type.split('\\').pop() }} <span class="text-primary-dim">#{{ log.auditable_id }}</span>
                                         </td>
                                         <td class="px-6 py-4 text-xs text-text-dim">
                                             <div class="flex items-center gap-2">
                                                 <div class="w-5 h-5 rounded-full bg-surface-light overflow-hidden flex items-center justify-center border border-glass-border flex-shrink-0">
                                                     <svg v-if="!log.user" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-primary-dim" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" /></svg>
-                                                    <span v-else class="text-[9px] font-bold text-white">{{ log.user.name.charAt(0) }}</span>
+                                                    <span v-else class="text-[9px] font-bold text-text-main">{{ log.user.name.charAt(0) }}</span>
                                                 </div>
                                                 {{ log.user ? log.user.name : 'System (Autopilot)' }}
                                             </div>
@@ -312,14 +312,14 @@
                                 <button 
                                     @click="fetchAuditLogs(auditMeta.currentPage - 1)" 
                                     :disabled="auditMeta.currentPage === 1 || auditLoading"
-                                    class="px-3 py-1.5 bg-surface border border-glass-border rounded-md text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white disabled:opacity-30 transition-all"
+                                    class="px-3 py-1.5 bg-surface border border-glass-border rounded-md text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-text-main disabled:opacity-30 transition-all"
                                 >
                                     Previous
                                 </button>
                                 <button 
                                     @click="fetchAuditLogs(auditMeta.currentPage + 1)" 
                                     :disabled="auditMeta.currentPage === auditMeta.lastPage || auditLoading"
-                                    class="px-3 py-1.5 bg-surface border border-glass-border rounded-md text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white disabled:opacity-30 transition-all"
+                                    class="px-3 py-1.5 bg-surface border border-glass-border rounded-md text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-text-main disabled:opacity-30 transition-all"
                                 >
                                     Next
                                 </button>
@@ -338,7 +338,7 @@
                         🤖
                     </div>
                     <div>
-                        <h2 class="text-xl font-black text-white">{{ editingId ? 'Rewrite Matrices Protocol' : 'Deploy Automation Logic' }}</h2>
+                        <h2 class="text-xl font-black text-text-main">{{ editingId ? 'Rewrite Matrices Protocol' : 'Deploy Automation Logic' }}</h2>
                         <p class="text-xs text-text-dim font-medium mt-1">Write the computational parameters triggering machine actions.</p>
                     </div>
                 </div>
@@ -346,12 +346,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
                     <div class="col-span-1">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Workflow Label</label>
-                        <input v-model="form.name" type="text" placeholder="e.g. Route Hardware to IT" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
+                        <input v-model="form.name" type="text" placeholder="e.g. Route Hardware to IT" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
                     </div>
 
                     <div class="col-span-1">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Trigger Event</label>
-                        <select v-model="form.trigger_event" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner">
+                        <select v-model="form.trigger_event" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner">
                             <option value="ticket_created">When a ticket is Created</option>
                             <option value="ticket_updated">When a ticket is Updated (Reply, Change, etc)</option>
                             <option value="sla_approaching">When an SLA warning is Approaching</option>
@@ -361,7 +361,7 @@
 
                     <div class="col-span-full">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Description Brief</label>
-                        <input v-model="form.description" type="text" placeholder="Internal notes describing when this operates." class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
+                        <input v-model="form.description" type="text" placeholder="Internal notes describing when this operates." class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
                     </div>
 
                     <div class="col-span-1 border-r border-glass-border pr-6">
@@ -378,12 +378,12 @@
 
                     <div class="col-span-1">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Execution Priority (Stack Value)</label>
-                        <input v-model="form.priority" type="number" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
+                        <input v-model="form.priority" type="number" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner" />
                     </div>
 
                     <div class="col-span-1 flex items-center justify-between gap-4 bg-background px-5 py-3 rounded-xl border border-glass-border shadow-inner mt-[1.35rem]">
                         <div>
-                            <span class="text-sm font-black text-white tracking-wide">Live Toggle</span>
+                            <span class="text-sm font-black text-text-main tracking-wide">Live Toggle</span>
                             <p class="text-[10px] font-medium text-text-dim mt-1">Machine state on/off.</p>
                         </div>
                         <button 
@@ -404,7 +404,7 @@
                 </div>
 
                 <div class="flex justify-end gap-3 mt-10 pt-6 border-t border-glass-border">
-                    <button @click="showModal = false" class="px-5 py-2.5 text-sm font-bold text-text-dim hover:text-white hover:bg-white/5 disabled:opacity-50 transition-colors rounded-xl">Discard Work</button>
+                    <button @click="showModal = false" class="px-5 py-2.5 text-sm font-bold text-text-dim hover:text-text-main hover:bg-white/5 disabled:opacity-50 transition-colors rounded-xl">Discard Work</button>
                     <button @click="saveRule" :disabled="saving" class="px-7 py-2.5 bg-primary hover:bg-primary-dark shadow-lg shadow-primary/30 text-white font-black rounded-xl transition-all hover-lift active:scale-95 disabled:opacity-50 flex items-center gap-2">
                         <span v-if="saving" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
                         {{ editingId ? 'Update System Rule' : 'Commit To Logic Matrix' }}
@@ -421,7 +421,7 @@
                         ⏱️
                     </div>
                     <div>
-                        <h2 class="text-xl font-black text-white">{{ editingSlaId ? 'Update SLA Contract' : 'Deploy New SLA Contract' }}</h2>
+                        <h2 class="text-xl font-black text-text-main">{{ editingSlaId ? 'Update SLA Contract' : 'Deploy New SLA Contract' }}</h2>
                         <p class="text-xs text-text-dim font-medium mt-1">Define operational thresholds for service level agreements.</p>
                     </div>
                 </div>
@@ -429,12 +429,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="col-span-full">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Contract Name</label>
-                        <input v-model="slaForm.name" type="text" placeholder="e.g. Critical Support Response" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary transition-all shadow-inner" />
+                        <input v-model="slaForm.name" type="text" placeholder="e.g. Critical Support Response" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all shadow-inner" />
                     </div>
 
                     <div class="col-span-1">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Priority Assignment</label>
-                        <select v-model="slaForm.priority" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary transition-all shadow-inner">
+                        <select v-model="slaForm.priority" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all shadow-inner">
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
@@ -445,7 +445,7 @@
                     <div class="col-span-1">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Business Hours Only</label>
                         <div class="flex items-center justify-between bg-background px-5 py-2.5 rounded-xl border border-glass-border shadow-inner">
-                            <span class="text-xs font-bold text-white tracking-wide">{{ slaForm.business_hours_only ? 'Enabled' : '24/7' }}</span>
+                            <span class="text-xs font-bold text-text-main tracking-wide">{{ slaForm.business_hours_only ? 'Enabled' : '24/7' }}</span>
                             <button 
                                 @click="slaForm.business_hours_only = !slaForm.business_hours_only"
                                 :class="[
@@ -465,17 +465,17 @@
 
                     <div class="col-span-1">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">First Response Goal (Minutes)</label>
-                        <input v-model="slaForm.response_time_minutes" type="number" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary transition-all shadow-inner" />
+                        <input v-model="slaForm.response_time_minutes" type="number" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all shadow-inner" />
                     </div>
 
                     <div class="col-span-1">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Full Resolution Goal (Minutes)</label>
-                        <input v-model="slaForm.resolution_time_minutes" type="number" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary transition-all shadow-inner" />
+                        <input v-model="slaForm.resolution_time_minutes" type="number" class="w-full bg-background border border-glass-border rounded-xl px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all shadow-inner" />
                     </div>
                 </div>
 
                 <div class="flex justify-end gap-3 mt-10 pt-6 border-t border-glass-border">
-                    <button @click="showSlaModal = false" class="px-5 py-2.5 text-sm font-bold text-text-dim hover:text-white transition-colors rounded-xl">Discard</button>
+                    <button @click="showSlaModal = false" class="px-5 py-2.5 text-sm font-bold text-text-dim hover:text-text-main transition-colors rounded-xl">Discard</button>
                     <button @click="saveSla" :disabled="saving" class="px-7 py-2.5 bg-primary hover:bg-primary-dark shadow-lg shadow-primary/20 text-white font-black rounded-xl transition-all hover-lift disabled:opacity-50 flex items-center gap-2">
                         <span v-if="saving" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
                         Commit Changes

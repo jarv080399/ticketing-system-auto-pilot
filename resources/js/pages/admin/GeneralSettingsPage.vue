@@ -85,7 +85,7 @@
                 <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
                     <button 
                         @click="reset"
-                        class="px-5 py-2.5 text-xs font-bold text-text-dim hover:text-white transition-all uppercase tracking-widest"
+                        class="px-5 py-2.5 text-xs font-bold text-text-dim hover:text-text-main transition-all uppercase tracking-widest"
                         :disabled="saving"
                     >
                         Discard

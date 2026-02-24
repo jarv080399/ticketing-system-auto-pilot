@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-6">
         <div>
-            <h1 class="text-2xl font-bold text-text-main">System Health</h1>
+            <h1 class="text-3xl font-black text-text-main tracking-tight">System Health</h1>
             <p class="text-text-dim text-sm mt-1">Real-time status of critical infrastructure services.</p>
         </div>
 
