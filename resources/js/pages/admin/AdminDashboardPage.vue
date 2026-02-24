@@ -193,22 +193,26 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from '@/plugins/axios';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 // ─── Metric KPI cards ───────────────────────────────────────────────────────
 const metrics = ref([
-    { label: 'Active Sessions',  value: '42',     unit: '',    icon: '⚡',  trend: '12', trendUp: true  },
-    { label: 'System Uptime',    value: '99.98',  unit: '%',   icon: '⏱️', trend: '0',  trendUp: true  },
-    { label: 'Queued Jobs',      value: '0',      unit: '',    icon: '📦',  trend: '100', trendUp: true },
-    { label: 'Users Online',     value: '12',     unit: '',    icon: '👤',  trend: '8',  trendUp: true  },
+    { label: 'Active Sessions',  value: '-',     unit: '',    icon: '⚡',  trend: '0', trendUp: true  },
+    { label: 'System Uptime',    value: '-',     unit: '%',   icon: '⏱️', trend: '0', trendUp: true  },
+    { label: 'Queued Jobs',      value: '-',     unit: '',    icon: '📦',  trend: '0', trendUp: true },
+    { label: 'Total Users',      value: '-',     unit: '',    icon: '👤',  trend: '0', trendUp: true  },
 ]);
 
 // ─── Service status strip ────────────────────────────────────────────────────
 const services = ref([
-    { name: 'Database',   value: 'Connected',      ok: true  },
-    { name: 'Redis',      value: 'Connected',      ok: true  },
-    { name: 'Queue',      value: '0 pending',      ok: true  },
-    { name: 'Scheduler',  value: 'Running',        ok: true  },
+    { name: 'Database',   value: 'Checking...',      ok: true  },
+    { name: 'Redis',      value: 'Checking...',      ok: true  },
+    { name: 'Queue',      value: '...',              ok: true  },
+    { name: 'Scheduler',  value: 'Checking...',      ok: true  },
 ]);
 
 // ─── Config quick actions ────────────────────────────────────────────────────
@@ -233,27 +237,44 @@ const maintenanceLinks = ref([
     },
     {
         to: '/admin/users',
-        icon: '👥', iconBg: 'bg-warning/10 text-warning',
+        icon: '👥', iconBg: 'bg-amber-500/10 text-amber-500', // Using standard tailwind warning colors if needed
         label: 'User Controls', sub: 'Permissions, roles & access', badge: null
     },
 ]);
 
-// ─── Recent activity feed (static seed — replace with API call) ──────────────
-const recentActivity = ref([
-    { id: 1, actor: 'System',       type: 'created',  description: 'Auto-escalation rule triggered for ticket #2041',          time: '2m ago'  },
-    { id: 2, actor: 'Admin',        type: 'updated',  description: 'General settings — SLA response time changed to 4 hours',  time: '18m ago' },
-    { id: 3, actor: 'John Doe',     type: 'deleted',  description: 'Removed custom field "department_code" from Asset schema',  time: '1h ago'  },
-    { id: 4, actor: 'Jane Smith',   type: 'created',  description: 'New holiday "Labor Day 2026" registered in system',         time: '3h ago'  },
-    { id: 5, actor: 'System',       type: 'updated',  description: 'Business hours schedule updated for Saturday',             time: '5h ago'  },
-]);
+// ─── Recent activity feed ────────────────────────────────────────────────────
+const recentActivity = ref([]);
+
+// ─── Data Fetching ───────────────────────────────────────────────────────────
+const fetchDashboardData = async () => {
+    try {
+        const response = await axios.get('/admin/dashboard');
+        const data = response.data;
+        
+        if (data.metrics) metrics.value = data.metrics;
+        if (data.services) services.value = data.services;
+        if (data.recentActivity) recentActivity.value = data.recentActivity;
+        
+    } catch (error) {
+        toast.error('Failed to load live dashboard data.');
+        console.error('Dashboard load error:', error);
+    }
+};
+
+onMounted(() => {
+    fetchDashboardData();
+    // In a real sophisticated app, we could poll this or use Echo, but for now fetching on mount is fine
+});
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function actionBadgeClass(type) {
-    const map = {
-        created: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-        updated: 'bg-primary/20 text-primary border-primary/30',
-        deleted: 'bg-red-500/20 text-red-400 border-red-500/30',
-    };
-    return map[type] ?? 'bg-slate-500/20 text-text-dim border-glass-border';
+    if (!type) return 'bg-slate-500/20 text-text-dim border-glass-border';
+    
+    const lowerType = type.toLowerCase();
+    if (lowerType.includes('created')) return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+    if (lowerType.includes('deleted')) return 'bg-red-500/20 text-red-400 border-red-500/30';
+    if (lowerType.includes('updated')) return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+    
+    return 'bg-slate-500/20 text-slate-400 border-slate-500/30'; // UNKNOWN badge
 }
 </script>
