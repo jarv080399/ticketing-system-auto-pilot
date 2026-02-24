@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-3xl font-black text-white tracking-tight">System Holidays</h1>
-                <p class="text-text-dim text-sm mt-2 max-w-2xl">
+                <p class="text-text-dim text-sm mt-2">
                     Specify non-working dates. SLA timers will automatically pause during these designated dates globally, bypassing standard business hours.
                 </p>
             </div>
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div v-else class="max-w-7xl space-y-4">
+        <div v-else class="w-full space-y-4">
             <div v-if="holidays.length === 0" class="bg-surface rounded-2xl border border-glass-border p-16 text-center shadow-xl">
                 <div class="w-16 h-16 bg-surface-light rounded-2xl flex items-center justify-center mx-auto mb-4 border border-glass-border shadow-inner">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>

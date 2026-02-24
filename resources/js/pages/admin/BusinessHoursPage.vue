@@ -2,7 +2,7 @@
     <div class="space-y-8 pb-10">
         <div class="mb-8">
             <h1 class="text-3xl font-black text-white tracking-tight">Business Hours</h1>
-            <p class="text-text-dim text-sm mt-2 max-w-2xl">
+            <p class="text-text-dim text-sm mt-2">
                 Configure your global support availability. These hours dictate SLA calculations, determining when time tracking pauses for active tickets during off hours.
             </p>
         </div>
@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div v-else class="space-y-10 max-w-7xl">
+        <div v-else class="space-y-10 w-full">
             <div class="bg-surface rounded-2xl border border-glass-border shadow-xl overflow-hidden relative">
                 
                 <div class="px-8 py-5 bg-surface-light border-b border-glass-border flex items-center justify-between">

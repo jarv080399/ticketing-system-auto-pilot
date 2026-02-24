@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-3xl font-black text-white tracking-tight">Custom Fields</h1>
-                <p class="text-text-dim text-sm mt-2 max-w-2xl">
+                <p class="text-text-dim text-sm mt-2">
                     Extend core system entities algebraically with additional metadata fields. Dynamically shape your asset management, tickets, and user databases.
                 </p>
             </div>
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div v-else class="max-w-7xl space-y-10">
+        <div v-else class="w-full space-y-10">
             <div v-for="entity in ['ticket', 'asset', 'user']" :key="entity" class="bg-surface rounded-2xl border border-glass-border shadow-xl overflow-hidden relative">
                 
                 <div class="px-8 py-5 bg-surface-light border-b border-glass-border flex items-center justify-between">
