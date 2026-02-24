@@ -61,11 +61,11 @@
                                     <div class="flex items-center gap-3 cursor-pointer" @click="day.is_working_day = !day.is_working_day">
                                         <button
                                             :class="day.is_working_day ? 'bg-primary' : 'bg-surface-light'"
-                                            class="relative w-11 h-6 rounded-full transition-colors focus:outline-none flex-shrink-0"
+                                            class="w-11 h-6 rounded-full p-1 flex items-center transition-colors focus:outline-none flex-shrink-0"
                                         >
                                             <span
-                                                :class="day.is_working_day ? 'translate-x-5' : 'translate-x-1'"
-                                                class="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform"
+                                                :class="day.is_working_day ? 'translate-x-5' : 'translate-x-0'"
+                                                class="w-4 h-4 bg-white rounded-full shadow transition-transform block"
                                             ></span>
                                         </button>
                                         <span class="text-xs font-bold whitespace-nowrap" :class="day.is_working_day ? 'text-text-main' : 'text-text-dim'">

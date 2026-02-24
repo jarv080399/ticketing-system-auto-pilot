@@ -328,11 +328,11 @@
                         <button
                             @click="form.is_active = !form.is_active"
                             :class="form.is_active ? 'bg-primary' : 'bg-surface-light'"
-                            class="relative w-11 h-6 rounded-full transition-colors focus:outline-none"
+                            class="w-11 h-6 rounded-full p-1 flex items-center transition-colors focus:outline-none flex-shrink-0"
                         >
                             <span
-                                :class="form.is_active ? 'translate-x-5' : 'translate-x-1'"
-                                class="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform"
+                                :class="form.is_active ? 'translate-x-5' : 'translate-x-0'"
+                                class="w-4 h-4 bg-white rounded-full shadow transition-transform block"
                             ></span>
                         </button>
                     </div>
@@ -380,11 +380,11 @@
                         <button
                             @click="slaForm.business_hours_only = !slaForm.business_hours_only"
                             :class="slaForm.business_hours_only ? 'bg-primary' : 'bg-surface-light'"
-                            class="relative w-11 h-6 rounded-full transition-colors focus:outline-none"
+                            class="w-11 h-6 rounded-full p-1 flex items-center transition-colors focus:outline-none flex-shrink-0"
                         >
                             <span
-                                :class="slaForm.business_hours_only ? 'translate-x-5' : 'translate-x-1'"
-                                class="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform"
+                                :class="slaForm.business_hours_only ? 'translate-x-5' : 'translate-x-0'"
+                                class="w-4 h-4 bg-white rounded-full shadow transition-transform block"
                             ></span>
                         </button>
                     </div>
