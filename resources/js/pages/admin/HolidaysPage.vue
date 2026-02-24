@@ -39,7 +39,7 @@
             <div v-else class="bg-surface border border-glass-border rounded-xl overflow-hidden">
                 <div class="px-6 py-4 bg-surface-light border-b border-glass-border flex items-center justify-between">
                     <div>
-                        <h2 class="text-[11px] font-semibold tracking-widest text-text-dim uppercase">Holiday Calendar</h2>
+                        <h2 class="text-base font-black uppercase tracking-widest text-text-main">Holiday Calendar</h2>
                         <p class="text-xs text-text-dim mt-0.5">Listed dates where the system treats as offline globally.</p>
                     </div>
                     <div class="hidden sm:flex w-8 h-8 bg-background border border-glass-border rounded-lg items-center justify-center text-primary cursor-help relative group/tooltip">
