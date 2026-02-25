@@ -1,4 +1,5 @@
 <template>
+<div class="w-full">
     <div v-if="loading" class="w-full space-y-12 py-12">
         <div class="h-12 w-64 bg-surface-light animate-pulse rounded-xl"></div>
         <div class="h-64 glass-card animate-pulse rounded-xl"></div>
@@ -267,6 +268,7 @@
             >›</button>
         </div>
     </Transition>
+</div>
 </template>
 
 <script setup>
