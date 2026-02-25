@@ -64,8 +64,8 @@ Route::prefix('v1')->group(function () {
             
             // Ticket Archiving
             Route::get('/tickets/archived', [\App\Http\Controllers\Api\V1\Admin\TicketArchiveController::class, 'index']);
-            Route::post('/tickets/{ticket}/archive', [\App\Http\Controllers\Api\V1\Admin\TicketArchiveController::class, 'archive']);
-            Route::post('/tickets/{ticket}/unarchive', [\App\Http\Controllers\Api\V1\Admin\TicketArchiveController::class, 'unarchive']);
+            Route::post('/tickets/{ticketNumber}/archive', [\App\Http\Controllers\Api\V1\Admin\TicketArchiveController::class, 'archive']);
+            Route::post('/tickets/{ticketNumber}/unarchive', [\App\Http\Controllers\Api\V1\Admin\TicketArchiveController::class, 'unarchive']);
             
             Route::apiResource('automation-rules', \App\Http\Controllers\Api\V1\Admin\AutomationController::class);
             Route::apiResource('users', \App\Http\Controllers\Api\V1\Admin\UserController::class);
