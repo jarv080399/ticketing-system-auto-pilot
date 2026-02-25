@@ -39,6 +39,9 @@
                 <router-link to="/admin/custom-fields" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
                     🏗️ Custom Fields
                 </router-link>
+                <router-link to="/admin/archived-tickets" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">
+                    🗄️ Archived Tickets
+                </router-link>
 
                 <div class="text-[10px] font-black uppercase tracking-widest text-text-dim px-3 mb-2 mt-6">System</div>
                 <router-link to="/admin/health" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-text-dim hover:bg-surface-light hover:text-text-main transition-colors" active-class="bg-surface-light text-text-main">

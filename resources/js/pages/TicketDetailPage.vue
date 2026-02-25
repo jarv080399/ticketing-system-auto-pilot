@@ -21,6 +21,15 @@
             </div>
         </div>
 
+        <!-- Archived Banner -->
+        <div v-if="ticket.is_archived" class="bg-amber-500/10 border border-amber-500/30 text-amber-500 px-6 py-4 rounded-xl flex items-center gap-4 shadow-sm">
+            <span class="text-2xl">🗄️</span>
+            <div>
+                <h3 class="font-bold text-sm">Archived Ticket</h3>
+                <p class="text-xs opacity-80 mt-1">This ticket has been archived by the administrative team. You can still view it, but no new replies can be added.</p>
+            </div>
+        </div>
+
         <!-- Progress Tracker -->
         <div class="glass-card p-10 rounded-xl">
             <TicketStatusTracker :status="ticket.status" />
@@ -140,7 +149,7 @@
                             <div class="text-right">
                                 <button 
                                     @click="submitComment"
-                                    :disabled="!commentBody.trim() || sending"
+                                    :disabled="!commentBody.trim() || sending || ticket.is_archived"
                                     class="px-8 py-3 bg-primary text-white rounded-lg text-xs font-black uppercase tracking-widest hover-lift disabled:opacity-50"
                                 >
                                     {{ sending ? 'Sending...' : 'Reply' }}
