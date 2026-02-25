@@ -18,6 +18,23 @@
         <!-- ── Main ── -->
         <div v-else class="space-y-8 pb-24 animate-fade-in">
 
+            <!-- Archived Banner -->
+            <div v-if="ticket.is_archived" class="bg-amber-500/10 border border-amber-500/30 text-amber-500 px-6 py-4 rounded-xl flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl">🗄️</span>
+                    <div>
+                        <h3 class="font-bold text-sm">Archived Record</h3>
+                        <p class="text-xs opacity-80 mt-1">This ticket is archived and removed from active queues. Interactions are disabled.</p>
+                    </div>
+                </div>
+                <!-- Admin Unarchive Button -->
+                <button v-if="auth.user?.role === 'admin'" 
+                        @click="toggleArchive" 
+                        class="px-4 py-2 bg-amber-500 text-white rounded-lg text-xs font-bold uppercase tracking-widest hover-lift">
+                    Unarchive
+                </button>
+            </div>
+
             <!-- Header -->
             <div class="flex items-center justify-between flex-wrap gap-4">
                 <router-link to="/agent/queue" class="flex items-center gap-2 text-text-dim hover:text-primary transition-colors group">
@@ -40,9 +57,8 @@
                         {{ ticket.priority }}
                     </span>
 
-                    <!-- Spam button -->
                     <button @click="markSpam"
-                            :disabled="actionLoading"
+                            :disabled="actionLoading || ticket.is_archived"
                             title="Mark as Spam"
                             class="p-2 rounded-lg bg-surface-light border border-glass-border hover:bg-red-500/10 hover:border-red-500/40 hover:text-red-400 text-text-dim transition-all text-sm font-bold flex items-center gap-1.5 disabled:opacity-50">
                         🚫 <span class="text-xs">Spam</span>
@@ -50,10 +66,19 @@
 
                     <!-- Relink button -->
                     <button @click="showRelinkModal = true"
-                            :disabled="actionLoading"
+                            :disabled="actionLoading || ticket.is_archived"
                             title="Relink / Reassign"
                             class="p-2 rounded-lg bg-surface-light border border-glass-border hover:bg-primary/10 hover:border-primary/40 hover:text-primary text-text-dim transition-all text-sm font-bold flex items-center gap-1.5 disabled:opacity-50">
                         🔗 <span class="text-xs">Relink</span>
+                    </button>
+
+                    <!-- Archive button (Admin Only) -->
+                    <button v-if="auth.user?.role === 'admin' && !ticket.is_archived" 
+                            @click="toggleArchive"
+                            :disabled="actionLoading"
+                            title="Archive Ticket"
+                            class="p-2 rounded-lg bg-surface-light border border-glass-border hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-500 text-text-dim transition-all text-sm font-bold flex items-center gap-1.5 disabled:opacity-50">
+                        🗄️ <span class="text-xs">Archive</span>
                     </button>
                 </div>
             </div>
@@ -260,7 +285,7 @@
                             </div>
                             <button
                                 @click="submitComment"
-                                :disabled="!commentBody.trim() || sending"
+                                :disabled="!commentBody.trim() || sending || ticket.is_archived"
                                 class="px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed hover-lift"
                                 :class="replyMode === 'internal'
                                     ? 'bg-amber-500 text-white'
@@ -281,8 +306,8 @@
                         <!-- Status -->
                         <div>
                             <label class="text-[9px] font-black uppercase tracking-widest text-text-dim/60 mb-2 block">Status</label>
-                            <select v-model="editStatus" @change="updateTicket({ status: editStatus })"
-                                    class="w-full bg-surface-light border border-glass-border rounded-lg px-3 py-2 text-sm font-bold text-text-main focus:ring-2 focus:ring-primary/40 focus:outline-none cursor-pointer">
+                            <select v-model="editStatus" @change="updateTicket({ status: editStatus })" :disabled="ticket.is_archived"
+                                    class="w-full bg-surface-light border border-glass-border rounded-lg px-3 py-2 text-sm font-bold text-text-main focus:ring-2 focus:ring-primary/40 focus:outline-none cursor-pointer disabled:opacity-50">
                                 <option value="new">🔵 New</option>
                                 <option value="in_progress">🟣 In Progress</option>
                                 <option value="waiting_on_customer">🟡 Waiting on Customer</option>
@@ -294,8 +319,8 @@
                         <!-- Priority -->
                         <div>
                             <label class="text-[9px] font-black uppercase tracking-widest text-text-dim/60 mb-2 block">Priority</label>
-                            <select v-model="editPriority" @change="updateTicket({ priority: editPriority })"
-                                    class="w-full bg-surface-light border border-glass-border rounded-lg px-3 py-2 text-sm font-bold text-text-main focus:ring-2 focus:ring-primary/40 focus:outline-none cursor-pointer">
+                            <select v-model="editPriority" @change="updateTicket({ priority: editPriority })" :disabled="ticket.is_archived"
+                                    class="w-full bg-surface-light border border-glass-border rounded-lg px-3 py-2 text-sm font-bold text-text-main focus:ring-2 focus:ring-primary/40 focus:outline-none cursor-pointer disabled:opacity-50">
                                 <option value="low">🔵 Low</option>
                                 <option value="medium">🟣 Medium</option>
                                 <option value="high">🟠 High</option>
@@ -649,6 +674,24 @@ async function updateTicket(payload) {
         // Revert select
         editStatus.value   = ticket.value.status;
         editPriority.value = ticket.value.priority;
+    } finally {
+        actionLoading.value = false;
+    }
+}
+
+// ─── Archive / Unarchive ───
+async function toggleArchive() {
+    if (!confirm(ticket.value.is_archived ? 'Unarchive this ticket?' : 'Archive this ticket? It will be hidden from queues.')) return;
+    
+    actionLoading.value = true;
+    try {
+        const action = ticket.value.is_archived ? 'unarchive' : 'archive';
+        await axios.post(`/admin/tickets/${ticket.value.ticket_number}/${action}`);
+        
+        ticket.value.is_archived = !ticket.value.is_archived;
+        toast.success(`Ticket ${ticket.value.is_archived ? 'archived' : 'unarchived'}.`);
+    } catch (err) {
+        toast.error(err.response?.data?.message || 'Failed to toggle archive status.');
     } finally {
         actionLoading.value = false;
     }

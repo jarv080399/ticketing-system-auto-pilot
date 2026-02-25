@@ -33,6 +33,7 @@ class Ticket extends Model
         'first_response_at',
         'resolved_at',
         'closed_at',
+        'is_archived',
     ];
 
     /**
@@ -46,6 +47,7 @@ class Ticket extends Model
         'first_response_at' => 'datetime',
         'resolved_at' => 'datetime',
         'closed_at' => 'datetime',
+        'is_archived' => 'boolean',
     ];
 
     /**
@@ -57,6 +59,10 @@ class Ticket extends Model
             if (!$ticket->ticket_number) {
                 $ticket->ticket_number = 'TKT-' . strtoupper(Str::random(8));
             }
+        });
+
+        static::addGlobalScope('archived', function (\Illuminate\Database\Eloquent\Builder $builder) {
+            $builder->where('is_archived', false);
         });
     }
 

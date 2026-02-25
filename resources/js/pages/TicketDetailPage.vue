@@ -1,4 +1,5 @@
 <template>
+<div class="w-full">
     <div v-if="loading" class="w-full space-y-12 py-12">
         <div class="h-12 w-64 bg-surface-light animate-pulse rounded-xl"></div>
         <div class="h-64 glass-card animate-pulse rounded-xl"></div>
@@ -18,6 +19,15 @@
 
             <div class="flex gap-3">
                 <button class="px-6 py-2.5 glass-card rounded-xl text-xs font-black uppercase tracking-widest text-text-dim hover:bg-white/5 transition-all">Download PDF</button>
+            </div>
+        </div>
+
+        <!-- Archived Banner -->
+        <div v-if="ticket.is_archived" class="bg-amber-500/10 border border-amber-500/30 text-amber-500 px-6 py-4 rounded-xl flex items-center gap-4 shadow-sm">
+            <span class="text-2xl">🗄️</span>
+            <div>
+                <h3 class="font-bold text-sm">Archived Ticket</h3>
+                <p class="text-xs opacity-80 mt-1">This ticket has been archived by the administrative team. You can still view it, but no new replies can be added.</p>
             </div>
         </div>
 
@@ -140,7 +150,7 @@
                             <div class="text-right">
                                 <button 
                                     @click="submitComment"
-                                    :disabled="!commentBody.trim() || sending"
+                                    :disabled="!commentBody.trim() || sending || ticket.is_archived"
                                     class="px-8 py-3 bg-primary text-white rounded-lg text-xs font-black uppercase tracking-widest hover-lift disabled:opacity-50"
                                 >
                                     {{ sending ? 'Sending...' : 'Reply' }}
@@ -258,6 +268,7 @@
             >›</button>
         </div>
     </Transition>
+</div>
 </template>
 
 <script setup>

@@ -18,8 +18,8 @@
                             v-for="item in navItems" 
                             :key="item.path"
                             :to="item.path"
-                            class="px-4 py-2 rounded-lg text-sm font-medium transition-smooth hover:bg-white/10"
-                            :class="[$route.path === item.path ? 'text-primary bg-primary/10' : 'text-gray-400 hover:text-white']"
+                            class="px-4 py-2 rounded-lg text-sm font-medium transition-smooth hover:bg-black/5 dark:hover:bg-white/10"
+                            :class="[$route.path === item.path ? 'text-primary bg-primary/10' : 'text-text-dim hover:text-text-main']"
                         >
                             {{ item.name }}
                         </router-link>
@@ -32,7 +32,7 @@
                         <!-- Theme Toggle -->
                         <button 
                             @click="themeStore.toggleTheme"
-                            class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-text-dim hover:text-primary hover:border-primary/50 transition-all duration-300"
+                            class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-glass-border text-text-dim hover:text-primary hover:border-primary/50 transition-all duration-300"
                             title="Toggle Theme"
                         >
                             <svg v-if="themeStore.theme === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,9 +54,9 @@
                         <div class="relative">
                             <button 
                                 @click="isUserMenuOpen = !isUserMenuOpen"
-                                class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-white/5 transition-smooth border border-transparent hover:border-white/10"
+                                class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-smooth border border-transparent hover:border-glass-border"
                             >
-                                <div class="w-8 h-8 rounded-lg bg-surface-light flex items-center justify-center border border-white/10">
+                                <div class="w-8 h-8 rounded-lg bg-surface-light flex items-center justify-center border border-glass-border">
                                     <span class="text-xs font-bold text-text-main">{{ auth.user?.name?.charAt(0) }}</span>
                                 </div>
                                 <span class="hidden sm:inline text-sm font-medium text-text-dim group-hover:text-text-main">{{ auth.user?.name }}</span>
@@ -64,15 +64,15 @@
 
                             <!-- Dropdown Menu -->
                             <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-                                <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 glass-card rounded-lg py-2 overflow-hidden ring-1 ring-white/10">
-                                    <div class="px-4 py-3 border-b border-white/10 bg-white/5">
+                                <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 glass-card rounded-lg py-2 overflow-hidden ring-1 ring-black/5 dark:ring-white/10">
+                                    <div class="px-4 py-3 border-b border-glass-border bg-black/5 dark:bg-white/5">
                                         <p class="text-xs text-text-dim font-medium uppercase tracking-wider">Role</p>
                                         <p class="text-sm font-bold text-primary truncate capitalize">{{ auth.user?.role }}</p>
                                     </div>
-                                    <div class="px-2 py-2 border-b border-white/10">
+                                    <div class="px-2 py-2 border-b border-glass-border">
                                         <router-link 
                                             to="/profile"
-                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-white/10 rounded-xl flex items-center gap-3 transition-all"
+                                            class="w-full text-left px-4 py-2.5 text-xs font-bold text-text-main hover:bg-black/5 dark:hover:bg-white/10 rounded-xl flex items-center gap-3 transition-all"
                                         >
                                             <span>👤</span>
                                             My Profile

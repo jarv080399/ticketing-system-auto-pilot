@@ -1,9 +1,10 @@
 <template>
     <div class="space-y-8 pb-10">
-        <div class="mb-8">
-            <h1 class="text-3xl font-black text-white tracking-tight">System Configuration</h1>
-            <p class="text-text-dim text-sm mt-2 max-w-2xl">
-                Manage global parameters, operational boundaries, and platform presentation. Changes made here may affect all active sessions and immediate workflows.
+        <!-- Header -->
+        <div class="mb-10">
+            <h1 class="text-3xl font-black text-text-main tracking-tight">System Configuration</h1>
+            <p class="text-text-dim text-sm mt-2">
+                Manage global parameters, operational boundaries, and platform presentation. 
             </p>
         </div>
 
@@ -14,97 +15,77 @@
             </div>
         </div>
 
-        <div v-else class="space-y-10 max-w-7xl"> <!-- Maximized View -->
-            
-            <!-- Settings Groups -->
-            <div v-for="(settings, group) in groupedSettings" :key="group" class="bg-surface rounded-2xl border border-glass-border shadow-xl overflow-hidden relative">
+        <div v-else class="space-y-8"> 
+            <!-- Settings Groups Vertical Stack -->
+            <div v-for="(settings, group) in groupedSettings" :key="group" class="bg-surface rounded-2xl border border-glass-border shadow-2xl overflow-hidden">
                 
-                <!-- Group Header Elements -->
-                <div class="px-8 py-5 bg-surface-light border-b border-glass-border flex items-center justify-between">
-                    <div>
-                        <h2 class="text-base font-black uppercase tracking-widest text-white">{{ group }} Settings</h2>
-                        <p class="text-xs text-text-dim mt-1">Configure parameters specific to the {{ group.toLowerCase() }} module.</p>
-                    </div>
-                    <div class="hidden sm:flex w-10 h-10 bg-surface rounded-xl border border-glass-border items-center justify-center text-primary shadow-sm hover:scale-110 transition-transform cursor-help" title="Module settings">
-                        ⚙️
-                    </div>
+                <!-- Group Header -->
+                <div class="px-8 py-5 bg-surface-light border-b border-glass-border">
+                    <h2 class="text-sm font-black uppercase tracking-[0.2em] text-text-main">{{ group }} Settings</h2>
                 </div>
                 
-                <!-- Inputs Flex Grid -->
-                <div class="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-10 bg-background/30">
-                    <div v-for="setting in settings" :key="setting.id" class="flex flex-col gap-3 group/item">
+                <!-- Group Fields: Contents Side by Side -->
+                <div class="divide-y divide-glass-border bg-background/20">
+                    <div v-for="setting in settings" :key="setting.id" class="px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start group/item hover:bg-white/[0.02] transition-colors">
                         
-                        <div class="flex items-start justify-between">
-                            <label :for="setting.key" class="text-sm font-bold text-gray-200 group-hover/item:text-primary transition-colors">
+                        <!-- Left Side: Label & Description -->
+                        <div class="lg:col-span-4 space-y-1">
+                            <label :for="setting.key" class="text-sm font-bold text-text-main group-hover/item:text-primary transition-colors">
                                 {{ formatLabel(setting.key) }}
                             </label>
-                            
-                            <!-- Help Tooltip / Icon -->
-                            <div class="group/tooltip relative flex items-center justify-center cursor-help">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-dim hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <!-- Tooltip visual -->
-                                <div class="absolute bottom-full right-0 mb-3 hidden group-hover/tooltip:block w-56 p-3 bg-gray-800 text-xs text-blue-100 rounded-xl border border-blue-500/30 shadow-2xl z-20 normal-case leading-relaxed">
-                                    <div class="font-black text-white mb-1">Configuration Guide:</div>
-                                    This property defines the systemic rules for "{{ formatLabel(setting.key) }}". Ensure accuracy to prevent operational errors.
-                                </div>
-                            </div>
+                            <p class="text-[11px] text-text-dim leading-relaxed max-w-sm">
+                                {{ getHelperText(setting.key) }}
+                            </p>
                         </div>
                         
-                        <!-- Text/Number Input -->
-                        <div v-if="setting.type === 'string' || setting.type === 'integer'" class="relative">
-                            <input 
-                                :id="setting.key"
-                                v-model="editedSettings[setting.key]"
-                                :type="setting.type === 'integer' ? 'number' : 'text'"
-                                placeholder="Enter desired value..."
-                                class="w-full px-4 py-3 bg-surface border border-glass-border rounded-xl text-white text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-inner"
-                            />
-                            <div v-if="setting.type === 'integer'" class="absolute right-3 top-3 text-[10px] uppercase font-black tracking-widest text-text-dim pointer-events-none">NUM</div>
-                        </div>
+                        <!-- Right Side: Input Control -->
+                        <div class="lg:col-span-8 flex items-center">
+                            <!-- Text/Number Input -->
+                            <div v-if="setting.type === 'string' || setting.type === 'integer'" class="w-full max-w-xl relative">
+                                <input 
+                                    :id="setting.key"
+                                    v-model="editedSettings[setting.key]"
+                                    :type="setting.type === 'integer' ? 'number' : 'text'"
+                                    class="w-full px-4 py-2.5 bg-background border border-glass-border rounded-xl text-text-main text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all font-mono"
+                                />
+                                <div v-if="setting.type === 'integer'" class="absolute right-3 top-2.5 text-[9px] font-black text-text-dim opacity-50 uppercase tracking-widest pointer-events-none">NUM</div>
+                            </div>
 
-                        <!-- Boolean Toggle Input -->
-                        <div v-else-if="setting.type === 'boolean'" class="flex items-center gap-4 bg-surface px-5 py-3 rounded-xl border border-glass-border shadow-inner cursor-pointer hover:border-gray-600 transition-colors" @click="editedSettings[setting.key] = !editedSettings[setting.key]">
-                            <button 
-                                :class="[
-                                    'w-14 h-7 rounded-full p-1 transition-colors duration-300 ease-in-out relative flex-shrink-0 flex items-center justify-start',
-                                    editedSettings[setting.key] ? 'bg-emerald-500' : 'bg-gray-700'
-                                ]"
-                            >
-                                <span 
+                            <!-- Boolean Toggle -->
+                            <div v-else-if="setting.type === 'boolean'" class="flex items-center gap-4 cursor-pointer" @click="editedSettings[setting.key] = !editedSettings[setting.key]">
+                                <button 
                                     :class="[
-                                        'w-5 h-5 bg-white rounded-full transition-transform duration-300 shadow-sm block',
-                                        editedSettings[setting.key] ? 'translate-x-[24px]' : 'translate-x-0'
+                                        'w-11 h-5.5 rounded-full p-1 transition-colors duration-300 relative flex items-center',
+                                        editedSettings[setting.key] ? 'bg-primary' : 'bg-surface-light'
                                     ]"
-                                ></span>
-                            </button>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-black tracking-wide" :class="editedSettings[setting.key] ? 'text-emerald-400' : 'text-gray-400'">
-                                    {{ editedSettings[setting.key] ? 'System Active' : 'System Offline' }}
+                                >
+                                    <span 
+                                        :class="[
+                                            'w-3.5 h-3.5 bg-white rounded-full transition-transform duration-300 block',
+                                            editedSettings[setting.key] ? 'translate-x-[22px]' : 'translate-x-0'
+                                        ]"
+                                    ></span>
+                                </button>
+                                <span class="text-xs font-bold uppercase tracking-widest" :class="editedSettings[setting.key] ? 'text-primary' : 'text-text-dim'">
+                                    {{ editedSettings[setting.key] ? 'Active' : 'Disabled' }}
                                 </span>
                             </div>
                         </div>
-                        
-                        <!-- Mini Guide Text -->
-                        <p class="text-[11px] font-medium text-text-dim/80 ml-1 leading-relaxed border-l-2 border-primary/30 pl-2">
-                            {{ getHelperText(setting.key) }}
-                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Sticky Save Bar -->
-            <div class="flex items-center justify-between sticky bottom-6 p-5 rounded-2xl bg-surface/80 backdrop-blur-2xl border border-glass-border shadow-2xl z-40 mt-10">
+            <!-- Save Bar -->
+            <div class="flex items-center justify-between p-6 rounded-xl bg-surface border border-glass-border mt-6">
                 <div class="hidden sm:block">
-                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Unsaved Changes Notice</p>
-                    <p class="text-xs text-text-dim mt-0.5">Please save your configurations before navigating away.</p>
+                    <p class="text-[11px] font-semibold tracking-widest text-text-dim uppercase">Global Persistence</p>
+                    <p class="text-xs text-text-dim mt-0.5">Unsaved changes will be discarded on navigation.</p>
                 </div>
                 
-                <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
                     <button 
                         @click="reset"
-                        class="px-5 py-2.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                        class="bg-surface-light hover:bg-surface text-text-dim hover:text-text-main text-sm font-semibold px-4 py-2 rounded-lg transition-colors border border-glass-border"
                         :disabled="saving"
                     >
                         Discard
@@ -112,11 +93,10 @@
                     <button 
                         @click="save"
                         :disabled="saving"
-                        class="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-black rounded-xl shadow-lg shadow-primary/30 hover-lift active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[180px]"
+                        class="bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-6 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        <span v-if="saving" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
-                        <svg v-if="!saving" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span>{{ saving ? 'Processing Request...' : 'Apply Configurations' }}</span>
+                        <span v-if="saving" class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></span>
+                        <span v-else>Apply Config</span>
                     </button>
                 </div>
             </div>

@@ -100,7 +100,8 @@ class TicketController extends Controller
      */
     public function show(Request $request, $ticketNumber)
     {
-        $ticket = Ticket::with(['category', 'requester', 'agent', 'attachments', 'comments.user'])
+        $ticket = Ticket::withoutGlobalScope('archived')
+            ->with(['category', 'requester', 'agent', 'attachments', 'comments.user'])
             ->where('ticket_number', $ticketNumber)
             ->firstOrFail();
 

@@ -174,6 +174,11 @@ const routes = [
                 component: () => import('@/pages/admin/CustomFieldsPage.vue'),
             },
             {
+                path: 'archived-tickets',
+                name: 'AdminArchivedTickets',
+                component: () => import('@/pages/admin/ArchivedTicketsPage.vue'),
+            },
+            {
                 path: 'health',
                 name: 'AdminHealth',
                 component: () => import('@/pages/admin/SystemHealthPage.vue'),

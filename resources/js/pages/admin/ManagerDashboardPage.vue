@@ -1,23 +1,23 @@
 <template>
-    <div class="space-y-12 pb-24">
+    <div class="space-y-8 pb-10">
         <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div class="space-y-2">
-                <h1 class="text-4xl font-black text-text-main tracking-tight">System <span class="text-gradient">Intelligence</span></h1>
-                <p class="text-text-dim font-medium">Global infrastructure metrics and support performance audit.</p>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <h1 class="text-3xl font-black text-text-main tracking-tight">System Intelligence</h1>
+                <p class="mt-1 text-sm text-text-dim">Global infrastructure metrics and support performance audit.</p>
             </div>
             
             <div class="flex items-center gap-4">
-                <div class="flex bg-surface-light p-1 rounded-xl border border-glass-border">
+                <div class="flex bg-surface-light p-1 rounded-lg border border-glass-border gap-1">
                     <button v-for="range in ranges" :key="range.label" 
                         @click="selectedRange = range.value; fetchData()"
-                        class="px-5 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all"
-                        :class="selectedRange === range.value ? 'bg-primary text-white shadow-lg' : 'text-text-dim hover:text-text-main'"
+                        class="text-xs font-bold px-3 py-1.5 rounded-md transition-colors"
+                        :class="selectedRange === range.value ? 'bg-primary text-white' : 'text-text-dim hover:text-text-main'"
                     >
                         {{ range.label }}
                     </button>
                 </div>
-                <button class="p-3 glass-card rounded-xl text-primary hover:bg-primary/10 transition-all">
+                <button class="p-2.5 bg-surface border border-glass-border rounded-lg text-primary hover:bg-primary/10 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
@@ -26,34 +26,33 @@
         </div>
 
         <!-- KPI Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div v-for="kpi in kpis" :key="kpi.label" class="glass-card p-8 rounded-2xl relative overflow-hidden group hover-lift">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform duration-700 group-hover:scale-150"></div>
-                <div class="relative z-10 space-y-4">
-                    <div class="w-12 h-12 rounded-xl bg-surface-light flex items-center justify-center text-2xl shadow-sm border border-glass-border">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div v-for="kpi in kpis" :key="kpi.label" class="bg-surface border border-glass-border rounded-xl p-6 group hover:border-primary/40 transition-all">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-surface-light border border-glass-border flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
                         {{ kpi.icon }}
                     </div>
-                    <div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-text-dim mb-1">{{ kpi.label }}</p>
-                        <h2 class="text-3xl font-black text-text-main">{{ kpi.value }}<span class="text-xs font-bold text-text-dim ml-1">{{ kpi.unit }}</span></h2>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span :class="kpi.trendUp ? 'text-emerald-500' : 'text-rose-500'" class="text-[10px] font-black uppercase tracking-widest">
-                            {{ kpi.trendUp ? '↑' : '↓' }} {{ kpi.trend }}%
-                        </span>
-                        <span class="text-[10px] text-text-dim font-bold uppercase tracking-widest opacity-50">vs last period</span>
-                    </div>
+                    <span class="text-[11px] font-semibold tracking-widest text-text-dim uppercase">
+                        {{ kpi.label }}
+                    </span>
+                </div>
+                <div class="text-4xl font-bold text-text-main">
+                    {{ kpi.value }}<span class="text-xl text-text-dim ml-1">{{ kpi.unit }}</span>
+                </div>
+                <div class="mt-2 text-xs flex items-center gap-1" :class="kpi.trendUp ? 'text-emerald-400' : 'text-red-400'">
+                    {{ kpi.trendUp ? '↑' : '↓' }} {{ kpi.trend }}%
+                    <span class="text-text-dim opacity-60 ml-1">vs last period</span>
                 </div>
             </div>
         </div>
 
         <!-- Main Charts Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Volume Trend -->
-            <div class="lg:col-span-2 glass-card p-10 rounded-2xl space-y-8">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Incident Volume Dynamics</h3>
-                    <div class="w-3 h-3 rounded-full bg-primary animate-pulse"></div>
+            <div class="lg:col-span-2 bg-surface border border-glass-border rounded-xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-[11px] font-semibold uppercase tracking-widest text-text-dim">Incident Volume Dynamics</h3>
+                    <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
                 </div>
                 <div class="h-80">
                     <apexchart type="area" height="100%" :options="volumeChart.options" :series="volumeChart.series"></apexchart>
@@ -61,8 +60,8 @@
             </div>
 
             <!-- Category Breakdown -->
-            <div class="glass-card p-10 rounded-2xl space-y-8 flex flex-col">
-                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Distribution Strategy</h3>
+            <div class="bg-surface border border-glass-border rounded-xl p-6 flex flex-col">
+                <h3 class="text-[11px] font-semibold uppercase tracking-widest text-text-dim mb-6">Distribution Strategy</h3>
                 <div class="flex-1 flex items-center justify-center">
                     <apexchart type="donut" width="100%" :options="categoryChart.options" :series="categoryChart.series"></apexchart>
                 </div>
@@ -70,31 +69,31 @@
         </div>
 
         <!-- Lower Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Heatmap -->
-            <div class="glass-card p-10 rounded-2xl space-y-8">
-                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Support Density (Heatmap)</h3>
+            <div class="bg-surface border border-glass-border rounded-xl p-6">
+                <h3 class="text-[11px] font-semibold uppercase tracking-widest text-text-dim mb-6">Support Density (Heatmap)</h3>
                 <div class="h-80">
                     <apexchart type="heatmap" height="100%" :options="heatmapChart.options" :series="heatmapChart.series"></apexchart>
                 </div>
             </div>
 
             <!-- Agent Performance -->
-            <div class="glass-card p-10 rounded-2xl space-y-8 overflow-hidden">
-                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-text-dim">Elite Service Providers</h3>
-                <div class="space-y-4">
-                    <div v-for="agent in leaderboard" :key="agent.name" class="flex items-center justify-between p-4 bg-surface-light/50 rounded-xl border border-glass-border group hover:border-primary/30 transition-all">
+            <div class="bg-surface border border-glass-border rounded-xl p-6 overflow-hidden">
+                <h3 class="text-[11px] font-semibold uppercase tracking-widest text-text-dim mb-6">Elite Service Providers</h3>
+                <div class="space-y-3">
+                    <div v-for="agent in leaderboard" :key="agent.name" class="flex items-center justify-between p-4 bg-background border border-glass-border rounded-lg group hover:border-primary/30 transition-all">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center font-black text-primary border border-primary/20">
+                            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center font-bold text-primary border border-primary/20">
                                 {{ agent.name.charAt(0) }}
                             </div>
                             <div>
-                                <p class="font-bold text-text-main text-sm">{{ agent.name }}</p>
+                                <p class="font-semibold text-text-main text-sm">{{ agent.name }}</p>
                                 <p class="text-[10px] font-bold text-text-dim uppercase tracking-widest">{{ agent.tickets_closed }} Resolves</p>
                             </div>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm font-black text-emerald-500">{{ agent.avg_csat || '5.0' }}★</p>
+                            <p class="text-sm font-bold text-emerald-400">{{ agent.avg_csat || '5.0' }}★</p>
                             <p class="text-[9px] font-bold text-text-dim uppercase tracking-widest">CSAT INDEX</p>
                         </div>
                     </div>
@@ -105,8 +104,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, computed } from 'vue';
 import axios from '@/plugins/axios';
+import { useThemeStore } from '@/stores/theme';
+
+const themeStore = useThemeStore();
+const chartTheme = computed(() => themeStore.theme === 'dark' ? 'dark' : 'light');
+const labelColor = computed(() => themeStore.theme === 'dark' ? '#9ca3af' : '#64748b');
 
 const selectedRange = ref(30);
 const ranges = [
@@ -122,43 +126,51 @@ const kpis = ref([
     { label: 'Satisfaction', value: '0', unit: '/5', icon: '⭐', trend: '8', trendUp: true },
 ]);
 
-const volumeChart = reactive({
-    series: [{ name: 'Incidents', data: [] }],
+const chartData = reactive({
+    volumeCategories: [],
+    volumeSeries: [],
+    categoryLabels: [],
+    categorySeries: [],
+    heatmapSeries: []
+});
+
+const volumeChart = computed(() => ({
+    series: [{ name: 'Incidents', data: chartData.volumeSeries }],
     options: {
         chart: { toolbar: { show: false }, background: 'transparent' },
         stroke: { curve: 'smooth', width: 3, colors: ['#6366f1'] },
         fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] } },
         dataLabels: { enabled: false },
-        xaxis: { categories: [], labels: { style: { colors: '#9ca3af', fontWeight: 600 } } },
-        yaxis: { labels: { style: { colors: '#9ca3af', fontWeight: 600 } } },
-        grid: { borderColor: 'rgba(255,255,255,0.05)' },
-        theme: { mode: 'dark' }
+        xaxis: { categories: chartData.volumeCategories, labels: { style: { colors: labelColor.value, fontWeight: 600 } } },
+        yaxis: { labels: { style: { colors: labelColor.value, fontWeight: 600 } } },
+        grid: { borderColor: themeStore.theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
+        theme: { mode: chartTheme.value }
     }
-});
+}));
 
-const categoryChart = reactive({
-    series: [],
+const categoryChart = computed(() => ({
+    series: chartData.categorySeries,
     options: {
         chart: { background: 'transparent' },
-        labels: [],
+        labels: chartData.categoryLabels,
         colors: ['#6366f1', '#a855f7', '#ec4899', '#f97316', '#3b82f6'],
-        legend: { position: 'bottom', labels: { colors: '#9ca3af' } },
+        legend: { position: 'bottom', labels: { colors: labelColor.value } },
         stroke: { width: 0 },
-        theme: { mode: 'dark' }
+        theme: { mode: chartTheme.value }
     }
-});
+}));
 
-const heatmapChart = reactive({
-    series: [],
+const heatmapChart = computed(() => ({
+    series: chartData.heatmapSeries,
     options: {
         chart: { toolbar: { show: false }, background: 'transparent' },
         dataLabels: { enabled: false },
         colors: ["#6366f1"],
-        xaxis: { type: 'category', labels: { style: { colors: '#9ca3af' } } },
-        yaxis: { labels: { style: { colors: '#9ca3af' } } },
-        theme: { mode: 'dark' }
+        xaxis: { type: 'category', labels: { style: { colors: labelColor.value } } },
+        yaxis: { labels: { style: { colors: labelColor.value } } },
+        theme: { mode: chartTheme.value }
     }
-});
+}));
 
 const leaderboard = ref([]);
 
@@ -172,12 +184,12 @@ const fetchData = async () => {
         kpis.value[2].value = d.sla_compliance_rate;
         kpis.value[3].value = d.avg_csat_score || '5.0';
 
-        categoryChart.series = d.volume_by_category.map(c => c.count);
-        categoryChart.options.labels = d.volume_by_category.map(c => c.name);
+        chartData.categorySeries = d.volume_by_category.map(c => c.count);
+        chartData.categoryLabels = d.volume_by_category.map(c => c.name);
 
         const trends = await axios.get('/reports/trends', { params: { days: selectedRange.value } });
-        volumeChart.series[0].data = trends.data.data.map(t => t.count);
-        volumeChart.options.xaxis.categories = trends.data.data.map(t => t.date);
+        chartData.volumeSeries = trends.data.data.map(t => t.count);
+        chartData.volumeCategories = trends.data.data.map(t => t.date);
 
         const heat = await axios.get('/reports/heatmap', { params: { days: selectedRange.value } });
         processHeatmap(heat.data.data);
@@ -199,17 +211,10 @@ const processHeatmap = (raw) => {
         });
         return { name: day, data };
     });
-    heatmapChart.series = formatted;
+    chartData.heatmapSeries = formatted;
 };
 
 onMounted(fetchData);
 </script>
 
-<style scoped>
-.text-gradient {
-    background: linear-gradient(to right, var(--color-primary, #6366f1), var(--color-secondary, #a855f7));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-</style>
+
