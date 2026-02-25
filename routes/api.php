@@ -52,6 +52,7 @@ Route::prefix('v1')->group(function () {
 
         // Agent Routes
         Route::middleware(['role:agent'])->prefix('agent')->group(function () {
+            Route::get('/dashboard', [\App\Http\Controllers\Api\V1\Agent\DashboardController::class, 'index']);
             Route::get('/tickets', [\App\Http\Controllers\Api\V1\TicketController::class, 'index']);
             Route::patch('/tickets/{ticket}', [\App\Http\Controllers\Api\V1\Agent\AgentTicketController::class, 'update']);
             Route::post('/tickets/{ticket}/comments', [\App\Http\Controllers\Api\V1\Agent\CommentController::class, 'store']);

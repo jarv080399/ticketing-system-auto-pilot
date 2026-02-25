@@ -106,21 +106,32 @@ import { useTicketStore } from '@/stores/tickets';
 const ticketStore = useTicketStore();
 const criticalTickets = ref([]);
 
-const stats = [
-    { label: 'Assigned To Me', value: '14', icon: '👤', trend: '+2 this hour', trendColor: 'text-emerald-500' },
-    { label: 'In Queue', value: '38', icon: '📥', trend: '-5 this hour', trendColor: 'text-emerald-500' },
-    { label: 'Avg Resolution', value: '2.4h', icon: '⚡', trend: '+12m vs avg', trendColor: 'text-red-500' },
-    { label: 'Customer CSAT', value: '4.9', icon: '⭐️', trend: 'Top 1%', trendColor: 'text-primary' },
-];
+const stats = ref([
+    { label: 'Assigned To Me', value: '-', icon: '👤', trend: '...', trendColor: 'text-emerald-500' },
+    { label: 'In Queue', value: '-', icon: '📥', trend: '...', trendColor: 'text-emerald-500' },
+    { label: 'Avg Resolution', value: '-', icon: '⚡', trend: '...', trendColor: 'text-red-500' },
+    { label: 'Customer CSAT', value: '-', icon: '⭐️', trend: '...', trendColor: 'text-primary' },
+]);
 
-const slaMetrics = [
-    { label: 'Initial Response', value: 98 },
-    { label: 'First Contact Resolve', value: 65 },
-    { label: 'Resolution Time', value: 89 },
-];
+const slaMetrics = ref([
+    { label: 'Initial Response', value: 0 },
+    { label: 'First Contact Resolve', value: 0 },
+    { label: 'Resolution Time', value: 0 },
+]);
 
 onMounted(async () => {
+    fetchDashboardData();
     const response = await ticketStore.fetchMyTickets({ priority: 'high', per_page: 5 });
     criticalTickets.value = response.data;
 });
+
+const fetchDashboardData = async () => {
+    try {
+        const { data } = await axios.get('/agent/dashboard');
+        stats.value = data.stats;
+        slaMetrics.value = data.slaMetrics;
+    } catch (err) {
+        console.error('Failed to load agent dashboard data', err);
+    }
+};
 </script>
