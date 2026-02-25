@@ -109,7 +109,7 @@ const themeStore = useThemeStore();
 const navItems = [
     { label: 'Overview', path: '/agent', icon: '📊' },
     { label: 'Issue Queue', path: '/agent/queue', icon: '📥' },
-    { label: 'Knowledge Base', path: '/agent/kb/new', icon: '📚' },
+    { label: 'Knowledge Base', path: '/agent/kb', icon: '📚' },
     { label: 'Macros', path: '/agent/canned-responses', icon: '⚡' },
     { label: 'Asset Registry', path: '/agent/assets', icon: '📦' },
     { label: 'Performance', path: '/agent/stats', icon: '📈' },

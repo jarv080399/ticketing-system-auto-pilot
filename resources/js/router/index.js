@@ -100,6 +100,11 @@ const routes = [
                 props: true,
             },
             {
+                path: 'kb',
+                name: 'AgentKbList',
+                component: () => import('@/pages/agent/AgentKbPage.vue'),
+            },
+            {
                 path: 'kb/new',
                 name: 'AgentNewArticle',
                 component: () => import('@/pages/AgentArticleEditorPage.vue'),
